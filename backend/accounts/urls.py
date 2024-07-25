@@ -6,7 +6,7 @@ from .views import *
 urlpatterns = [
     path('api/activate_user/<uidb64>/<token>', views.activate_user, name="activate"),
     #path('api/test', views.test, name="test"),
-    path('api/login/', login_view),
+    path('api/login/', login_view),  ##endpoint for login
     path('api/signup/', signup_view),
     path('api/test/', ExampleAPIView.as_view()),
     path('api/verify/', VerifyUser.as_view()),
