@@ -1,0 +1,19 @@
+{
+    "nationality": "india",
+    "emailAddress": "jayashtripathy371@gmail.com",
+    "phoneNumber": "+917389120420",
+    "addressLine1": "mig 1 371 hudco bhilai/chattisgarh",
+    "country": "belgium",
+    "dateOfBirth": "2024-01-16T18:30:00.000Z",
+    "zipcode": "460009",
+    "preferredCountries": [
+        "Canada",
+        "UK"
+    ],
+    "courseType": "full-time degrees/ certificates",
+    "areaOfInterests": [],
+    "courseStartDate": "2024-01-16T18:30:00.000Z",
+    "budget": "30 to 40 lakhs",
+    "gender": "male",
+    "addressLine2": "Mig 1 371 Hudco Bhilai/Chattisgarh"
+}
