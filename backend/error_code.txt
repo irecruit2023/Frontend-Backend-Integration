@@ -1,0 +1,15 @@
+EMAIL_EXISTS == email is already registered and present in the db
+
+USER_NOT_EXISTS == db do not have user by that email
+
+INCORRECT_PASSWORD == password do not matches as per the one in db
+
+Resume_uploaded_successfully == resume is added to the db
+
+Pdf_file_only == the user is trying to add file that is not in pdf format
+
+Resume_Not_Found == no resume is found on that id
+
+Status updated successfully == Status of a perticular job hass been successfully updated by the AI engine
+
+Job not found == The job on a perticular job id is not been found in the database
