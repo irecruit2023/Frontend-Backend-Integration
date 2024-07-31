@@ -1,0 +1,103 @@
+.blogs {
+  margin: 0;
+  position: relative;
+  font-size: inherit;
+  line-height: 64px;
+  font-weight: 600;
+  font-family: inherit;
+  display: inline-block;
+  min-width: 123px;
+}
+.blogHeading {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--padding-xl) 0 var(--padding-2xl);
+}
+.experienceTheFuture,
+.whereEveryFeature {
+  margin: 0;
+}
+.experienceTheFutureContainer {
+  position: relative;
+  font-size: var(--popins-body-copy-body-regular-size);
+  color: var(--colour-primary-p4-text-light);
+  z-index: 1;
+}
+.blogHeader,
+.blogTitle {
+  display: flex;
+  max-width: 100%;
+}
+.blogTitle {
+  width: 734px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: var(--gap-base);
+}
+.blogHeader {
+  width: 1388px;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 var(--padding-xl);
+  box-sizing: border-box;
+}
+.blog {
+  width: 1514px;
+  overflow-x: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--gap-13xl);
+  z-index: 1;
+  text-align: left;
+  font-size: var(--popins-body-copy-body-regular-size);
+}
+.blog,
+.blogContent,
+.blogContentWrapper {
+  display: flex;
+  align-items: flex-start;
+  max-width: 100%;
+}
+.blogContent {
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: var(--gap-33xl);
+}
+.blogContentWrapper {
+  align-self: stretch;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0 var(--padding-8xs) var(--padding-42xl);
+  box-sizing: border-box;
+  text-align: center;
+  font-size: var(--popins-heading-hero-text-size);
+  color: var(--colour-primary-p4-text);
+  font-family: var(--popins-body-copy-body-regular);
+}
+@media screen and (max-width: 750px) {
+  .blogs {
+    font-size: var(--font-size-16xl);
+    line-height: 51px;
+  }
+  .blog {
+    gap: var(--gap-base);
+  }
+  .blogContent {
+    gap: var(--gap-7xl);
+  }
+  .blogContentWrapper {
+    padding-bottom: var(--padding-21xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 450px) {
+  .blogs {
+    font-size: var(--font-size-7xl);
+    line-height: 38px;
+  }
+}
