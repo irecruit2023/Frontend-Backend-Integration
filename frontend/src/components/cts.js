@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import { useNavigate } from "react-router-dom";
 import styles from "./cts.module.css";
+import { signup,userLogin } from "../utils/util";
 
 const Cts = ({
   className = "",
@@ -11,8 +12,12 @@ const Cts = ({
   showDescription,
   propAlignSelf,
   propWidth,
+  formData, 
+  loginData
 }) => {
-  const navigate = useNavigate(); // Initialize useNavigate
+
+  console.log("formData",formData)
+  const navigate = useNavigate();
 
   const ctsStyle = useMemo(() => {
     return {
@@ -21,20 +26,77 @@ const Cts = ({
     };
   }, [propAlignSelf, propWidth]);
 
-  const handlePrimaryClick = () => {
-    if (primary === "Login") {
-      navigate('/home'); // Navigate to welcome page
-    } else {
-      navigate('/signupmessage'); // Navigate to signupmessage page
+  const validateFormData = () => {
+    console.log(formData)
+    const { firstName, lastName, email, password, reEnterPassword } = formData;
+    if (!firstName || !lastName || !email || !password || !reEnterPassword) {
+      alert("Please fill in all fields.");
+      return false;
+    }
+    if (password !== reEnterPassword) {
+      alert("Passwords do not match.");
+      return false;
+    }
+    return true;
+  };
+
+
+  const validateLoginData = () => {
+    const { email, password } = loginData;
+    console.log("logindata",loginData)
+    if (!email || !password) {
+      alert("Please fill in all fields.");
+      return false;
+    }
+    return true;
+  };
+
+
+  const handlePrimaryClick = async () => {
+    if (primary === "Sign up") {
+      if (validateFormData()) {
+        try {
+          const response = await signup(formData.email,formData.firstName, formData.lastName,formData.password );
+          if (response.message) {
+            navigate('/signupmessage');
+          } else {
+            alert(response.error || "Sign up failed.");
+          }
+        } catch (error) {
+          alert("An error occurred during sign up. Please try again.");
+        }
+      }
+    } else if (primary === "Login") {
+        console.log("enter")
+
+      if (validateLoginData()) {
+        // navigate('/home');
+        try {
+          const response = await userLogin(loginData.email,loginData.password );
+          console.log(response)
+          if (response.message) {
+            navigate('/home');
+          } else {
+            alert(response.error || "login  failed.");
+          }
+        } catch (error) {
+          alert("An error occurred during login up. Please try again.");
+        }
+
+      }
+      else{
+        console.error("not valid")
+      }
+
     }
   };
 
   const handleLoginClick = () => {
-    navigate('/login'); // Navigate to login page
+    navigate('/login');
   };
 
   const handleSignupClick = () => {
-    navigate('/signup'); // Navigate to sign-up page
+    navigate('/signup');
   };
 
   return (
@@ -75,6 +137,13 @@ Cts.propTypes = {
   alreadyHaveAnAccount: PropTypes.string,
   login: PropTypes.string,
   showDescription: PropTypes.bool,
+  formData: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    reEnterPassword: PropTypes.string.isRequired,
+  }),
 
   /** Style props */
   propAlignSelf: PropTypes.any,

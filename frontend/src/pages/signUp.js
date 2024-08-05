@@ -1,9 +1,27 @@
+import React, { useState } from "react";
 import InputField2 from "../components/input-field2";
 import Cts from "../components/cts";
 import InputField3 from "../components/input-field3";
 import styles from "./signUp.module.css";
+import { signup } from "../utils/util";
 
-const A = () => {
+const SignUp = () => {
+  const [formState, setFormState] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    reEnterPassword: "",
+  });
+
+  const handleChange = (e, fieldName) => {
+    const { value } = e.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [fieldName]: value,
+    }));
+  };
+
   return (
     <div className={styles.a}>
       <img className={styles.loadingIcon} alt="" src="/loading.svg" />
@@ -81,44 +99,59 @@ const A = () => {
           <div className={styles.levelOne}>
             <InputField2
               firstName="First Name*"
-              value="Vidhi"
+              value={formState.firstName}
+              placeholder="Enter your first name"
               vectorIcon={false}
               propAlignSelf="unset"
               propFlex="1"
               propMinWidth="151px"
+              onChange={(e) => handleChange(e, "firstName")}
+              name="firstName"
             />
             <InputField2
               firstName="Last Name*"
-              value="Sharma"
+              value={formState.lastName}
+              placeholder="Enter your last name"
               vectorIcon={false}
               propAlignSelf="unset"
               propFlex="1"
               propMinWidth="151px"
+              onChange={(e) => handleChange(e, "lastName")}
+              name="lastName"
             />
           </div>
           <InputField2
             firstName="Email*"
-            value="vidhisharma@gmail.com"
+            value={formState.email}
+            placeholder="Enter your email"
             vectorIcon={false}
             propAlignSelf="stretch"
             propFlex="unset"
             propMinWidth="unset"
+            onChange={(e) => handleChange(e, "email")}
+            name="email"
           />
           <InputField2
             firstName="Password"
-            value="********"
+            value={formState.password}
+            placeholder="Enter your password"
             vectorIcon
             propAlignSelf="stretch"
             propFlex="unset"
             propMinWidth="unset"
+            onChange={(e) => handleChange(e, "password")}
+            name="password"
           />
           <InputField2
             firstName="Re-enter Password"
-            value="********"
+            value={formState.reEnterPassword}
+            placeholder="Re-enter your password"
             vectorIcon
             propAlignSelf="stretch"
             propFlex="unset"
             propMinWidth="unset"
+            onChange={(e) => handleChange(e, "reEnterPassword")}
+            name="reEnterPassword"
           />
         </div>
         <Cts
@@ -128,6 +161,7 @@ const A = () => {
           showDescription
           propAlignSelf="stretch"
           propWidth="unset"
+          formData={formState}
         />
       </div>
       <div className={styles.newSignUpFormParent}>
@@ -138,32 +172,53 @@ const A = () => {
           </div>
           <div className={styles.body1}>
             <div className={styles.levelOne1}>
-              <InputField3 firstName="First Name*" value="Vidhi" />
-              <InputField3 firstName="Last Name*" value="Sharma" />
+              <InputField3
+                firstName="First Name*"
+                value={formState.firstName}
+                placeholder="Enter your first name"
+                onChange={(e) => handleChange(e, "firstName")}
+                name="firstName"
+              />
+              <InputField3
+                firstName="Last Name*"
+                value={formState.lastName}
+                placeholder="Enter your last name"
+                onChange={(e) => handleChange(e, "lastName")}
+                name="lastName"
+              />
             </div>
             <InputField2
               firstName="Email*"
-              value="vidhisharma@gmail.com"
+              value={formState.email}
+              placeholder="Enter your email"
               vectorIcon={false}
               propAlignSelf="stretch"
               propFlex="unset"
               propMinWidth="unset"
+              onChange={(e) => handleChange(e, "email")}
+              name="email"
             />
             <InputField2
               firstName="Password"
-              value="********"
+              value={formState.password}
+              placeholder="Enter your password"
               vectorIcon
               propAlignSelf="stretch"
               propFlex="unset"
               propMinWidth="unset"
+              onChange={(e) => handleChange(e, "password")}
+              name="password"
             />
             <InputField2
               firstName="Re-enter Password"
-              value="********"
+              value={formState.reEnterPassword}
+              placeholder="Re-enter your password"
               vectorIcon
               propAlignSelf="stretch"
               propFlex="unset"
               propMinWidth="unset"
+              onChange={(e) => handleChange(e, "reEnterPassword")}
+              name="reEnterPassword"
             />
           </div>
           <Cts
@@ -173,6 +228,7 @@ const A = () => {
             showDescription
             propAlignSelf="stretch"
             propWidth="unset"
+            formData={formState}
           />
         </form>
         <div className={styles.descriptionWrapper}>
@@ -183,4 +239,4 @@ const A = () => {
   );
 };
 
-export default A;
+export default SignUp;

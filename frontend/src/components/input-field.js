@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./input-field.module.css";
 
-const InputField = ({ className = "", firstName, initialValue = "", vectorIcon }) => {
-  const [value, setValue] = useState(initialValue);
+const InputField = ({ className = "", firstName,  initialValue = "", onChange, vectorIcon, placeholder }) => {
+  const [value, setValue] = useState(initialValue)
   const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
 
   const handleChange = (e) => {
     setValue(e.target.value);
+    if(onChange)
+    {
+      onChange(e)
+    }
   };
 
   const handleIconClick = () => {
@@ -23,6 +27,7 @@ const InputField = ({ className = "", firstName, initialValue = "", vectorIcon }
           style={{ border: 'none', outline: 'none', width: "100%" }}
           value={value}
           onChange={handleChange}
+          placeholder={placeholder}
         />
         {vectorIcon && (
           <img
@@ -41,7 +46,9 @@ const InputField = ({ className = "", firstName, initialValue = "", vectorIcon }
 InputField.propTypes = {
   className: PropTypes.string,
   firstName: PropTypes.string,
-  initialValue: PropTypes.string,
+  placeholder: PropTypes.string,
+  value: PropTypes.string.isRequired,  // Making value a required prop
+  onChange: PropTypes.func.isRequired, // Making onChange a required prop
   vectorIcon: PropTypes.bool,
 };
 

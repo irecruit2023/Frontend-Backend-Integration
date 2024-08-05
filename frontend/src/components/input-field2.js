@@ -6,10 +6,12 @@ const InputField2 = ({
   className = "",
   firstName,
   initialValue = "",
+  placeholder = "",
   vectorIcon,
   propAlignSelf,
   propFlex,
   propMinWidth,
+  onChange, // Receive onChange prop
 }) => {
   const [value, setValue] = useState(initialValue);
   const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
@@ -22,12 +24,16 @@ const InputField2 = ({
     };
   }, [propAlignSelf, propFlex, propMinWidth]);
 
+  // Handle change using onChange prop
   const handleChange = (e) => {
     setValue(e.target.value);
+    if (onChange) {
+      onChange(e); // Pass the event object to parent's onChange handler
+    }
   };
 
   const handleIconClick = () => {
-    setShowPassword(prevState => !prevState); // Toggle password visibility
+    setShowPassword((prevState) => !prevState); // Toggle password visibility
   };
 
   return (
@@ -39,9 +45,10 @@ const InputField2 = ({
       <div className={styles.input}>
         <input
           type={!vectorIcon || showPassword ? "text" : "password"} // Use 'text' if vectorIcon is present and password is to be shown
-          style={{ border: 'none', outline: 'none', width: '100%' }}
+          style={{ border: "none", outline: "none", width: "100%" }}
           value={value}
-          onChange={handleChange}
+          placeholder={placeholder} // Add placeholder here
+          onChange={handleChange} // Use the handleChange function
         />
         {vectorIcon && (
           <img
@@ -61,12 +68,15 @@ InputField2.propTypes = {
   className: PropTypes.string,
   firstName: PropTypes.string,
   initialValue: PropTypes.string,
+  placeholder: PropTypes.string,
   vectorIcon: PropTypes.bool,
 
   /** Style props */
   propAlignSelf: PropTypes.any,
   propFlex: PropTypes.any,
   propMinWidth: PropTypes.any,
+
+  onChange: PropTypes.func, // Define onChange prop as a function
 };
 
 export default InputField2;

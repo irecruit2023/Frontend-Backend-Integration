@@ -13,17 +13,19 @@
  * @returns {Promise<Object>} The response from the backend.
  */
 export const signup = async (candidate_email, candidate_first_name, candidate_last_name, password) => {
-    var response = null;
-    await fetch("/https://hazel-tea-419405.el.r.appspot.com/api/signup/", {
+  let response = null;
+  await fetch("/api/signup/", {
       method: "POST",
-      dataType: "json",
-      body: JSON.stringify({ candidate_email, candidate_first_name, candidate_last_name, password }),
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        response = data;
-      });
-    return response;
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ candidate_email, candidate_first_name, candidate_last_name, password })
+  })
+  .then((data) => data.json())
+  .then((data) => {
+      response = data;
+  });
+  return response;
 };
 
 /**
@@ -33,20 +35,21 @@ export const signup = async (candidate_email, candidate_first_name, candidate_la
  * @param {string} password - The password of the candidate.
  * @returns {Promise<Object>} The response from the backend.
  */
-export const emailLogin = async (candidate_email, password) => {
-    var response = null;
-    await fetch("/api/upload_resume/", {
+export const userLogin = async (candidate_email , password) => {
+  let response = null;
+  await fetch("/api/login/", {
       method: "POST",
-      dataType: "json",
-      body: JSON.stringify({ candidate_email, password }),
-    })
-      .then((data) => data.json())
-      .then((data) => {  
-        response = data;
-      });
-    return response;
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ candidate_email, password })
+  })
+  .then((data) => data.json())
+  .then((data) => {
+      response = data;
+  });
+  return response;
 };
-
 /**
  * Upload a resume in PDF format to the backend.
  * @function

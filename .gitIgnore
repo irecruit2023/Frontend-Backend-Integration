@@ -1,1 +1,33 @@
-frontend/node_modules/
+# Node.js and React
+/frontend/node_modules/
+/frontend/build/
+
+# Django
+/backend/.venv/
+/backend/.env/
+/backend/env/
+/backend/venv/
+/backend/db.sqlite3  # If you are using SQLite for local development
+/backend/staticfiles/
+backend/media/
+
+
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Logs
+*.log

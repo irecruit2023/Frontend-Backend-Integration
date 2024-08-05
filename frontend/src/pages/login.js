@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/input-field";
 import Cts from "../components/cts";
@@ -6,8 +6,15 @@ import styles from "./login.module.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loginState, setLoginState] = useState({ email: '', password: '' });
 
-
+  const handleChange = (e, fieldName) => {
+    const { value } = e.target;
+    setLoginState((prevState) => ({
+      ...prevState,
+      [fieldName]: value,
+    }));
+  };
 
   return (
     <div className={styles.d}>
@@ -85,9 +92,23 @@ const Login = () => {
               Login to manage your account
             </h1>
           </div>
-          <div className={styles.body} >
-            <InputField firstName="Email" value="Email" vectorIcon={false} />
-            <InputField firstName="Password" value="Password" vectorIcon={true} />
+          <div className={styles.body}>
+            <InputField
+              firstName="Email"
+              name="email"
+              value={loginState.email}
+              vectorIcon={false}
+              onChange={(e) => handleChange(e, "email")}
+              placeholder = "Enter your email"
+            />
+            <InputField
+              firstName="Password"
+              name="password"
+              value={loginState.password}
+              vectorIcon={true}
+              onChange={(e) => handleChange(e, "password")}
+              placeholder="password"
+            />
             <div className={styles.textLink}>
               <div className={styles.secondary}>Forgot Password?</div>
             </div>
@@ -99,6 +120,7 @@ const Login = () => {
             showDescription={false}
             propAlignSelf="unset"
             propWidth="490px"
+            loginData={loginState}  // Passing loginState to Cts
           />
         </form>
       </div>
