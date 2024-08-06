@@ -10,6 +10,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         jwt_token = request.META.get('HTTP_AUTHORIZATION')
         if not jwt_token:
             return None
+            #raise AuthenticationFailed('TOKEN_MISSING')
 
         try:
             token = self.get_token_from_header(jwt_token)
@@ -21,7 +22,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         candidate_id = payload.get('candidate_id')
         if not candidate_id:
-            raise AuthenticationFailed('Invalid token')
+            raise AuthenticationFailed('INVALID_TOKEN')
 
         user = User.objects.filter(candidate_id=candidate_id).first()
         if not user:

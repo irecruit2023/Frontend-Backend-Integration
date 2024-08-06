@@ -981,3 +981,69 @@ Traceback (most recent call last):
   File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\pymongo\topology.py", line 218, in _select_servers_loop
     raise ServerSelectionTimeoutError(
 pymongo.errors.ServerSelectionTimeoutError: ac-yftqwrw-shard-00-00.6samspz.mongodb.net:27017: timed out,ac-yftqwrw-shard-00-02.6samspz.mongodb.net:27017: timed out,ac-yftqwrw-shard-00-01.6samspz.mongodb.net:27017: timed out, Timeout: 30s, Topology Description: <TopologyDescription id: 66b1cdcc73ba3609e446d44f, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-yftqwrw-shard-00-00.6samspz.mongodb.net', 27017) server_type: Unknown, rtt: None, error=NetworkTimeout('ac-yftqwrw-shard-00-00.6samspz.mongodb.net:27017: timed out')>, <ServerDescription ('ac-yftqwrw-shard-00-01.6samspz.mongodb.net', 27017) server_type: Unknown, rtt: None, error=NetworkTimeout('ac-yftqwrw-shard-00-01.6samspz.mongodb.net:27017: timed out')>, <ServerDescription ('ac-yftqwrw-shard-00-02.6samspz.mongodb.net', 27017) server_type: Unknown, rtt: None, error=NetworkTimeout('ac-yftqwrw-shard-00-02.6samspz.mongodb.net:27017: timed out')>]>
+2024-08-06 19:18:45,315 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:18:48,188 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:18:48,866 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:19:50,158 - django.request - WARNING - Bad Request: /api/signup/
+2024-08-06 19:19:59,317 - django.request - WARNING - Bad Request: /api/signup/
+2024-08-06 19:20:32,732 - django.utils.autoreload - INFO - C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\accounts\serializers.py changed, reloading.
+2024-08-06 19:21:16,530 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:21:19,440 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:21:20,157 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:21:48,713 - django.request - WARNING - Bad Request: /api/signup/
+2024-08-06 19:32:16,810 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:32:19,969 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:32:21,092 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:32:29,364 - django.request - WARNING - Bad Request: /api/login/
+2024-08-06 19:32:51,274 - django.request - WARNING - Bad Request: /api/login/
+2024-08-06 19:35:58,892 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:36:02,259 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:36:03,057 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:36:23,225 - django.request - WARNING - Unauthorized: /api/jobstatus/
+2024-08-06 19:36:30,034 - django.request - WARNING - Bad Request: /api/jobstatus/
+2024-08-06 19:37:00,842 - django.request - ERROR - Internal Server Error: /api/upload_resume/
+Traceback (most recent call last):
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\django\views\decorators\csrf.py", line 55, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\venv\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\accounts\views.py", line 224, in post
+    user_id = str(user.candidate_id)
+                  ^^^^^^^^^^^^^^^^^
+AttributeError: 'AnonymousUser' object has no attribute 'candidate_id'
+2024-08-06 19:37:39,444 - django.utils.autoreload - INFO - C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\accounts\authentication.py changed, reloading.
+2024-08-06 19:37:43,248 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:37:44,443 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:46:24,110 - django.utils.autoreload - INFO - C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\accounts\authentication.py changed, reloading.
+2024-08-06 19:46:27,094 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:46:28,309 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:46:34,981 - django.request - WARNING - Unauthorized: /api/upload_resume/
+2024-08-06 19:49:25,000 - django.utils.autoreload - INFO - C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\accounts\views.py changed, reloading.
+2024-08-06 19:49:28,283 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:49:28,922 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:50:30,066 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:50:34,707 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:50:35,283 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:50:39,611 - django.request - WARNING - Unauthorized: /api/signup/
+2024-08-06 19:51:14,040 - django.utils.autoreload - INFO - C:\Users\Dhruv Adavadkar\OneDrive\Desktop\backendCode\backend\accounts\authentication.py changed, reloading.
+2024-08-06 19:51:16,922 - connection - INFO - Pinged your deployment. You successfully connected to MongoDB!
+2024-08-06 19:51:17,751 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2024-08-06 19:51:22,711 - django.request - WARNING - Bad Request: /api/signup/

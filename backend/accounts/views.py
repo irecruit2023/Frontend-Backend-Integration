@@ -134,7 +134,7 @@ class VerifyUser(APIView):
         token = request.META.get('HTTP_AUTHORIZATION')
         
         if not token:
-            raise AuthenticationFailed('Unauthenticated')
+            raise AuthenticationFailed('UNAUTHENTICATED')
         
         try:
             payload = jwt.decode(token, 'secret', algorithm=['HS256'])

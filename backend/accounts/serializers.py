@@ -34,7 +34,7 @@ class UserSerializer(serializers.Serializer):
 
         # Validate password requirements (e.g., minimum length)
         if len(password) < 8:
-            raise serializers.ValidationError('Password must be at least 8 characters')
+            raise serializers.ValidationError('PASSWORD_MUST_BE_OF_8_CHARACTERS')
 
         return data
 

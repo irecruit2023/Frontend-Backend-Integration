@@ -60,7 +60,7 @@ def send_confirmation_email(user, request):
         logger.info(f"Confirmation email sent to {user.candidate_email}")
 
     except Exception as e:
-        logger.error(f"Error sending confirmation email to {user.candidate_email}: {e}")    
+        logger.error(f"ERROR_SENDING_MAIL")    
         
         
 
