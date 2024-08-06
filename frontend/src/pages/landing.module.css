@@ -1,0 +1,216 @@
+.connectingTalent,
+.withOpportunities {
+  margin: 0;
+}
+.connectingTalentWithContainer {
+  margin: 0;
+  align-self: stretch;
+  position: relative;
+  font-size: inherit;
+  line-height: 71px;
+  font-weight: 600;
+  font-family: inherit;
+}
+.thisPlatformIs {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--popins-sub-heading-subheader-size);
+  font-weight: 500;
+  color: var(--colour-primary-p1);
+}
+.description {
+  width: 738px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: var(--gap-5xl);
+  max-width: 100%;
+}
+.ofCandidatesWho {
+  flex: 1;
+  position: relative;
+  line-height: 15.5px;
+  display: inline-block;
+  max-width: 100%;
+}
+.ofCandidatesWhoCompletedThWrapper {
+  width: 567px;
+  border-radius: var(--br-81xl);
+  background-color: var(--color-lavender);
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-5xs) var(--padding-base);
+  box-sizing: border-box;
+  min-height: 36px;
+  max-width: 100%;
+  z-index: 1;
+  font-size: var(--popins-body-copy-body-regular1-size);
+  color: var(--colour-secondary-s2);
+}
+.frameChild,
+.frameItem {
+  position: absolute;
+  top: 514px;
+  left: 0;
+  width: 1085.1px;
+  height: 1013px;
+  object-fit: contain;
+}
+.frameItem {
+  top: 130px;
+  left: 372px;
+  width: 1208.9px;
+  height: 1144.5px;
+  z-index: 1;
+}
+.frameInner {
+  position: absolute;
+  top: 0;
+  left: 759px;
+  width: 823.9px;
+  height: 622.5px;
+  z-index: 3;
+}
+.vectorParent {
+  width: 1582.9px;
+  height: 862px;
+  position: absolute;
+  margin: 0 !important;
+  right: 19.1px;
+  bottom: -275px;
+}
+.primary {
+  position: relative;
+  line-height: 31px;
+  font-weight: 600;
+}
+.content,
+.primaryButton {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+.primaryButton {
+  border-radius: var(--br-81xl);
+  background-color: var(--colour-primary-p1);
+  overflow: hidden;
+  flex-direction: row;
+  padding: 22.5px 59px;
+  white-space: nowrap;
+  font-size: var(--popins-heading-heading-medium-size);
+  color: var(--colour-tertiary-t6-all-white);
+}
+.content {
+  align-self: stretch;
+  border-radius: var(--br-base);
+  background: linear-gradient(92.75deg, #ffeceb, #f9f4ff);
+  flex-direction: column;
+  padding: var(--padding-45xl) var(--padding-96xl) 263px;
+  position: relative;
+  gap: var(--gap-25xl);
+  z-index: 2;
+}
+.description1 {
+  position: relative;
+  display: inline-block;
+  min-width: 112px;
+}
+.footerText {
+  flex-direction: row;
+  padding: var(--padding-9xs) 0;
+  z-index: 1;
+  text-align: center;
+  font-size: var(--popins-body-copy-body-regular-size);
+}
+.contentContainer,
+.contentContainerWrapper,
+.footerText,
+.landing {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.contentContainer {
+  flex: 1;
+  flex-direction: column;
+  gap: 213px;
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--popins-heading-heading-size);
+  color: var(--colour-primary-p4-text);
+  font-family: var(--popins-body-copy-body-regular);
+}
+.contentContainerWrapper,
+.landing {
+  box-sizing: border-box;
+}
+.contentContainerWrapper {
+  align-self: stretch;
+  flex-direction: row;
+  padding: 0 var(--padding-25xl);
+  max-width: 100%;
+}
+.landing {
+  width: 100%;
+  position: relative;
+  background-color: var(--colour-tertiary-t6-all-white);
+  overflow: hidden;
+  flex-direction: column;
+  padding: 0 0 var(--padding-12xl);
+  gap: 45px;
+  line-height: normal;
+  letter-spacing: normal;
+}
+@media screen and (max-width: 1200px) {
+  .contentContainer {
+    gap: 106px;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .connectingTalentWithContainer {
+    font-size: 51px;
+    line-height: 57px;
+  }
+  .content {
+    padding-left: var(--padding-38xl);
+    padding-right: var(--padding-38xl);
+    box-sizing: border-box;
+  }
+  .contentContainerWrapper {
+    padding-left: var(--padding-3xl);
+    padding-right: var(--padding-3xl);
+    box-sizing: border-box;
+  }
+}
+@media screen and (max-width: 750px) {
+  .content {
+    gap: var(--gap-3xl);
+    padding: 42px var(--padding-9xl) 171px;
+    box-sizing: border-box;
+  }
+  .contentContainer {
+    gap: 53px;
+  }
+}
+@media screen and (max-width: 450px) {
+  .connectingTalentWithContainer {
+    font-size: 38px;
+    line-height: 43px;
+  }
+  .primaryButton {
+    padding-left: var(--padding-xl);
+    padding-right: var(--padding-xl);
+    box-sizing: border-box;
+  }
+  .contentContainer {
+    gap: 27px;
+  }
+  .landing {
+    gap: var(--gap-3xl);
+  }
+}

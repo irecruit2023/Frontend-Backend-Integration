@@ -1,0 +1,108 @@
+.wrapperGroup54Child {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    position: absolute;
+    left: -14px;
+    top: -63px;
+    transform: scale(1.09);
+  }
+  .wrapperGroup54 {
+    height: 1397px;
+    width: 1602px;
+    position: absolute;
+    margin: 0 !important;
+    right: -1528px;
+    bottom: -696px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+  }
+  .description {
+    position: relative;
+    display: inline-block;
+    min-width: 112px;
+  }
+  .footerContent,
+  .footerText {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .footerText {
+    padding: var(--padding-9xs) 0;
+    z-index: 1;
+  }
+  .footerContent {
+    position: relative;
+  }
+  .footerContainer {
+    flex-direction: row;
+    padding: 0 var(--padding-8xs);
+  }
+  .contentWrapper,
+  .footerContainer,
+  .mainContent,
+  .root {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .contentWrapper {
+    flex: 1;
+    flex-direction: column;
+    gap: 164px;
+    max-width: 100%;
+    text-align: center;
+    font-size: var(--popins-body-copy-body-regular-size);
+    color: var(--colour-primary-p4-text);
+    font-family: var(--popins-body-copy-body-regular);
+  }
+  .mainContent,
+  .root {
+    box-sizing: border-box;
+  }
+  .mainContent {
+    align-self: stretch;
+    flex-direction: row;
+    padding: 0 var(--padding-25xl) 0 var(--padding-20xl);
+    max-width: 100%;
+  }
+  .root {
+    width: 100%;
+    position: relative;
+    background-color: var(--colour-tertiary-t6-all-white);
+    /* overflow-y: auto; */
+    flex-direction: column;
+    padding: 0 0 var(--padding-11xl);
+    gap: 46px;
+    line-height: normal;
+    letter-spacing: normal;
+  }
+  @media screen and (max-width: 1250px) {
+    .contentWrapper {
+      gap: 82px;
+    }
+  }
+  @media screen and (max-width: 1100px) {
+    .mainContent {
+      padding-right: var(--padding-3xl);
+      box-sizing: border-box;
+    }
+  }
+  @media screen and (max-width: 750px) {
+    .contentWrapper {
+      gap: 41px;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .contentWrapper {
+      gap: var(--gap-xl);
+    }
+    .root {
+      gap: var(--gap-4xl);
+    }
+  }
+  

@@ -1,0 +1,284 @@
+.awesomeTxt {
+    text-decoration: none;
+    width: 662px;
+    position: relative;
+    font-size: var(--popins-sub-heading-subheader-size);
+    font-weight: 500;
+    color: inherit;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .fillNoForms,
+  .kickstartingItWith {
+    margin: 0;
+  }
+  .fillNoFormsContainer,
+  .uploadResume {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .fillNoFormsContainer {
+    width: 662px;
+    color: var(--colour-primary-p4-text-light);
+  }
+  .uploadResume {
+    margin: 0;
+    flex: 1;
+    font-size: inherit;
+    line-height: 31px;
+    font-weight: 600;
+    font-family: inherit;
+  }
+  .uploadResumeWrapper {
+    width: 662px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 0 38px;
+    box-sizing: border-box;
+    max-width: 100%;
+    font-size: var(--popins-heading-heading-medium-size);
+    color: var(--colour-primary-p1);
+  }
+  .dropYourFile {
+    font-weight: 500;
+  }
+  .or {
+    font-size: var(--popins-body-copy-body-regular-size);
+    line-height: 15.5px;
+    font-family: var(--popins-body-copy-body-regular);
+    color: var(--colour-primary-p4-text-light);
+  }
+  .span {
+    color: var(--colour-primary-p4-text);
+  }
+  .browseFromDevice {
+    font-weight: 500;
+  }
+  .dropYourFileHereOrBrowse {
+    margin: 0;
+  }
+  .blankLine1 {
+    font-weight: 500;
+  }
+  .blankLine,
+  .or1 {
+    margin: 0;
+    color: var(--colour-primary-p1);
+  }
+  .or1 {
+    font-size: var(--popins-body-copy-body-regular-size);
+    line-height: 15.5px;
+    color: var(--colour-primary-p4-text-light);
+  }
+  .dropYourFileContainer,
+  .secondary {
+    position: relative;
+  }
+  .secondaryButton {
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-primary-p1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 26px;
+    white-space: nowrap;
+    text-align: left;
+    cursor: pointer;
+  }
+  .sizeUpto10,
+  .supportsDocxAnd {
+    margin: 0;
+  }
+  .supportsDocxAndContainer {
+    align-self: stretch;
+    position: relative;
+    font-size: var(--popins-body-copy-body-regular-size);
+    line-height: 15.5px;
+  }
+  .dropzone,
+  .dropzoneWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .dropzone {
+    align-self: stretch;
+    align-items: center;
+    padding: 0;
+    gap: 23px;
+  }
+  .dropzoneWrapper {
+    width: 662px;
+    border-radius: 8px;
+    background-color: #ffeceb;
+    border: 1px dashed #f4a789;
+    box-sizing: border-box;
+    align-items: flex-start;
+    padding: 30px 0px;
+    max-width: 100%;
+  }
+  .textBox {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    margin: 0 !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: var(--br-81xl);
+    background-color: rgba(230, 252, 244, 0.5);
+  }
+  .ofCandidatesWho {
+    width: 390px;
+    position: relative;
+    line-height: 16px;
+    display: inline-block;
+    z-index: 1;
+  }
+  .rootInner,
+  .textBoxParent {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: 100%;
+  }
+  .textBoxParent {
+    justify-content: flex-start;
+    padding: var(--padding-7xs) 12px var(--padding-7xs) 19px;
+    box-sizing: border-box;
+    position: relative;
+  }
+  .rootInner {
+    width: 662px;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--colour-primary-p2);
+    font-family: var(--font-inter);
+  }
+  .tryOurResume {
+    color: var(--colour-primary-p1);
+  }
+  .dontHaveAContainer {
+    width: 662px;
+    position: relative;
+    font-size: var(--popins-body-copy-body-regular-size);
+    line-height: 16px;
+    display: inline-block;
+    max-width: 100%;
+    color: var(--colour-primary-p4-text-light);
+  }
+  .root {
+    width: 100%;
+    box-shadow: var(--card-1);
+    border-radius: 16px;
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-tertiary-t1-text-default);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 46px var(--padding-xl);
+    gap: 30.2px;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    font-size: var(--popins-ctas-tertiary-medium-size);
+    color: var(--colour-primary-p4-text);
+    font-family: var(--popins-body-copy-body-regular);
+  }
+  @media screen and (max-width: 750px) {
+    .uploadResume {
+      font-size: 26px;
+      line-height: 25px;
+    }
+    .dropzoneWrapper {
+      padding-left: var(--padding-107xl);
+      padding-right: var(--padding-107xl);
+      box-sizing: border-box;
+    }
+    .root {
+      gap: 15px;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .uploadResume {
+      font-size: var(--popins-sub-heading-subheader-size);
+      line-height: 19px;
+    }
+    .dropzoneWrapper {
+      padding-left: var(--padding-xl);
+      padding-right: var(--padding-xl);
+      box-sizing: border-box;
+    }
+}
+
+
+/* App Styles */
+.appContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .openModalButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .openModalButton:hover {
+    background-color: #0056b3;
+  }
+
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+  }
+  
+  .modalContent {
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 60%;
+    width: 100%;
+    position: relative;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modalBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  
