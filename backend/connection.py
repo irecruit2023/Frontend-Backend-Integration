@@ -2,6 +2,18 @@
 
 import mongoengine
 import ssl
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("mongo_connection.log"),
+        logging.StreamHandler()
+    ]
+)
+
+logger = logging.getLogger(__name__)
 
 def setup_mongoengine_connection():
     try:
@@ -11,6 +23,6 @@ def setup_mongoengine_connection():
             ssl=True,
             ssl_cert_reqs=ssl.CERT_NONE
         )
-        print("Pinged your deployment. You successfully connected to MongoDB!")
+        logger.info("Pinged your deployment. You successfully connected to MongoDB!")
     except Exception as e:
-        print(f"Error connecting to MongoDB: {e}")
+        logger.error(f"Error connecting to MongoDB: {e}")

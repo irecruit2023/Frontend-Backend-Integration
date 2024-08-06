@@ -25,9 +25,18 @@ from django.contrib.auth.tokens import default_token_generator
 from rest_framework.parsers import MultiPartParser, FormParser
 from .tasks import JobScheduler, start_job_scheduler
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
+import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("mongo_connection.log"),
+        logging.StreamHandler()
+    ]
+)
 
+logger = logging.getLogger(__name__)
 
 @api_view(['POST'])
 @csrf_exempt
@@ -38,7 +47,19 @@ def signup_view(request):
         
         #sending email to the user in bg
         send_confirmation_email(user,request)
-        return HttpResponse('User_registered_successfully', status=status.HTTP_201_CREATED, content_type='text/plain')
+        
+        response_data = serializer.data
+        response_data.pop('password', None)
+        
+        response = {
+            "status_code": status.HTTP_201_CREATED,
+            "success": True,
+            "data": response_data,
+            "message": "User registered successfully"
+        }
+        
+        return Response(response, status=status.HTTP_201_CREATED)
+        #return HttpResponse('User_registered_successfully', status=status.HTTP_201_CREATED, content_type='text/plain')
     else:
         # Custom error handling
         error_messages = []
@@ -46,7 +67,19 @@ def signup_view(request):
             error_messages.extend(errors)
         # Join all error messages into a single string
         error_message = ' '.join(error_messages)
-        return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
+        
+        response_data = serializer.data
+        response_data.pop('password', None)
+        
+        response = {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "data": response_data,
+            "message": error_message
+        }
+        
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        #return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
     
     
 @api_view(['POST'])
@@ -61,7 +94,18 @@ def login_view(request):
         access_token, refresh_token = JWTAuthentication.create_tokens(user)
 
         # Authentication successful, return a success message or token
-        response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
+        response_data = {
+            "status_code": status.HTTP_200_OK,
+            "success": True,
+            "data": {
+                'access_token': access_token,
+                'refresh_token': refresh_token,
+                'user_id': user.id
+            },
+            "message": "Login successful"
+        }
+        #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
+        response= Response(response_data, status=status.HTTP_200_OK)
         response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
         return response
     else:
@@ -71,25 +115,17 @@ def login_view(request):
             error_messages.extend(errors)
         # Join all error messages into a single string
         error_message = ' '.join(error_messages)
-        return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
-    
- #       if serializer.is_valid():
- #           user = serializer.validated_data['user']
- #           tokens = get_tokens(user)
- #           response = Response({'message': 'login_success'})
-
- #           payload = {
- #               'id': user.id,
- #               'exp': datetime.datetime.now() + datetime.timedelta(minutes=60),
- #           }
-
- #           token = jwt.encode(payload, 'secret', algorithm='HS256').decode('utf-8')
-
- #           response = Response()
- #           response.set_cookie(key='jwt', value=token, httponly=True)
-
- #           return Response({'jwt': token})                 
- #       return Response({'message':'login_success', 'token':token})
+        
+        response_data = serializer.data
+        response_data.pop('password', None)
+        
+        response = {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "data": response_data,
+            "message": error_message
+        }
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)
         
         
 class VerifyUser(APIView):
@@ -164,7 +200,15 @@ def refresh_token_view(request):
     jwt_auth = JWTAuthentication()
     access_token = jwt_auth.generate_access_token(user)
 
-    return Response({'access_token': access_token})
+    response = {
+        "status_code": status.HTTP_200_OK,
+        "success": True,
+        "data": {
+            "access_token":access_token
+            },
+        "message": " New Access token for login using refresh token"
+    }
+    return Response(response)
 
 
     
@@ -179,21 +223,42 @@ class UploadResume(APIView):
         user = request.user
         user_id = str(user.candidate_id)
         
-        
         serializer = ResumeSerializer(data=request.data, context={'user_id': user_id})
         if serializer.is_valid():
             resume = serializer.save()
             
             # Celery task
-            #process_resume.delay(str(resume.id))  
+            # process_resume.delay(str(resume.id))  
             
-            #  scheduler = JobScheduler()
+            # Scheduler job
             scheduler.add_job(30, resume.id)
-            return Response({'message': f'Resume uploaded successfully.'}, status=status.HTTP_201_CREATED)
-            #return HttpResponse('Resume_uploaded_successfully', user.candidate_id, status=status.HTTP_201_CREATED, content_type='text/plain')
+            
+            response = {
+                "status_code": status.HTTP_200_OK,
+                "success": True,
+                "data": serializer.data,
+                "message": "Resume uploaded successfully"
+            }
+            return Response(response, status=status.HTTP_200_OK)
         else:
-            error_messages = ' '.join([str(error) for errors in serializer.errors.values() for error in errors])
-            return HttpResponse(error_messages, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
+        # Custom error handling
+            error_messages = []
+            for field, errors in serializer.errors.items():
+                error_messages.extend(errors)
+        # Join all error messages into a single string
+            error_message = ' '.join(error_messages)
+        
+        
+        
+            response = {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "success": False,
+                "data": None,
+                "message": error_message
+            }
+        
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            #return HttpResponse(error_messages, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
         
         
         
@@ -207,13 +272,13 @@ class GetResume(APIView):
             redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
             
             # Debugging: Print the key being used to fetch from Redis
-            print(f"Attempting to fetch key from Redis: {user_id}")
+            logging.info(f"Attempting to fetch key from Redis: {user_id}")
             
             cached_resume = redis_client.get(user_id)
 
             if cached_resume:
                 # Print or log message indicating the file is coming from Redis
-                print("Getting the resume from Redis")
+                logging.info("Getting the resume from Redis")
                 response = HttpResponse(cached_resume, content_type='application/pdf')
                 response['Content-Disposition'] = f'attachment; filename="{user_id}.pdf"'
                 return response
@@ -229,7 +294,14 @@ class GetResume(APIView):
             document = resume_collection.find_one({'candidate': user_id})
 
             if document is None:
-                return HttpResponse('Resume_Not_Found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
+                response={
+                    "status_code":status.HTTP_404_NOT_FOUND,
+                    "success": False,
+                    "data":None,
+                    "message": "Resume Not Found"
+                }
+                return Response(response, status=status.HTTP_404_NOT_FOUND)
+                #return HttpResponse('Resume_Not_Found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
 
             # Access the filename and file ID from the document
             filename = document.get('filename')
@@ -244,21 +316,34 @@ class GetResume(APIView):
 
             # Cache the file content in Redis
             redis_client.set(user_id, file_content)
-            print(f"Stored resume in Redis with key: {user_id}")
+            logging.info(f"Stored resume in Redis with key: {user_id}")
 
             # Construct the response with the resume file content
             response = HttpResponse(file_content, content_type='application/pdf')
             response['Content-Disposition'] = f'attachment; filename="{filename}"'
             
             # Print or log message indicating the file is coming from MongoDB
-            print('Getting the resume from MongoDB')
+            logging.info('Getting the resume from MongoDB')
             return response
 
         except gridfs.errors.NoFile:
-            return HttpResponse('No_file_found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
+            response={
+                    "status_code":status.HTTP_404_NOT_FOUND,
+                    "success": False,
+                    "data":None,
+                    "message": "No File Found"
+                }
+            return Response(response, status=status.HTTP_404_NOT_FOUND)
+            #return HttpResponse('No_file_found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
 
         except Exception as e:
-            return HttpResponse(f"Error: {str(e)}", status=status.HTTP_500_INTERNAL_SERVER_ERROR, content_type='text/plain')
+            response={
+                    "status_code":status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    "success": False,
+                    "data":None,
+                    "message": {str(e)}
+                }
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
 
@@ -283,5 +368,17 @@ class UpdateJobStatus(APIView):
                 collection.update_one({'_id':job_id}, {'$set':{'status': new_status}})
                 schedular = JobScheduler()
                 schedular.remove_job(job)
-                return HttpResponse('Status updated successfully', status=status.HTTP_200_OK, content_type='text/plain')
-        return HttpResponse('Job not found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
+                response = {
+                    "status_code":status.HTTP_200_OK,
+                    "success": True,
+                    "data":{'_id' : job_id},
+                    "message": "Status updated successfully"
+                }
+                return Response(response, status=status.HTTP_200_OK)
+        response = {
+                    "status_code":status.HTTP_404_NOT_FOUND,
+                    "success": False,
+                    "data":{'_id' : job_id},
+                    "message": "Job not found"
+                }    
+        return Response(response, status=status.HTTP_404_NOT_FOUND)

@@ -6,25 +6,21 @@ from .models import *
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from .helpers import generate_token
-from django.core.mail import EmailMessage
 from django.conf import settings
 import logging
-from django.core.mail import send_mail
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 import time
-from pymongo import MongoClient
 import pymongo
 import asyncio
 import threading
 import uuid
 import time
 import json
-import os
 import heapq
 #from datetime import datetime
 
