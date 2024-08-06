@@ -1,0 +1,10 @@
+
+USER_REGISTERED_SUCCESSFULLY == user registered successfully
+
+LOGIN_SUCCESSFUL == Login success
+
+NEW_ACCESS_TOKEN == New access token generated
+
+RESUME_UPLOADED_SUCCESSFULLY == resume uploaded 
+
+STATUS_UPDATED_SUCCESSFULLY == job status updated

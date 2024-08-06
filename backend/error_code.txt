@@ -1,16 +1,54 @@
-EMAIL_EXISTS == email is already registered and present in the db
+---User-related errors---
 
-USER_NOT_EXISTS == db do not have user by that email
+EMAIL_EXISTS == Email is already registered 
 
-INCORRECT_PASSWORD == password do not matches as per the one in db
+USER_NOT_EXISTS == User not found
 
-Resume_uploaded_successfully == resume is added to the db
+INCORRECT_PASSWORD == Password incorrect
 
-Pdf_file_only == the user is trying to add file that is not in pdf format
+PASSWORD_MUST_BE_OF_8_CHARACTERS == Password must be at least 8 characters
 
-Resume_Not_Found == no resume is found on that id
+ERROR_SENDING_MAIL == Error sending email to the user email
 
-Status updated successfully == Status of a perticular job hass been successfully updated by the AI engine
+
+---Authentication errors---
+
+INVALID_TOKEN_FORMAT == Token format invalid
+
+INVALID_TOKEN == Invalid token 
+
+UNAUTHORIZED_ACCESS = "Unauthorized access."
+
+TOKEN_EXPIRED == Token Expired
+
+TOKEN_MISSING == Token missing
+
+
+---Validation error--
+
+Enter a valid email address = enter valid email
+
+
+
+---General errors---
+
+UNKNOWN_ERROR == "An unknown error occurred."
+
+BAD_REQUEST == "Bad request."
+
+NOT_FOUND == "Resource not found."
+
+METHOD_NOT_ALLOWED == "Method not allowed."
+
+
+---Resume error---
+
+PDF_FILES_ONLY == only pdf files to be uploaded
+
+RESUME_NOT_FOUND == no resume found
+
+
+---Error related to job---
 
 Job not found == The job on a perticular job id is not been found in the database
 
