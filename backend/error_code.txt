@@ -13,3 +13,4 @@ Resume_Not_Found == no resume is found on that id
 Status updated successfully == Status of a perticular job hass been successfully updated by the AI engine
 
 Job not found == The job on a perticular job id is not been found in the database
+

@@ -83,7 +83,7 @@ class ResumeSerializer(serializers.Serializer):
         file_data = validated_data.pop('file')  # Remove 'file' from validated_data
 
         if not file_data.content_type.startswith('application/pdf'):
-            raise serializers.ValidationError({'file': 'Pdf_files_only'})
+            raise serializers.ValidationError({'file': 'PDF_FILES_ONLY'})
         
         # Generate filename
         filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"

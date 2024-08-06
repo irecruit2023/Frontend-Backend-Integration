@@ -55,7 +55,7 @@ def signup_view(request):
             "status_code": status.HTTP_201_CREATED,
             "success": True,
             "data": response_data,
-            "message": "User registered successfully"
+            "message": "USER_REGISTERED_SUCCESSFULLY"
         }
         
         return Response(response, status=status.HTTP_201_CREATED)
@@ -102,7 +102,7 @@ def login_view(request):
                 'refresh_token': refresh_token,
                 'user_id': user.id
             },
-            "message": "Login successful"
+            "message": "LOGIN_SUCCESSFUL"
         }
         #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
         response= Response(response_data, status=status.HTTP_200_OK)
@@ -206,7 +206,7 @@ def refresh_token_view(request):
         "data": {
             "access_token":access_token
             },
-        "message": " New Access token for login using refresh token"
+        "message": " NEW_ACCESS_TOKEN"
     }
     return Response(response)
 
@@ -237,7 +237,7 @@ class UploadResume(APIView):
                 "status_code": status.HTTP_200_OK,
                 "success": True,
                 "data": serializer.data,
-                "message": "Resume uploaded successfully"
+                "message": "RESUME_UPLOADED_SUCCESSFULLY"
             }
             return Response(response, status=status.HTTP_200_OK)
         else:
@@ -298,7 +298,7 @@ class GetResume(APIView):
                     "status_code":status.HTTP_404_NOT_FOUND,
                     "success": False,
                     "data":None,
-                    "message": "Resume Not Found"
+                    "message": "RESUME_NOT_FOUND"
                 }
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
                 #return HttpResponse('Resume_Not_Found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
@@ -331,7 +331,7 @@ class GetResume(APIView):
                     "status_code":status.HTTP_404_NOT_FOUND,
                     "success": False,
                     "data":None,
-                    "message": "No File Found"
+                    "message": "NO_FILE_FOUND"
                 }
             return Response(response, status=status.HTTP_404_NOT_FOUND)
             #return HttpResponse('No_file_found', status=status.HTTP_404_NOT_FOUND, content_type='text/plain')
@@ -372,13 +372,13 @@ class UpdateJobStatus(APIView):
                     "status_code":status.HTTP_200_OK,
                     "success": True,
                     "data":{'_id' : job_id},
-                    "message": "Status updated successfully"
+                    "message": "STATUS_UPDATED_SUCCESSFULLY"
                 }
                 return Response(response, status=status.HTTP_200_OK)
         response = {
                     "status_code":status.HTTP_404_NOT_FOUND,
                     "success": False,
                     "data":{'_id' : job_id},
-                    "message": "Job not found"
+                    "message": "JOB_NOT_FOUND"
                 }    
         return Response(response, status=status.HTTP_404_NOT_FOUND)

@@ -15,9 +15,9 @@ class JWTAuthentication(authentication.BaseAuthentication):
             token = self.get_token_from_header(jwt_token)
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('Token expired')
+            raise AuthenticationFailed('TOKEN_EXPIRED')
         except (jwt.InvalidTokenError, jwt.DecodeError):
-            raise AuthenticationFailed('Invalid token')
+            raise AuthenticationFailed('INVALID_TOKEN')
 
         candidate_id = payload.get('candidate_id')
         if not candidate_id:
@@ -25,7 +25,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         user = User.objects.filter(candidate_id=candidate_id).first()
         if not user:
-            raise AuthenticationFailed('User not found')
+            raise AuthenticationFailed('USER_NOT_FOUND')
 
         return user, payload
 
@@ -36,7 +36,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # Clean the token and extract the actual token value
         prefix, value = token.split()
         if prefix.lower() != 'bearer':
-            raise AuthenticationFailed('Invalid token format')
+            raise AuthenticationFailed('INVALID_TOKEN_FORMAT')
         return value
 
     @classmethod
