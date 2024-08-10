@@ -2,12 +2,15 @@ import TopNavBar from "../components/top-nav-bar";
 import styles from "./home.module.css";
 import { Modal } from '../components/upload-resume';
 import {React,useState} from 'react';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const openModal = () => { console.log("called"), setModalOpen(true)};
   const closeModal = () => setModalOpen(false);
+  const navigateMain =()=>{ navigate("/main")}
 
   return (
     <div className={styles.root}>
@@ -50,7 +53,7 @@ const Home = () => {
                   <div className={styles.primary} style ={{cursor:"pointer"}} onClick={openModal} >Complete Profile Now</div>
                 </div>
                 <div className={styles.secondaryButton} > 
-                  <div className={styles.secondary} style ={{cursor:"pointer"}} >Skip and Explore</div>
+                  <div className={styles.secondary} style ={{cursor:"pointer"}}   onClick={navigateMain} >Skip and Explore</div>
                 </div>
               </div>
               <div className={styles.vectorParent}>

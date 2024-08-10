@@ -1,6 +1,10 @@
 import styles from "./signUpMessage.module.css";
 
 const signUpMessage = () => {
+  const openGmail = () => {
+    window.open('https://mail.google.com', '_blank');
+  };
+
   return (
     <div className={styles.b}>
       <img className={styles.loadingIcon} alt="" src="/loading.svg" />
@@ -83,13 +87,13 @@ const signUpMessage = () => {
                   We sent a confirmation to the email below.
                 </p>
                 <p className={styles.pleaseGoTo}>
-                  Please go to you gmail account and confirm your account
+                  Please go to your Gmail account and confirm your account
                 </p>
               </div>
               <div className={styles.description6}>vidhisharma@gmail.com</div>
             </div>
-            <div className={styles.textLink}>
-              <div className={styles.secondary}>Open gmail account</div>
+            <div className={styles.textLink} onClick={openGmail}>
+              <div className={styles.secondary}>Open Gmail account</div>
             </div>
             <div className={styles.description7}>
               <div className={styles.description8}>
