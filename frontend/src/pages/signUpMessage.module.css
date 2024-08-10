@@ -184,6 +184,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  cursor: pointer;
 }
 .signUpThrough {
   margin: 0;

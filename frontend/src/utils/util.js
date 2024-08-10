@@ -96,9 +96,12 @@ export const refreshToken = async () => {
  * @returns {Promise<Object>} The response from the backend.
  */
 export const getResume = async (user_id) => {
-    var response = null;
-    await fetch(`/api/get_resume/${user_id}/`, {
+  let response = null;
+  await fetch(`/api/get_resume/${user_id}/`, {
       method: "GET",
+      headers: {
+          'Content-Type': 'application/json'
+      },
       dataType: "json",
     })
       .then((data) => data.json())

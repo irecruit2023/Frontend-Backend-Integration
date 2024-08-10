@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import styles from "./cts.module.css";
 import { signup,userLogin } from "../utils/util";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { notifyError } from "../helper";
 
 const Cts = ({
   className = "",
@@ -30,11 +33,11 @@ const Cts = ({
     console.log(formData)
     const { firstName, lastName, email, password, reEnterPassword } = formData;
     if (!firstName || !lastName || !email || !password || !reEnterPassword) {
-      alert("Please fill in all fields.");
+      notifyError("Please fill in all fields.");
       return false;
     }
     if (password !== reEnterPassword) {
-      alert("Passwords do not match.");
+      notifyError("Passwords do not match.");
       return false;
     }
     return true;
@@ -45,7 +48,7 @@ const Cts = ({
     const { email, password } = loginData;
     console.log("logindata",loginData)
     if (!email || !password) {
-      alert("Please fill in all fields.");
+      notifyError("Please fill in all fields.");
       return false;
     }
     return true;
@@ -57,13 +60,14 @@ const Cts = ({
       if (validateFormData()) {
         try {
           const response = await signup(formData.email,formData.firstName, formData.lastName,formData.password );
-          if (response.message) {
+          if (response.success) {
             navigate('/signupmessage');
           } else {
-            alert(response.error || "Sign up failed.");
+          
+            notifyError(response.message || "Sign up failed.");
           }
         } catch (error) {
-          alert("An error occurred during sign up. Please try again.");
+          notifyError("An error occurred during sign up. Please try again.");
         }
       }
     } else if (primary === "Login") {
@@ -74,18 +78,19 @@ const Cts = ({
         try {
           const response = await userLogin(loginData.email,loginData.password );
           console.log(response)
-          if (response.message) {
+          if (response.success) {
             navigate('/home');
           } else {
-            alert(response.error || "login  failed.");
+            console.log(response.message)
+            notifyError(response.message);
           }
         } catch (error) {
-          alert("An error occurred during login up. Please try again.");
+          notifyError("An error occurred during login up. Please try again.");
         }
 
       }
       else{
-        console.error("not valid")
+        notifyError("not valid")
       }
 
     }
