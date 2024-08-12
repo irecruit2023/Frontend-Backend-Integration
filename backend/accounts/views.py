@@ -8,6 +8,7 @@ from .serializers import *
 from rest_framework.response import Response
 from rest_framework import status
 
+
 from .authentication import JWTAuthentication
 from rest_framework.views import APIView
 #from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
@@ -26,6 +27,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from .tasks import JobScheduler, start_job_scheduler
 from django.views.decorators.csrf import csrf_exempt
 import logging
+import os
 
 logging.basicConfig(
     level=logging.INFO,
@@ -37,6 +39,13 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+def index_html(request):
+    file_path = os.path.join(settings.BASE_DIR, '..', 'frontend', 'public', 'index.html')
+    with open(file_path, 'r') as file:
+        content = file.read()
+    return HttpResponse(content, content_type='text/html')
+
 
 @api_view(['POST'])
 @csrf_exempt

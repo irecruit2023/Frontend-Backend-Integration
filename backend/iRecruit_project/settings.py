@@ -248,6 +248,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Replace with your React development server port
     "http://127.0.0.1:8000",
     "https://hazel-tea-419405.el.r.appspot.com" 
-    "https://20240812t205903-dot-hazel-tea-419405.el.r.appspot.com/"
+    
 ]
 
