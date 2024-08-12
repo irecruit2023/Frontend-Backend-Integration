@@ -1,15 +1,3 @@
-<!--{% autoescape off %}
-
-#Hi {{user.first_name}}
-
-Please use the link below to verify your account
-
-http://{{domain}}{% url 'activate' uidb64=uid token=token %}
-
-
-#{% endautoescape %}-->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +7,7 @@ http://{{domain}}{% url 'activate' uidb64=uid token=token %}
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #fff6f6;
             margin: 0;
             padding: 0;
         }
@@ -27,14 +15,14 @@ http://{{domain}}{% url 'activate' uidb64=uid token=token %}
             max-width: 600px;
             margin: 20px auto;
             background-color: #ffffff;
-            border: 1px solid #dddddd;
+            border: 1px solid #ffdfdf;
             padding: 20px;
             border-radius: 8px;
         }
         .header {
             text-align: center;
             padding-bottom: 20px;
-            border-bottom: 1px solid #dddddd;
+            border-bottom: 1px solid #ffdfdf;
         }
         .header h1 {
             margin: 0;
@@ -53,7 +41,7 @@ http://{{domain}}{% url 'activate' uidb64=uid token=token %}
             margin: 20px 0;
         }
         .button a {
-            background-color: #007BFF;
+            background-color: #ff4b4b;
             color: #ffffff;
             padding: 10px 20px;
             text-decoration: none;
@@ -63,12 +51,16 @@ http://{{domain}}{% url 'activate' uidb64=uid token=token %}
         .footer {
             text-align: center;
             padding: 10px 0;
-            border-top: 1px solid #dddddd;
+            border-top: 1px solid #ffdfdf;
             color: #777777;
         }
         .footer p {
             margin: 0;
             font-size: 14px;
+        }
+        .footer a {
+            color: #ff4b4b;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -78,9 +70,9 @@ http://{{domain}}{% url 'activate' uidb64=uid token=token %}
             <h1>Welcome to iRecruit!</h1>
         </div>
         <div class="content">
-            <p>Dear {{user.first_name}},</p>
+            <p>Dear {{user.candidate_first_name}},</p>
             <p>Thank you for registering. We are excited to have you on board!</p>
-            <p>You can now access all the features and benefits of our platform</p>
+            <p>You can now access all the features and benefits of our platform.</p>
 
             <p>To get started, click the button below to log in to your account and explore what we have to offer.</p>
         </div>
@@ -95,4 +87,3 @@ http://{{domain}}{% url 'activate' uidb64=uid token=token %}
     </div>
 </body>
 </html>
-
