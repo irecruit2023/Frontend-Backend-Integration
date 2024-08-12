@@ -1,0 +1,11 @@
+runtime: python39  # or any other runtime
+entrypoint: serve -s build
+
+handlers:
+- url: /
+  static_files: build/index.html
+  upload: build/index.html
+
+- url: /(.*)
+  static_files: build/\1
+  upload: build/(.*)
