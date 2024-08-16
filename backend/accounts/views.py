@@ -26,6 +26,7 @@ from django.contrib.auth.tokens import default_token_generator
 from rest_framework.parsers import MultiPartParser, FormParser
 from .tasks import JobScheduler, start_job_scheduler
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 import logging
 import os
 
@@ -39,6 +40,10 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+
+def index_view(request):
+    return render(request, 'index.html')
 
 def index_html(request):
     file_path = os.path.join(settings.BASE_DIR, '..', 'frontend', 'public', 'index.html')

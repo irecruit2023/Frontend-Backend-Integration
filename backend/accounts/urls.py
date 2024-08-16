@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,re_path
 from . import views
 from .views import *
 
@@ -14,6 +14,8 @@ urlpatterns = [
     path('api/upload_resume/', UploadResume.as_view()),
     path('api/get_resume/<str:user_id>/', GetResume.as_view(), name='get_resume'),
     path('api/jobstatus/', UpdateJobStatus.as_view(), name='update_job_status'),
-    path('index/', views.index_html, name='index_html')
+    path('index/', views.index_html, name='index_html'),
+    re_path(r'^$', index_view, name='index'),  # Root URL
+    re_path(r'^.*$', index_view, name='catch-all')  # Catch-all for any other path
 ]
     
