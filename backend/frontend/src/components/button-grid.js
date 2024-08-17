@@ -1,5 +1,9 @@
 import PropTypes from "prop-types";
 import styles from "./button-grid.module.css";
+import { ReactComponent as  Iconjob } from "../assets/icons/iconjob-document.svg";
+import { ReactComponent as  Iconblogs } from "../assets/icons/iconblogs.svg";
+import { ReactComponent as  Iconevents } from "../assets/icons/iconevents.svg";
+
 
 const ButtonGrid = ({
   className = "",
@@ -28,18 +32,17 @@ const ButtonGrid = ({
         <div className={styles.icon}>
           <img className={styles.icondocument} alt="" src={iconDocument} />
           {showIconJobDocument && (
-            <img
+            <Iconjob
               className={styles.iconjobDocument}
               loading="lazy"
               alt=""
-              src="/iconjob-document.svg"
             />
           )}
           {iconEvents1 && (
-            <img className={styles.iconevents} alt="" src="/iconevents.svg" />
+            <Iconevents className={styles.iconevents} alt="" />
           )}
           {iconblogs1 && (
-            <img className={styles.iconblogs} alt="" src="/iconblogs.svg" />
+            <Iconblogs className={styles.iconblogs} alt="" />
           )}
         </div>
       </div>

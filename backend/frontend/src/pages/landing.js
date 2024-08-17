@@ -1,5 +1,9 @@
 import TopNavBar1 from "../components/top-nav-bar1";
 import styles from "./landing.module.css";
+import { ReactComponent as  GroupIcon } from "../assets/icons/group-56.svg";
+import { ReactComponent as  Ellipse1 } from "../assets/icons/ellipse-5.svg";
+import { ReactComponent as  Ellipse2 } from "../assets/icons/ellipse-6.svg";
+
 
 const Landing = () => {
   return (
@@ -30,13 +34,12 @@ const Landing = () => {
               </div>
             </div>
             <div className={styles.vectorParent}>
-              <img className={styles.frameChild} alt="" src="/ellipse-5.svg" />
-              <img className={styles.frameItem} alt="" src="/ellipse-6.svg" />
-              <img
+              <Ellipse1 className={styles.frameChild} alt="" />
+              <Ellipse2 className={styles.frameItem} alt="" />
+              <GroupIcon
                 className={styles.frameInner}
                 loading="lazy"
                 alt=""
-                src="/group-56.svg"
               />
             </div>
             <div className={styles.primaryButton}>

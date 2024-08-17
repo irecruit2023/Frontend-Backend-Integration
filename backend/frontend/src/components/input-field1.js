@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import styles from "./input-field1.module.css";
+import { ReactComponent as  ToggleIcon } from "../assets/icons/vector1.svg";
+
 
 const InputField1 = ({ className = "", firstName }) => {
   return (
@@ -7,7 +9,7 @@ const InputField1 = ({ className = "", firstName }) => {
       <div className={styles.firstName}>{firstName}</div>
       <div className={styles.input}>
         <div className={styles.value}>Name</div>
-        <img className={styles.vectorIcon} alt="" src="/vector1.svg" />
+        <ToggleIcon className={styles.vectorIcon} alt="" />
       </div>
       <div className={styles.error}>Error</div>
     </div>

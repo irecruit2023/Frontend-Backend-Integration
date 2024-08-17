@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import styles from "./input-field2.module.css";
+import { ReactComponent as  ToggleIcon } from "../assets/icons/vector1.svg";
+
 
 const InputField2 = ({
   className = "",
@@ -51,10 +53,9 @@ const InputField2 = ({
           onChange={handleChange} // Use the handleChange function
         />
         {vectorIcon && (
-          <img
+          <ToggleIcon
             className={styles.vectorIcon}
             alt="Toggle visibility"
-            src="/vector1.svg"
             onClick={handleIconClick} // Add click handler
           />
         )}

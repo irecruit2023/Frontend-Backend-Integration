@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./input-field.module.css";
+import { ReactComponent as  ToggleIcon } from "../assets/icons/vector1.svg";
 
 const InputField = ({ className = "", firstName,  initialValue = "", onChange, vectorIcon, placeholder }) => {
   const [value, setValue] = useState(initialValue)
@@ -30,10 +31,9 @@ const InputField = ({ className = "", firstName,  initialValue = "", onChange, v
           placeholder={placeholder}
         />
         {vectorIcon && (
-          <img
+          <ToggleIcon
             className={styles.vectorIcon}
             alt="Toggle visibility"
-            src="/vector1.svg"
             onClick={handleIconClick} // Add click handler
           />
         )}

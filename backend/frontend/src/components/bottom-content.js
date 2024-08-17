@@ -1,5 +1,13 @@
 import PropTypes from "prop-types";
 import styles from "./bottom-content.module.css";
+import { ReactComponent as  Iconclick } from "../assets/icons/iconclick-on.svg";
+import { ReactComponent as  Iconcelebrated } from "../assets/icons/iconcelebrated.svg";
+import { ReactComponent as  LineIcon } from "../assets/icons/line.svg";
+import { ReactComponent as  Icondocument } from "../assets/icons/icondocument-1.svg";
+import { ReactComponent as  Iconpersonalised } from "../assets/icons/iconpersonalised.svg";
+import { ReactComponent as  VectorIcon } from "../assets/icons/vector-13.svg";
+import girlPic from '../assets/icons/girl@2x.png';
+
 
 const BottomContent = ({ className = "" }) => {
   return (
@@ -21,53 +29,48 @@ const BottomContent = ({ className = "" }) => {
               brighter career path.
             </div>
           </div>
-          <img
+          <VectorIcon
             className={styles.contentChild}
             loading="lazy"
             alt=""
-            src="/vector-13.svg"
           />
           <img
             className={styles.girlIcon}
             loading="lazy"
             alt=""
-            src="/girl@2x.png"
+            src= {girlPic}
           />
           <div className={styles.iconContainer}>
             <div className={styles.iconGridContainer}>
               <div className={styles.iconGridWrapper}>
                 <div className={styles.iconList}>
-                  <img
+                  <Icondocument
                     className={styles.icondocument}
                     alt=""
-                    src="/icondocument-1.svg"
                   />
                   <div className={styles.iconsList}>
-                    <img className={styles.lineIcon} alt="" src="/line.svg" />
+                    <LineIcon className={styles.lineIcon} alt=""  />
                   </div>
-                  <img
+                  <Iconpersonalised
                     className={styles.iconpersonalised}
                     loading="lazy"
                     alt=""
-                    src="/iconpersonalised.svg"
                   />
                   <div className={styles.iconsList1}>
-                    <img className={styles.lineIcon1} alt="" src="/line.svg" />
+                    <LineIcon className={styles.lineIcon1} alt=""  />
                   </div>
-                  <img
+                  <Iconclick
                     className={styles.iconclickOn}
                     loading="lazy"
                     alt=""
-                    src="/iconclick-on.svg"
                   />
                   <div className={styles.iconsList2}>
-                    <img className={styles.lineIcon2} alt="" src="/line.svg" />
+                    <LineIcon className={styles.lineIcon2} alt="" />
                   </div>
-                  <img
+                  <Iconcelebrated
                     className={styles.iconcelebrated}
                     loading="lazy"
                     alt=""
-                    src="/iconcelebrated.svg"
                   />
                 </div>
               </div>

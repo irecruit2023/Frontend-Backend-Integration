@@ -3,6 +3,12 @@ import styles from "./home.module.css";
 import { Modal } from '../components/upload-resume';
 import {React,useState} from 'react';
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as  Ellipse1 } from "../assets/icons/ellipse-6.svg";
+import { ReactComponent as  Ellipse2 } from "../assets/icons/ellipse-5.svg";
+import { ReactComponent as  RightHomeIcon } from "../assets/icons/right.svg";
+
+
+
 
 const Home = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -57,17 +63,15 @@ const Home = () => {
                 </div>
               </div>
               <div className={styles.vectorParent}>
-                <img
+                <Ellipse2
                   className={styles.frameChild}
                   alt=""
-                  src="/ellipse-5.svg"
                 />
-                <img className={styles.frameItem} alt="" src="/ellipse-6.svg" />
-                <img
+                <Ellipse1 className={styles.frameItem} alt="" />
+                <RightHomeIcon
                   className={styles.rightIcon}
                   loading="lazy"
                   alt=""
-                  src="/right.svg"
                 />
               </div>
             </div>

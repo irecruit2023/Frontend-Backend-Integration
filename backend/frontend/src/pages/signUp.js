@@ -4,6 +4,17 @@ import Cts from "../components/cts";
 import InputField3 from "../components/input-field3";
 import styles from "./signUp.module.css";
 import { signup } from "../utils/util";
+import { ReactComponent as  Loading } from "../assets/icons/loading.svg";
+import { ReactComponent as  Icon } from "../assets/icons/symbol1.svg";
+import { ReactComponent as  IconI } from "../assets/icons/vector.svg";
+import { ReactComponent as  IconR } from "../assets/icons/vector-11.svg";
+import { ReactComponent as  IconE } from "../assets/icons/vector-21.svg";
+import { ReactComponent as  IconC } from "../assets/icons/vector-31.svg";
+import { ReactComponent as  IconU } from "../assets/icons/vector-41.svg";
+import { ReactComponent as  IconR2 } from "../assets/icons/vector-51.svg";
+import { ReactComponent as  IconI2 } from "../assets/icons/vector-61.svg";
+import { ReactComponent as  IcontT } from "../assets/icons/vector-71.svg";
+
 
 const SignUp = () => {
   const [formState, setFormState] = useState({
@@ -24,67 +35,63 @@ const SignUp = () => {
 
   return (
     <div className={styles.a}>
-      <img className={styles.loadingIcon} alt="" src="/loading.svg" />
+      <Loading className={styles.loadingIcon} alt="" />
       <div className={styles.irecruitLogoBigWrapper}>
         <div className={styles.irecruitLogoBig}>
-          <img
+          <Icon
             className={styles.symbolIcon}
             loading="lazy"
             alt=""
-            src="/symbol1.svg"
           />
           <div className={styles.logo}>
             <div className={styles.i}>
               <div className={styles.iChild} />
-              <img
+              <IconI
                 className={styles.vectorIcon}
                 loading="lazy"
                 alt=""
-                src="/vector.svg"
+
               />
             </div>
             <div className={styles.recruit}>
-              <img
+              <IconR
                 className={styles.vectorIcon1}
                 loading="lazy"
                 alt=""
-                src="/vector-11.svg"
               />
-              <img
+              <IconE
                 className={styles.vectorIcon2}
                 loading="lazy"
                 alt=""
-                src="/vector-21.svg"
               />
-              <img
+              <IconC
                 className={styles.vectorIcon3}
                 loading="lazy"
                 alt=""
-                src="/vector-31.svg"
+  
               />
-              <img
+              <IconU
                 className={styles.vectorIcon4}
                 loading="lazy"
                 alt=""
-                src="/vector-41.svg"
+
               />
-              <img
+              <IconR2
                 className={styles.vectorIcon5}
                 loading="lazy"
                 alt=""
-                src="/vector-51.svg"
+        
               />
-              <img
+              <IconI2
                 className={styles.vectorIcon6}
                 loading="lazy"
                 alt=""
-                src="/vector-61.svg"
+    
               />
-              <img
+              <IcontT
                 className={styles.vectorIcon7}
                 loading="lazy"
                 alt=""
-                src="/vector-71.svg"
               />
             </div>
           </div>

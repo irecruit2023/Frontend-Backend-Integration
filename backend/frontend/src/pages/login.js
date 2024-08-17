@@ -3,6 +3,17 @@ import { useNavigate } from "react-router-dom";
 import InputField from "../components/input-field";
 import Cts from "../components/cts";
 import styles from "./login.module.css";
+import { ReactComponent as  Loading } from "../assets/icons/loading.svg";
+import { ReactComponent as  Icon } from "../assets/icons/symbol1.svg";
+import { ReactComponent as  IconI } from "../assets/icons/vector.svg";
+import { ReactComponent as  IconR } from "../assets/icons/vector-11.svg";
+import { ReactComponent as  IconE } from "../assets/icons/vector-21.svg";
+import { ReactComponent as  IconC } from "../assets/icons/vector-31.svg";
+import { ReactComponent as  IconU } from "../assets/icons/vector-41.svg";
+import { ReactComponent as  IconR2 } from "../assets/icons/vector-51.svg";
+import { ReactComponent as  IconI2 } from "../assets/icons/vector-61.svg";
+import { ReactComponent as  IcontT } from "../assets/icons/vector-71.svg";
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,68 +29,65 @@ const Login = () => {
 
   return (
     <div className={styles.d}>
-      <img className={styles.loadingIcon} alt="" src="/loading.svg" />
+      <Loading className={styles.loadingIcon}/>
       <div className={styles.frameParent}>
         <div className={styles.irecruitLogoBigWrapper}>
           <div className={styles.irecruitLogoBig}>
-            <img
+            <Icon
               className={styles.symbolIcon}
               loading="lazy"
               alt=""
-              src="/symbol1.svg"
+
             />
             <div className={styles.logo}>
               <div className={styles.i}>
                 <div className={styles.initialBackground} />
-                <img
+                <IconI
                   className={styles.initialShapeIcon}
-                  loading="lazy"
-                  alt=""
-                  src="/vector.svg"
+    
                 />
               </div>
               <div className={styles.recruit}>
-                <img
+                <IconR
                   className={styles.wordmarkComponentsIcon}
                   loading="lazy"
                   alt=""
-                  src="/vector-11.svg"
+   
                 />
-                <img
+                <IconE
                   className={styles.wordmarkComponentsIcon1}
                   loading="lazy"
                   alt=""
-                  src="/vector-21.svg"
                 />
-                <img
+                <IconC
                   className={styles.wordmarkComponentIcon}
                   loading="lazy"
                   alt=""
-                  src="/vector-31.svg"
+    
                 />
-                <img
+                <IconU
                   className={styles.wordmarkComponentsIcon2}
                   loading="lazy"
                   alt=""
-                  src="/vector-41.svg"
+            
                 />
-                <img
+                <IconR2
                   className={styles.wordmarkComponentIcon1}
                   loading="lazy"
                   alt=""
-                  src="/vector-51.svg"
+        
                 />
-                <img
+                <IconI2 
                   className={styles.wordmarkComponentsIcon3}
                   loading="lazy"
                   alt=""
-                  src="/vector-61.svg"
+            
                 />
-                <img
+                <IcontT
                   className={styles.wordmarkComponentsIcon4}
                   loading="lazy"
                   alt=""
-                  src="/vector-71.svg"
+                 
                 />
               </div>
             </div>

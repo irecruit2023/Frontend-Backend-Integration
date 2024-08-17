@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./input-field3.module.css";
+import { ReactComponent as  ToggleIcon } from "../assets/icons/vector1.svg";
+
 
 const InputField3 = ({
   className = "",
@@ -31,7 +33,7 @@ const InputField3 = ({
           onChange={handleChange}
           style={{ border: 'none', outline: 'none', width: '100%' }}
         />
-        <img className={styles.vectorIcon} alt="" src="/vector1.svg" />
+        <ToggleIcon className={styles.vectorIcon} alt="" />
       </div>
       <div className={styles.error}>Error</div>
     </div>

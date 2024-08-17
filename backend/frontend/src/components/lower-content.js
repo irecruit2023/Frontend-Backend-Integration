@@ -1,6 +1,14 @@
 import ButtonGrid from "./button-grid";
 import PropTypes from "prop-types";
 import styles from "./lower-content.module.css";
+import { ReactComponent as  DocumentIcon } from "../assets/icons/icondocument.svg";
+import { ReactComponent as  JobIcon } from "../assets/icons/iconjob-document.svg";
+import { ReactComponent as  EventIcon } from "../assets/icons/iconevents.svg";
+import { ReactComponent as  Iconblogs } from "../assets/icons/iconblogs.svg";
+import { ReactComponent as  Iconarrows } from "../assets/icons/iconarrows.svg";
+import iconarrows1 from "../assets/icons/iconarrows-1.svg";
+import iconarrows2  from "../assets/icons/iconarrows-2.svg";
+import iconarrows3 from "../assets/icons/iconarrows-3.svg";
 
 const LowerContent = ({ className = "" }) => {
   return (
@@ -32,23 +40,21 @@ const LowerContent = ({ className = "" }) => {
                 </div>
               </div>
               <div className={styles.icon}>
-                <img
+                <DocumentIcon
                   className={styles.icondocument}
                   loading="lazy"
                   alt=""
-                  src="/icondocument.svg"
                 />
-                <img
+                <JobIcon
                   className={styles.iconjobDocument}
                   alt=""
-                  src="/iconjob-document.svg"
                 />
-                <img
+                <EventIcon
                   className={styles.iconevents}
                   alt=""
-                  src="/iconevents.svg"
+
                 />
-                <img className={styles.iconblogs} alt="" src="/iconblogs.svg" />
+                <Iconblogs className={styles.iconblogs} alt="" />
               </div>
             </div>
             <div className={styles.cts1}>
@@ -56,10 +62,9 @@ const LowerContent = ({ className = "" }) => {
                 <div className={styles.textLink}>
                   <div className={styles.secondary}>Create Now</div>
                 </div>
-                <img
+                <Iconarrows
                   className={styles.iconarrows}
                   alt=""
-                  src="/iconarrows.svg"
                 />
               </div>
             </div>
@@ -69,7 +74,7 @@ const LowerContent = ({ className = "" }) => {
             description1="With user-friendly interfaces and tailored filters, our platforms streamline the job search process, making it more accessible and efficient for fresh graduates eager to kickstart their careers."
             iconDocument="/icondocument1.svg"
             secondary="Explore"
-            iconArrows="/iconarrows-1.svg"
+            iconArrows={iconarrows1}
             showIconJobDocument
             iconEvents1
             iconblogs1
@@ -79,7 +84,7 @@ const LowerContent = ({ className = "" }) => {
             description1="Navigating these curated events equips fresher candidates with the knowledge and connections necessary for a successful transition from academia to the professional landscape."
             iconDocument="/icondocument2.svg"
             secondary="Discover"
-            iconArrows="/iconarrows-2.svg"
+            iconArrows={iconarrows2}
             showIconJobDocument={false}
             iconEvents1
             iconblogs1={false}
@@ -89,7 +94,7 @@ const LowerContent = ({ className = "" }) => {
             description1="Navigating these curated events equips fresher candidates with the knowledge and connections necessary for a successful transition from academia to the professional landscape."
             iconDocument="/icondocument3.svg"
             secondary="Read"
-            iconArrows="/iconarrows-3.svg"
+            iconArrows={iconarrows3}
             showIconJobDocument={false}
             iconEvents1={false}
             iconblogs1

@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import styles from "./content-container.module.css";
+import { ReactComponent as  Vector } from "../assets/icons/vector-12.svg";
+import manPic from '../assets/icons/man-top@2x.png'
 
 const ContentContainer = ({ className = "" }) => {
   return (
@@ -12,17 +14,16 @@ const ContentContainer = ({ className = "" }) => {
         </h1>
         <div className={styles.manImageContainer}>
           <div className={styles.wrapperVector12}>
-            <img
+            <Vector
               className={styles.wrapperVector12Child}
               alt=""
-              src="/vector-12.svg"
             />
           </div>
           <img
             className={styles.manTopIcon}
             loading="lazy"
             alt=""
-            src="/man-top@2x.png"
+            src={manPic}
           />
         </div>
         <div className={styles.ofCandidatesWhoCompletedThWrapper}>

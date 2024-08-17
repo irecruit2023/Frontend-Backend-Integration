@@ -6,6 +6,8 @@ import FrameComponent1 from "../components/frame-component1";
 import FrameComponent from "../components/frame-component";
 import styles from "./main.module.css";
 import TopNavBar from "../components/top-nav-bar";
+import { ReactComponent as  GroupIcon } from "../assets/icons/group-54.svg";
+
 
 const Main = () => {
   return (
@@ -21,10 +23,9 @@ const Main = () => {
           <div className={styles.footerContainer}>
             <div className={styles.footerContent}>
               <div className={styles.wrapperGroup54}>
-                <img
+                <GroupIcon
                   className={styles.wrapperGroup54Child}
                   alt=""
-                  src="/group-54.svg"
                 />
               </div>
               <div className={styles.footerText}>

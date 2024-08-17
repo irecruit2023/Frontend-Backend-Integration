@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./blog-items.module.css";
+import { ReactComponent as  ArrowsIcon } from "../assets/icons/iconarrows2.svg";
 
 const BlogItems = ({
   className = "",
@@ -44,7 +45,7 @@ const BlogItems = ({
                 <span> June 11, 2024</span>
               </div>
             </div>
-            <img className={styles.iconarrows} alt="" src="/iconarrows2.svg" />
+            <ArrowsIcon className={styles.iconarrows} alt="" />
           </div>
         </div>
       </div>

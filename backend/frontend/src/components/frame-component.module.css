@@ -60,7 +60,7 @@
 .blogContent,
 .blogContentWrapper {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   max-width: 100%;
 }
 .blogContent {
@@ -71,7 +71,7 @@
 .blogContentWrapper {
   align-self: stretch;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 0 var(--padding-8xs) var(--padding-42xl);
   box-sizing: border-box;
   text-align: center;

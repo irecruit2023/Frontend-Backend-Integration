@@ -1,63 +1,70 @@
 import PropTypes from "prop-types";
 import styles from "./frame-component2.module.css";
+import { ReactComponent as  Icon } from "../assets/icons/symbol.svg";
+import { ReactComponent as  IconI } from "../assets/icons/vector.svg";
+import { ReactComponent as  IconR } from "../assets/icons/vector-1.svg";
+import { ReactComponent as  IconE } from "../assets/icons/vector-2.svg";
+import { ReactComponent as  IconC } from "../assets/icons/vector-3.svg";
+import { ReactComponent as  IconU } from "../assets/icons/vector-4.svg";
+import { ReactComponent as  IconR2 } from "../assets/icons/vector-5.svg";
+import { ReactComponent as  IconI2 } from "../assets/icons/vector-6.svg";
+import { ReactComponent as  IcontT } from "../assets/icons/vector-7.svg";
+import { ReactComponent as  Search } from "../assets/icons/iconsearch.svg";
+import { ReactComponent as  More } from "../assets/icons/vector-21.svg";
+import { ReactComponent as  Notification } from "../assets/icons/iconnotificationnew.svg";
+import { ReactComponent as  VerticalMenu } from "../assets/icons/overflowmenuvertical.svg";
+import { ReactComponent as  Avatar } from "../assets/icons/iconuseravatar.svg";
+
 
 const FrameComponent2 = ({ className = "" }) => {
   return (
     <header className={[styles.topNavBarParent, className].join(" ")}>
       <div className={styles.topNavBar}>
         <div className={styles.topNavBarChild} />
-        <img className={styles.topNavBarItem} alt="" src="/vector-21.svg" />
+        <More className={styles.topNavBarItem} alt=""/>
       </div>
       <div className={styles.centralContent}>
         <div className={styles.leftMenu}>
           <div className={styles.logoMenu}>
             <div className={styles.irecruitLogoSmall}>
-              <img
+              <Icon
                 className={styles.symbolIcon}
                 loading="lazy"
                 alt=""
-                src="/symbol.svg"
               />
               <div className={styles.logo}>
                 <div className={styles.i}>
                   <div className={styles.iChild} />
-                  <img className={styles.vectorIcon} alt="" src="/vector.svg" />
+                  <IconI className={styles.vectorIcon} alt="" />
                 </div>
                 <div className={styles.recruit}>
-                  <img
+                 <IconR
                     className={styles.vectorIcon1}
                     alt=""
-                    src="/vector-1.svg"
                   />
-                  <img
+                  <IconE
                     className={styles.vectorIcon2}
                     alt=""
-                    src="/vector-2.svg"
                   />
-                  <img
+                  <IconC
                     className={styles.vectorIcon3}
                     alt=""
-                    src="/vector-3.svg"
                   />
-                  <img
+                  <IconU
                     className={styles.vectorIcon4}
                     alt=""
-                    src="/vector-4.svg"
                   />
-                  <img
+                  <IconR2
                     className={styles.vectorIcon5}
                     alt=""
-                    src="/vector-5.svg"
                   />
-                  <img
+                  <IconI2
                     className={styles.vectorIcon6}
                     alt=""
-                    src="/vector-6.svg"
                   />
-                  <img
+                  <IcontT
                     className={styles.vectorIcon7}
                     alt=""
-                    src="/vector-7.svg"
                   />
                 </div>
               </div>
@@ -82,40 +89,38 @@ const FrameComponent2 = ({ className = "" }) => {
                 <div className={styles.search}>
                   <div className={styles.input}>
                     <a className={styles.search1}>Search</a>
-                    <img
+                    <Search
                       className={styles.iconsearch}
                       alt=""
-                      src="/iconsearch.svg"
+
                     />
                   </div>
                 </div>
               </div>
               <div className={styles.notification}>
-                <img
+                <Notification
                   className={styles.iconnotificationNew}
                   loading="lazy"
                   alt=""
-                  src="/iconnotificationnew.svg"
                 />
               </div>
               <div className={styles.user}>
                 <div className={styles.userAvatarContainer}>
-                  <img
+                  <Avatar
                     className={styles.iconuserAvatar}
                     loading="lazy"
                     alt=""
-                    src="/iconuseravatar.svg"
                   />
                   <div className={styles.userNameContainer}>
                     <a className={styles.hiVidhi}>Hi, Vidhi</a>
                   </div>
                 </div>
                 <div className={styles.overflowMenu}>
-                  <img
+                  <VerticalMenu
                     className={styles.overflowMenuVerticalIcon}
                     loading="lazy"
                     alt=""
-                    src="/overflowmenuvertical.svg"
+
                   />
                 </div>
               </div>

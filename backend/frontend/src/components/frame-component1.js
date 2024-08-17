@@ -1,5 +1,9 @@
 import PropTypes from "prop-types";
 import styles from "./frame-component1.module.css";
+import { ReactComponent as  Iconarrows1 } from "../assets/icons/iconarrows1.svg";
+import { ReactComponent as  Iconarrows2 } from "../assets/icons/iconarrows2.svg";
+import { ReactComponent as  FrameIcon } from "../assets/icons/frame-56.svg";
+import { ReactComponent as  ToggleIcon } from "../assets/icons/vector1.svg";
 
 const FrameComponent1 = ({ className = "" }) => {
   return (
@@ -45,11 +49,10 @@ const FrameComponent1 = ({ className = "" }) => {
                   <div className={styles.scoreContainer}>
                     <div className={styles.score}>
                       <div className={styles.wrapperEmptyScore}>
-                        <img
+                        <FrameIcon
                           className={styles.emptyScoreIcon}
                           loading="lazy"
                           alt=""
-                          src="/frame-56.svg"
                         />
                       </div>
                       <div className={styles.div}>4.7</div>
@@ -64,10 +67,9 @@ const FrameComponent1 = ({ className = "" }) => {
                           </div>
                         </div>
                       </div>
-                      <img
+                      <Iconarrows1
                         className={styles.iconarrows}
                         alt=""
-                        src="/iconarrows1.svg"
                       />
                     </div>
                   </div>
@@ -125,10 +127,9 @@ const FrameComponent1 = ({ className = "" }) => {
                           View detailed Report
                         </div>
                       </div>
-                      <img
+                      <Iconarrows2
                         className={styles.iconarrows1}
                         alt=""
-                        src="/iconarrows2.svg"
                       />
                     </div>
                   </div>
