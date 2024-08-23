@@ -1,6 +1,6 @@
 import TopNavBar from "../components/top-nav-bar";
 import styles from "./home.module.css";
-import { Modal } from '../components/upload-resume';
+import { Modal } from '../components/resume-analysis';
 import {React,useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as  Ellipse1 } from "../assets/icons/ellipse-6.svg";

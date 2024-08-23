@@ -1,0 +1,23 @@
+.secondary {
+  position: relative;
+}
+.secondaryButton {
+  border-radius: var(--br-81xl);
+  background-color: var(--colour-tertiary-t6-all-white);
+  border: 1px solid var(--colour-primary-p1);
+  border-radius: var(--br-81xl);
+  cursor: pointer;
+  flex-direction: row;
+  justify-content: center;
+  overflow: hidden;
+  padding: 7px 26px;
+  text-align: left;
+  white-space: nowrap;
+}
+@media screen and (max-width: 450px) {
+  .secondaryButton {
+    padding-left: var(--padding-xl);
+    padding-right: var(--padding-xl);
+    box-sizing: border-box;
+  }
+}

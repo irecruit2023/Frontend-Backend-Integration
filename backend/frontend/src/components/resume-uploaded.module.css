@@ -1,0 +1,262 @@
+.root {
+  width: 100%;
+  box-shadow: var(--card-1);
+  border-radius: 16px;
+  background-color: var(--colour-tertiary-t6-all-white);
+  border: 1px solid var(--colour-tertiary-t1-text-default);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 46px var(--padding-xl);
+  gap: 30.2px;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  font-size: var(--popins-ctas-tertiary-medium-size);
+  color: var(--colour-primary-p4-text);
+  font-family: var(--popins-body-copy-body-regular);
+}
+
+
+
+.awesome {
+    text-decoration: none;
+    width: 662px;
+    position: relative;
+    font-weight: 500;
+    color: inherit;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .fillNoForms {
+    margin: 0;
+  }
+  .fillNoFormsContainer,
+  .uploadResume {
+    width: 662px;
+    position: relative;
+    color: var(--colour-primary-p4-text-light);
+    display: inline-block;
+    max-width: 100%;
+  }
+  .uploadResume {
+    margin: 0;
+    line-height: 31px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--colour-primary-p1);
+  }
+  .vectorIcon {
+    height: 21px;
+    width: 15px;
+    position: relative;
+  }
+  .iconframe1171275249 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--padding-9xs);
+  }
+  .resumeTitle {
+    position: relative;
+    line-height: 140%;
+  }
+  .secondary {
+    position: relative;
+  }
+  .secondaryButtonUploaded {
+    width: 205px;
+    height: 41px;
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-primary-p1);
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: var(--padding-5xs);
+    white-space: nowrap;
+  }
+  .iconContainer,
+  .resumeLabel {
+    display: flex;
+    box-sizing: border-box;
+  }
+  .resumeLabel {
+    width: 585px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 var(--padding-xl) 0 0;
+    gap: var(--gap-4xl);
+    max-width: calc(100% - 31px);
+    flex-shrink: 0;
+  }
+  .iconContainer {
+    width: 605px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    gap: var(--gap-5xs);
+    max-width: calc(100% - 28px);
+  }
+  .iconclose {
+    height: 24px;
+    width: 24px;
+    position: relative;
+  }
+  .buttonContainer,
+  .iconContainerParent {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+  }
+  .iconContainerParent {
+    border-radius: var(--br-5xs);
+    background-color: var(--colour-tertiary-t5);
+    border: 1px solid #f2665d;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-xs) var(--padding-xs) var(--padding-xs)
+      var(--padding-mini);
+    gap: var(--gap-9xs);
+    text-align: left;
+    font-family: var(--body-base);
+  }
+  .buttonContainer {
+    width: 662px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .textBox {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    margin: 0 !important;
+    top: 0;
+    right: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #e6fcf480;
+    border-radius: var(--br-81xl);
+  }
+  .ofCandidatesWho {
+    position: relative;
+    line-height: 16px;
+    z-index: 1;
+  }
+  .completionStats,
+  .textBoxParent {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: 100%;
+  }
+  .textBoxParent {
+    justify-content: flex-start;
+    padding: var(--padding-7xs) var(--padding-xs) var(--padding-7xs)
+      var(--padding-lgi);
+    box-sizing: border-box;
+    position: relative;
+  }
+  .completionStats {
+    width: 662px;
+    justify-content: center;
+    font-size: var(--font-size-3xs);
+    color: var(--colour-primary-p2);
+    font-family: var(--body-base);
+  }
+  .tryOurResume {
+    color: var(--colour-primary-p1);
+  }
+  .dontHaveAContainer {
+    width: 662px;
+    position: relative;
+    line-height: 16px;
+    display: inline-block;
+    max-width: 100%;
+    color: var(--colour-primary-p4-text-light);
+  }
+  .resumeUploadedContent{
+    width: 854px;
+    box-shadow: var(--card-1);
+    border-radius: var(--br-base);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-tertiary-t1-text-default);
+    box-sizing: border-box;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-27xl) var(--padding-xl) 151px;
+    gap: 31px;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: var(--colour-primary-p4-text);
+  }
+  @media screen and (max-width: 750px) {
+    .uploadResume {
+      font-size: var(--font-size-7xl);
+      line-height: 25px;
+    }
+    .c {
+      gap: var(--gap-mini);
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .uploadResume {
+      line-height: 19px;
+    }
+  }
+  
+
+
+
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 6;
+  }
+  
+  .modalContent {
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 60%;
+    width: 100%;
+    position: relative;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modalBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  
