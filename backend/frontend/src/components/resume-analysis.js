@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import styles from "./resume-analysis.module.css";
 import dice from "../assets/images/dice.png"
 
-const ResumeAnalysis = ({ className = "" }) => {
+
+const ResumeAnalysis = ({ className = "" , handleResumeAnalysis2 }) => {
   return (
     <div className={[styles.root, className].join(" ")}>
-      <section className={styles.vidhiSitBackAndSeeTheMaParent}>
-        <h3 className={styles.vidhiSitBack}>
+      <section className={styles.sitBackAndSeeTheMaParent}>
+        <h3 className={styles.sitBack}>
           Vidhi, sit back and see the magic unfold!
         </h3>
         <div className={styles.thisShouldTakeContainer}>
@@ -17,7 +18,7 @@ const ResumeAnalysis = ({ className = "" }) => {
           >{`Feel free to patiently await while we meticulously analyse your resume, or you may choose to explore the portal further. We'll promptly notify you once the analysis is complete. `}</p>
         </div>
       </section>
-      <div className={styles.secondaryButtonWrapper}>
+      <div className={styles.secondaryButtonWrapper} onClick={handleResumeAnalysis2}>
         <SecondaryButton
           secondary="Notify me once the analysis is complete"
           secondaryFontWeight="500"
@@ -25,7 +26,7 @@ const ResumeAnalysis = ({ className = "" }) => {
       </div>
       <img
         className={styles.screenrecording20240124at22Icon}
-        loading="lazy"
+        // loading="lazy"
         alt=""
         src= {dice}
       />
@@ -42,26 +43,26 @@ ResumeAnalysis.propTypes = {
   className: PropTypes.string,
 };
 
-const Modal = ({ isOpen, onClose, className }) => {
-    console.log(isOpen,onClose,'hhhhhhhhhhh')
-  if (!isOpen) return null;
+// const Modal = ({ isOpen, onClose, className }) => {
+//     console.log(isOpen,onClose,'hhhhhhhhhhh')
+//   if (!isOpen) return null;
 
-  return (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContent}>
-        <button className={styles.closeButton} onClick={onClose}>X</button>
-        <div className={[styles.modalBody, className].join(' ')}>
-          <ResumeAnalysis />
-        </div>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className={styles.modalOverlay}>
+//       <div className={styles.modalContent}>
+//         <button className={styles.closeButton} onClick={onClose}>X</button>
+//         <div className={[styles.modalBody, className].join(' ')}>
+//           <ResumeAnalysis />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
-Modal.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  className: PropTypes.string,
-};
+// Modal.propTypes = {
+//   isOpen: PropTypes.bool.isRequired,
+//   onClose: PropTypes.func.isRequired,
+//   className: PropTypes.string,
+// };
 
-export { Modal, ResumeAnalysis };
+export default ResumeAnalysis;

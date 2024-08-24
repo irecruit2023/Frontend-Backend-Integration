@@ -21,13 +21,13 @@
 
 
 
-.vidhiSitBack {
+.sitBack {
     margin: 0;
     align-self: stretch;
     position: relative;
-    font-size: inherit;
     font-weight: 500;
     font-family: inherit;
+    font-size: var(--popins-sub-heading-subheader-size);
   }
   .thisShouldTake {
     margin: 0;
@@ -37,8 +37,10 @@
     position: relative;
     font-size: var(--popins-body-copy-body-medium-size);
     color: var(--colour-primary-p4-text-light);
+    padding-left: 48px;
+    padding-right: 48px;
   }
-  .vidhiSitBackAndSeeTheMaParent {
+  .sitBackAndSeeTheMaParent {
     align-self: stretch;
     display: flex;
     flex-direction: column;
@@ -49,6 +51,8 @@
     font-size: var(--popins-ctas-primary-medium-size);
     color: var(--colour-primary-p4-text);
     font-family: var(--popins-body-copy-body-medium);
+    
+    
   }
   .secondaryButtonWrapper {
     display: flex;
