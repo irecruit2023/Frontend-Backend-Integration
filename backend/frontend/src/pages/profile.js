@@ -16,13 +16,21 @@ import codingLanguageIcon  from "../assets/images/codinglanguage@2x.png"
 import group47Icon from "../assets/icons/group-47.svg"
 import rocketIcon from "../assets/icons/lni-lnirocket.svg"
 import clgIcon from "../assets/images/8ba615e8c14d1ebb6cb54ead8bd6e175-1@2x.png" 
-
-
-
 import styles from "./profile.module.css";
 import TopNavBar from "../components/top-nav-bar";
+import { getResume } from "../utils/util";
 
 const EploreLanding = () => {
+
+  const handleResumeClick = () => {
+    console.log(JSON.parse(localStorage.loginInformation).data)
+    const userId = JSON.parse(localStorage.loginInformation).data.user_id; // Replace this with the actual user ID or fetch it dynamically
+    getResume(userId).then(data=>{
+      console.log(data)
+    });
+};
+
+
   return (
     <div className={styles.root}>
     <div className={styles.eploreLanding}>
@@ -191,6 +199,7 @@ const EploreLanding = () => {
       <div className={styles.eploreLandingChild22} />
       <div className={styles.fresher}>Fresher</div>
       <img className={styles.groupIcon} alt="" src={group47Icon} />
+      <div style={{"cursor":"pointer"}} onClick={handleResumeClick}>
       <SecondaryButton
         secondary="My Resume"
         secondaryFontWeight="600"
@@ -205,6 +214,7 @@ const EploreLanding = () => {
         secondaryButtonLeft ="459px"
         secondaryButtonHeight ='66px'
       />
+      </div>
       <div className={styles.eploreLandingChild23} />
       <div className={styles.vidhiYourProfileContainer}>
         <p

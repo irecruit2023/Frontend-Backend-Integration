@@ -109,18 +109,45 @@ export const refreshToken = async () => {
  * @param {string} user_id - The ID of the user.
  * @returns {Promise<Object>} The response from the backend.
  */
-export const getResume = async (user_id) => {
-  let response = null;
-  await fetch(`/api/get_resume/${user_id}/`, {
-      method: "GET",
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      dataType: "json",
-    })
-      .then((data) => data.json())
-      .then((data) => {  
-        response = data;
+
+
+export const getResume = async(userId)=> {
+  try {
+      const response = await fetch(`/api/get-resume/${userId}`, {
+          method: 'GET',
+          headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming JWT token is stored in localStorage
+              'Content-Type': 'application/json'
+          }
       });
-    return response;
-};
+
+      if (response.ok) {
+          // Check for PDF content type
+          const contentType = response.headers.get('Content-Type');
+          if (contentType === 'application/pdf') {
+              const blob = await response.blob();
+              const url = window.URL.createObjectURL(blob);
+              const newTab = window.open(url, '_blank');
+              if (newTab) {
+                  newTab.focus();
+              } else {
+                  console.error('Failed to open new tab.');
+              }
+          } else {
+              const data = await response.json();
+              console.error('Failed to fetch resume:', data.message);
+          }
+      } else if (response.status === 404) {
+          console.error('Resume not found');
+      } else {
+          const errorData = await response.json();
+          console.error('Error fetching resume:', errorData.message);
+      }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}
+
+
+
+
