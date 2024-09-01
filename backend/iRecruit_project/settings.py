@@ -36,7 +36,10 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default_secret_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 DEBUG = False
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,hazel-tea-419405.el.r.appspot.com').split(',')
+# ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,hazel-tea-419405.el.r.appspot.com').split(',')
+
+# for testting purpose  by @deepak  and you need to add domain name 
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -247,7 +250,8 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Replace with your React development server port
     "http://127.0.0.1:8000",
-    "https://hazel-tea-419405.el.r.appspot.com" 
+    "https://hazel-tea-419405.el.r.appspot.com",
+    "https://irecruit-u.com"
     
 ]
 

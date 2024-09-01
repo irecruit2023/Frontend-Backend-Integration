@@ -4,9 +4,7 @@ import styles from "./resume-uploaded.module.css";
 import { ReactComponent as Iconcross } from "../assets/icons/iconclose.svg";
 import { ReactComponent as Icondocument } from "../assets/icons/document.svg";
 
-
-
-const ResumeUploaded = ({ className = "", handleResumeAnalysis }) => {
+const ResumeUploaded = ({ className = "", handleResumeAnalysis, fileName, onClose }) => {
   return (
     <>
       <div className={styles.iconContainerParent}>
@@ -16,13 +14,13 @@ const ResumeUploaded = ({ className = "", handleResumeAnalysis }) => {
           </div>
           <div className={styles.resumeLabel}>
             <div className={styles.resumeTitle}>
-              vidhi sharma_resume 2024
+              {fileName}
             </div>
           </div>
         </div>
-        <Iconcross />
+        <Iconcross onClick={onClose} className={styles.closeIcon} />
       </div>
-      <div className={styles.buttonContainer} onClick ={handleResumeAnalysis}>
+      <div className={styles.buttonContainer} onClick={handleResumeAnalysis}>
         <SecondaryButton
           secondary="Generate My Profile"
           secondaryFontWeight="500"
@@ -30,40 +28,15 @@ const ResumeUploaded = ({ className = "", handleResumeAnalysis }) => {
           secondaryColor="#fff"
         />
       </div>
-
     </>
-
   );
 };
 
 ResumeUploaded.propTypes = {
   className: PropTypes.string,
+  handleResumeAnalysis: PropTypes.func.isRequired,
+  fileName: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired, // Add PropTypes for onClose
 };
 
-
-
-// const Modal = ({ isOpen, onClose, className }) => {
-//     console.log(isOpen,onClose,'hhhhhhhhhhh')
-//   if (!isOpen) return null;
-
-//   return (
-//     <div className={styles.modalOverlay}>
-//       <div className={styles.modalContent}>
-//         <button className={styles.closeButton} onClick={onClose}>X</button>
-//         <div className={[styles.modalBody, className].join(' ')}>
-//           <ResumeUploaded />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// Modal.propTypes = {
-//   isOpen: PropTypes.bool.isRequired,
-//   onClose: PropTypes.func.isRequired,
-//   className: PropTypes.string,
-// };
-
 export default ResumeUploaded;
-
-

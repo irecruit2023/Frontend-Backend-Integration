@@ -8,6 +8,7 @@ import Home from "./pages/home";
 import SignUp from "./pages/signUp";
 import SignUpMessage from "./pages/signUpMessage";
 import Main from "./pages/main";
+import Profile from "./pages/profile";
 
 function App() {
   const action = useNavigationType();
@@ -28,7 +29,8 @@ function App() {
         <Route path="/signUp" element={<SignUp/>} />
         <Route path="/signUpMessage" element={<SignUpMessage/>} />
         <Route path="/home" element={<Home />} />
-        <Route path="/Main" element={<Main/>} />
+        <Route path="/main" element={<Main/>} />
+        <Route path="/profile" element={<Profile/>} />
       </Routes>
       <ToastContainer />
     </>

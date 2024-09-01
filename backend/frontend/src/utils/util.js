@@ -56,19 +56,33 @@ export const userLogin = async (candidate_email , password) => {
  * @param {File} pdf - The PDF file to be uploaded.
  * @returns {Promise<Object>} The response from the backend.
  */
-export const uploadResume = async (pdf) => {
-    var response = null;
-    await fetch("/api/upload_resume/", {
-      method: "POST",
-      dataType: "json",
-      body: JSON.stringify({ pdf }),
-    })
-      .then((data) => data.json())
-      .then((data) => {  
-        response = data;
-      });
-    return response;
+export const uploadResume = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file); // Changed from 'resume' to 'file'
+
+  try {
+    const response = await fetch('/api/upload_resume/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(localStorage.loginInformation).data.access_token}` // Assuming JWT token is stored in local storage
+        // Note: You don't need 'Content-Type' here because fetch will automatically set it to 'multipart/form-data' when using FormData
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to upload resume');
+    }
+
+    const data = await response.json();
+    return data; // Return the response data
+  } catch (error) {
+    console.error('Error uploading resume:', error.message);
+    throw new Error(error.message || 'Failed to upload resume');
+  }
 };
+
 
 /**
  * Refresh the authentication token.

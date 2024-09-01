@@ -287,3 +287,12 @@
     flex-wrap: wrap;
   }
 }
+
+@media (max-width: 1050px) {
+  .irecruitLogoSmallParent {
+    width: 100%; /* Adjust width to be responsive on smaller screens */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center align items */
+    gap:2px; /* Adjust gap size for smaller screens */
+  }
+}

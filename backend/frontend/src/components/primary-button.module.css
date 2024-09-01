@@ -1,0 +1,24 @@
+.primary {
+  position: relative;
+  font-weight: 600;
+}
+.primaryButton {
+  position: absolute;
+  border-radius: var(--br-81xl);
+  background-color: var(--colour-primary-p1);
+  width: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 13.5px 50px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  text-align: left;
+  font-size: var(--popins-sub-heading-subheader1-size);
+  color: var(--text-brand-on-brand);
+  font-family: var(--popins-sub-heading-subheader);
+}
+

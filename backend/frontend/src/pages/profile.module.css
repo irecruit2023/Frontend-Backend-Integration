@@ -1,0 +1,758 @@
+.blogs {
+    position: absolute;
+    top: 21px;
+    left: 483px;
+    font-size: var(--popins-sub-heading-subheader-size);
+    font-weight: 500;
+    display: inline-block;
+    width: 47px;
+    height: 26px;
+  }
+  .eploreLandingChild,
+  .eploreLandingItem {
+    position: absolute;
+    border-radius: var(--br-base);
+    border: 1px solid var(--colour-tertiary-t3);
+    box-sizing: border-box;
+  }
+  .eploreLandingChild {
+    top: 865px;
+    left: 43px;
+    box-shadow: var(--i-16x4x4);
+    background-color: var(--i-white);
+    width: 396px;
+    height: 403px;
+  }
+  .eploreLandingItem {
+    top: 1292px;
+    left: 44px;
+    box-shadow: var(--i-4x4);
+    background-color: #e4f1ff;
+    width: 395px;
+    height: 164px;
+    font-family: var(--popins-body-copy-body)
+  }
+  .ba615e8c14d1ebb6cb54ead8bd6e17Icon {
+    position: absolute;
+    top: 1305px;
+    left: 55px;
+    width: 124px;
+    height: 61px;
+    object-fit: cover;
+  }
+  .eploreLandingInner {
+    left: 459px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--i-white);
+    border: 1px solid var(--colour-tertiary-t3);
+    box-sizing: border-box;
+    width: 810px;
+  }
+  .eploreLandingInner,
+  .maskGroupIcon,
+  .rectangleDiv {
+    position: absolute;
+    top: 1318px;
+    height: 267px;
+  }
+  .maskGroupIcon {
+    left: 459px;
+    width: 810px;
+    object-fit: contain;
+  }
+  .rectangleDiv {
+    left: 1289px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--colour-secondary-s1);
+    border: 1px solid var(--i-lightest-grey);
+    box-sizing: border-box;
+    width: 395px;
+  }
+  .makeAnImpact,
+  .uploadACase {
+    position: absolute;
+    left: 1320px;
+    line-height: 151%;
+    font-weight: 600;
+    font-family: var(--body-base);
+    color: var(--i-white);
+    display: inline-block;
+  }
+  .makeAnImpact {
+    top: 1452px;
+    font-size: var(--popins-sub-heading-subheader1-size);
+    width: 182px;
+  }
+  .uploadACase {
+    top: 1542px;
+    width: 192px;
+  }
+  .eploreLandingChild1 {
+    position: absolute;
+    top: 865px;
+    left: 459px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--color-honeydew-200);
+    border: 1px solid var(--i-lightest-grey);
+    box-sizing: border-box;
+    width: 616px;
+    height: 141px;
+  }
+  .eploreLandingChild2,
+  .eploreLandingChild3,
+  .eploreLandingChild4,
+  .eploreLandingChild5,
+  .eploreLandingChild6,
+  .eploreLandingChild7 {
+    position: absolute;
+    top: 1609px;
+    left: 459px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--i-white);
+    border: 1px solid var(--colour-tertiary-t3);
+    box-sizing: border-box;
+    width: 395px;
+    height: 177px;
+  }
+  .eploreLandingChild3,
+  .eploreLandingChild4,
+  .eploreLandingChild5,
+  .eploreLandingChild6,
+  .eploreLandingChild7 {
+    left: 874px;
+    background-color: var(--colour-tertiary-t5);
+    height: 267px;
+  }
+  .eploreLandingChild4,
+  .eploreLandingChild5,
+  .eploreLandingChild6,
+  .eploreLandingChild7 {
+    left: 1289px;
+    background-color: var(--i-white);
+    width: 188px;
+    height: 73px;
+  }
+  .eploreLandingChild5,
+  .eploreLandingChild6,
+  .eploreLandingChild7 {
+    left: 1496px;
+  }
+  .eploreLandingChild6,
+  .eploreLandingChild7 {
+    top: 1706px;
+    left: 1289px;
+  }
+  .eploreLandingChild7 {
+    left: 1496px;
+  }
+  .caseStudy {
+    top: 1333px;
+    left: 1320px;
+    font-weight: 500;
+    color: var(--i-white);
+    width: 147px;
+  }
+  .caseStudy,
+  .certifications,
+  .databaseManagementExpert {
+    position: absolute;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+  .certifications {
+    top: 1624px;
+    left: 477px;
+    font-weight: 500;
+    width: 205px;
+  }
+  .databaseManagementExpert {
+    top: 886px;
+    left: 479px;
+    font-size: 23px;
+    line-height: 117%;
+    font-family: var(--body-base);
+    color: var(--colour-primary-p1);
+    width: 558px;
+    height: 96px;
+  }
+  .eploreLandingChild8 {
+    position: absolute;
+    top: 865px;
+    left: 1097px;
+    box-shadow: var(--i-16x4x4);
+    border-radius: var(--br-base);
+    background-color: var(--i-white);
+    border: 1px solid var(--colour-tertiary-t3);
+    box-sizing: border-box;
+    width: 587px;
+    height: 429px;
+  }
+  .employeeSkillsIndividual11Icon {
+    position: absolute;
+    top: 923px;
+    left: 1127px;
+    border-radius: 30px;
+    width: 518px;
+    height: 345px;
+    object-fit: cover;
+  }
+  .skillAnalysis {
+    top: 886px;
+    left: 1126px;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 211px;
+  }
+  .achievemnets,
+  .myProfile,
+  .skillAnalysis {
+    position: absolute;
+    display: inline-block;
+  }
+  .achievemnets {
+    top: 1624px;
+    left: 890px;
+    text-transform: uppercase;
+    font-weight: 500;
+    width: 147px;
+  }
+  .myProfile {
+    top: 814px;
+    left: 43px;
+    font-size: var(--popins-heading-heading-medium-size);
+    line-height: 31px;
+    font-weight: 600;
+    width: 366px;
+  }
+  .softwareEngineer,
+  .vidhiSharma {
+    position: absolute;
+    left: 60px;
+    display: inline-block;
+  }
+  .vidhiSharma {
+    top: 886px;
+    font-size: var(--popins-heading-heading-medium-size);
+    line-height: 31px;
+    font-weight: 600;
+    color: var(--i-grey);
+    width: 253px;
+  }
+  .softwareEngineer {
+    top: 922px;
+    font-weight: 500;
+    width: 157px;
+  }
+  .eploreLandingChild10,
+  .eploreLandingChild9 {
+    position: absolute;
+    top: 1030px;
+    left: 459px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--color-floralwhite);
+    border: 1px solid var(--colour-tertiary-t3);
+    box-sizing: border-box;
+    width: 381px;
+    height: 264px;
+  }
+  .eploreLandingChild10 {
+    left: 873px;
+    width: 199px;
+  }
+  .mbti,
+  .topTechSkills {
+    position: absolute;
+    top: 1050px;
+    left: 479px;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-block;
+    width: 145px;
+  }
+  .mbti {
+    left: 896px;
+  }
+  .webDevelopment {
+    margin-bottom: 0;
+  }
+  .webDevelopmentObjectOriente {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    padding-left: var(--padding-xl);
+  }
+  .webDevelopmentObjectOrienteContainer {
+    position: absolute;
+    top: 1086px;
+    left: 479px;
+    font-weight: 600;
+    color: var(--i-grey);
+    display: inline-block;
+    width: 335px;
+  }
+  .advanceJavaProgramming {
+    margin: 0;
+  }
+  .advanceJavaProgrammingContainer,
+  .chatBotImplementationContainer,
+  .pythonForDataContainer {
+    position: absolute;
+    top: 1652px;
+    left: 495px;
+    color: var(--i-grey);
+    display: inline-block;
+    width: 213px;
+  }
+  .chatBotImplementationContainer,
+  .pythonForDataContainer {
+    left: 908px;
+  }
+  .pythonForDataContainer {
+    top: 1722px;
+    left: 495px;
+    height: 54px;
+  }
+  .modeEditIcon,
+  .modeEditIcon1 {
+    position: absolute;
+    top: 1046px;
+    left: 794px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+  }
+  .modeEditIcon1 {
+    top: 1336px;
+    left: 1236px;
+  }
+  .modeEditIcon2 {
+    top: 1625px;
+    left: 1233px;
+    width: 20px;
+    height: 20px;
+  }
+  .modeEditIcon2,
+  .modeEditIcon3,
+  .vectorIcon {
+    position: absolute;
+    overflow: hidden;
+  }
+  .modeEditIcon3 {
+    top: 1625px;
+    left: 820px;
+    width: 20px;
+    height: 20px;
+  }
+  .vectorIcon {
+    top: 1603.5px;
+    left: 65px;
+    max-width: 100%;
+    height: 231px;
+  }
+  .ellipseDiv,
+  .eploreLandingChild11 {
+    position: absolute;
+    top: 1599px;
+    left: 61px;
+    border-radius: 50%;
+    background-color: var(--i-grey);
+    width: 8px;
+    height: 8px;
+  }
+  .eploreLandingChild11 {
+    top: 1714px;
+  }
+  .eploreLandingChild12 {
+    position: absolute;
+    top: 1578px;
+    left: 43px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--i-white);
+    border: 1px solid var(--colour-tertiary-t3);
+    box-sizing: border-box;
+    width: 396px;
+    height: 298px;
+  }
+  .internshipworkExperience {
+    position: absolute;
+    top: 1595px;
+    left: 61px;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-block;
+    width: 309px;
+  }
+  .jan2024 {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  .mgSoftwareEngineeringContainer,
+  .razorpaySoftwareEngineeringContainer {
+    position: absolute;
+    top: 1631px;
+    left: 79px;
+    color: var(--i-grey);
+    display: inline-block;
+    width: 291px;
+    height: 91px;
+  }
+  .mgSoftwareEngineeringContainer {
+    top: 1746px;
+  }
+  .modeEditIcon4,
+  .modeEditIcon5 {
+    position: absolute;
+    top: 1595px;
+    left: 408px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+  }
+  .modeEditIcon5 {
+    top: 890px;
+    left: 409px;
+  }
+  .btechComputerScience {
+    margin: 0;
+    line-height: 114%;
+  }
+  .amityUniversity {
+    margin: 0;
+    font-size: var(--popins-body-copy-body-sembold-size);
+    line-height: 160%;
+  }
+  .btechComputerScienceContainer {
+    position: absolute;
+    top: 1376px;
+    left: 60px;
+    display: inline-block;
+    font-family: var(--body-base);
+    color: var(--i-grey);
+    width: 290px;
+    font-size: var(--popins-sub-heading-subheader1-size);
+  }
+  .eploreLandingChild13,
+  .eploreLandingChild14 {
+    position: absolute;
+    top: 1480px;
+    left: 44px;
+    box-shadow: var(--i-4x4);
+    border-radius: var(--br-base);
+    background-color: var(--i-white);
+    border: 1px solid var(--colour-primary-p1);
+    box-sizing: border-box;
+    width: 183px;
+    height: 74px;
+  }
+  .eploreLandingChild14 {
+    left: 256px;
+  }
+  .message {
+    top: 1506px;
+    left: 79px;
+    line-height: 114%;
+    font-family: var(--body-base);
+    color: var(--colour-primary-p1);
+    text-align: center;
+    width: 113px;
+  }
+  .committedToAchieving,
+  .follow,
+  .message {
+    position: absolute;
+    font-size: var(--popins-sub-heading-subheader1-size);
+    display: inline-block;
+  }
+  .follow {
+    top: 1506px;
+    left: 291px;
+    line-height: 114%;
+    font-family: var(--body-base);
+    color: var(--colour-primary-p1);
+    text-align: center;
+    width: 113px;
+  }
+  .committedToAchieving {
+    top: 1389px;
+    left: 479px;
+    font-weight: 500;
+    color: #a05bf9;
+    width: 754px;
+    height: 170px;
+  }
+  .div {
+    position: absolute;
+    top: 1337px;
+    left: 477px;
+    font-size: var(--popins-heading-hero-text-size);
+    line-height: 64px;
+    font-weight: 600;
+    color: var(--i-grey);
+    display: flex;
+    align-items: center;
+    width: 23px;
+  }
+  .eploreLandingChild15,
+  .eploreLandingChild16 {
+    position: absolute;
+    top: 1664px;
+    left: 481px;
+    max-width: 100%;
+    overflow: hidden;
+    height: 122px;
+  }
+  .eploreLandingChild16 {
+    left: 61px;
+  }
+  .lniLniRocketIcon {
+    position: absolute;
+    top: 1378px;
+    left: 1322px;
+    width: 53px;
+    height: 53px;
+    overflow: hidden;
+  }
+  .eploreLandingChild17,
+  .eploreLandingChild18,
+  .eploreLandingChild19,
+  .eploreLandingChild20,
+  .eploreLandingChild21 {
+    position: absolute;
+    top: 1660px;
+    left: 477px;
+    border-radius: 50%;
+    background-color: var(--i-grey);
+    width: 8px;
+    height: 8px;
+  }
+  .eploreLandingChild18,
+  .eploreLandingChild19,
+  .eploreLandingChild20,
+  .eploreLandingChild21 {
+    left: 61px;
+  }
+  .eploreLandingChild19,
+  .eploreLandingChild20,
+  .eploreLandingChild21 {
+    left: 890px;
+  }
+  .eploreLandingChild20,
+  .eploreLandingChild21 {
+    top: 1731px;
+    left: 477px;
+  }
+  .eploreLandingChild21 {
+    left: 61px;
+  }
+  .cIcon,
+  .codingLanguageIcon,
+  .icon,
+  .javaScriptIcon,
+  .mysqlIcon {
+    position: absolute;
+    top: 1721px;
+    left: 1361px;
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+  }
+  .cIcon,
+  .codingLanguageIcon,
+  .icon,
+  .javaScriptIcon {
+    top: 1624px;
+    left: 1568px;
+  }
+  .codingLanguageIcon,
+  .icon,
+  .javaScriptIcon {
+    top: 1721px;
+  }
+  .codingLanguageIcon,
+  .icon {
+    top: 1624px;
+    left: 1361px;
+  }
+  .icon {
+    top: 1809px;
+    left: 874px;
+    width: 503px;
+    height: 68px;
+    overflow: hidden;
+  }
+  .christinaWocintechchatCom0zIcon {
+    position: absolute;
+    top: 955px;
+    left: 79px;
+    width: 336px;
+    height: 313px;
+    object-fit: cover;
+  }
+  .eploreLandingChild22 {
+    position: absolute;
+    top: 1223px;
+    left: 68px;
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-primary-p1);
+    width: 75px;
+    height: 28px;
+  }
+  .fresher {
+    position: absolute;
+    top: 1226px;
+    left: 70px;
+    font-weight: 600;
+    color: var(--i-white);
+    text-align: center;
+    display: inline-block;
+    width: 71px;
+  }
+  .groupIcon {
+    position: absolute;
+    top: 1224px;
+    left: 391px;
+    width: 24px;
+    height: 24px;
+  }
+  .eploreLandingChild23 {
+    position: absolute;
+    top: 526px;
+    left: 91px;
+    box-shadow: var(--i-16x4x4);
+    border-radius: var(--br-base);
+    background-color: var(--i-white);
+    border: 1px solid var(--colour-tertiary-t2-stroke);
+    box-sizing: border-box;
+    width: 1545px;
+    height: 145px;
+  }
+  .takeUpPersonality,
+  .vidhiYourProfileContainer {
+    position: absolute;
+    top: 549px;
+    left: 124px;
+    color: var(--i-grey);
+    display: inline-block;
+    width: 1469px;
+  }
+  .takeUpPersonality {
+    top: 1099px;
+    left: 882px;
+    font-size: var(--popins-sub-heading-subheader1-size);
+    line-height: 151%;
+    font-weight: 600;
+    font-family: var(--body-base);
+    color: var(--colour-primary-p1);
+    width: 182px;
+  }
+  .topNavBarChild {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--i-white);
+  }
+  .jobs {
+    width: 42px;
+    position: relative;
+    font-weight: 500;
+  }
+  .blogs1,
+  .events,
+  .jobs {
+    display: inline-block;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  .events {
+    width: 56px;
+    position: relative;
+    font-weight: 500;
+  }
+  .blogs1 {
+    width: 47px;
+  }
+  .blogs1,
+  .irecruitProPlan,
+  .mentor {
+    position: relative;
+    font-weight: 500;
+  }
+  .mentor {
+    color: inherit;
+    text-decoration: none;
+  }
+  .irecruitProPlan {
+    white-space: pre-wrap;
+  }
+  .irecruitProPlanWrapper {
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-primary-p2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--padding-5xs);
+    color: var(--i-white);
+  }
+  .primaryNav {
+    position: absolute;
+    height: 38.24%;
+    width: 12.09%;
+    top: 30.88%;
+    right: 69.33%;
+    bottom: 30.88%;
+    left: 18.58%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--gap-13xl);
+  }
+  .topNavBarItem {
+    position: absolute;
+    top: 68px;
+    left: 0;
+    max-height: 100%;
+    width: 1728px;
+    object-fit: contain;
+  }
+  .iconnotificationNew,
+  .topNavBar {
+    position: absolute;
+    top: 23px;
+    left: 1456px;
+    width: 24px;
+    height: 24px;
+  }
+  .topNavBar {
+    top: 0;
+    left: 0;
+    width: 1728px;
+    height: 68px;
+    overflow: hidden;
+    font-size: var(--popins-sub-heading-subheader-size);
+  }
+  .eploreLanding {
+    width: 100%;
+    background-color: var(--i-white);
+    height: 2068px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: var(--popins-body-copy-body-sembold-size);
+    color: var(--colour-primary-p4-text);
+    font-family: var(--popins-sub-heading-subheader);
+  }
+
+
+
+  
