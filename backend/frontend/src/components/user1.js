@@ -12,7 +12,7 @@ const User1 = ({ className = "" }) => {
           src="/iconuseravatar.svg"
         />
         <div className={styles.userNameContainer}>
-          <a className={styles.hiVidhi}>Hi, Vidhi</a>
+          <a className={styles.hiVidhi}>Hi, {JSON.parse(localStorage.loginInformation).data.name}</a>
         </div>
       </div>
       <div className={styles.overflowMenu}>

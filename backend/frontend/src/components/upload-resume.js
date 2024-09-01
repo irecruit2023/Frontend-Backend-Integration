@@ -72,7 +72,7 @@ const UploadResume = ({ className = "" }) => {
       {!showResumeAnalysis && showResumeAnalysis2 && <ResumeAnalysisTwo />}
       {!showResumeAnalysis && !showResumeAnalysis2 && (
         <div className={[styles.root, className].join(" ")}>
-          <a className={styles.awesomeTxt}>Awesome, Vidhi!</a>
+          <a className={styles.awesomeTxt}>Awesome, {JSON.parse(localStorage.loginInformation).data.name}!</a>
           <div className={styles.fillNoFormsContainer}>
             <p className={styles.fillNoForms}>
               Fill no forms, save time and unleash the full potential of your job

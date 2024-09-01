@@ -71,7 +71,7 @@ const EploreLanding = () => {
       <div className={styles.skillAnalysis}>Skill Analysis</div>
       <div className={styles.achievemnets}>Achievemnets</div>
       <div className={styles.myProfile}>My Profile</div>
-      <div className={styles.vidhiSharma}>Vidhi Sharma</div>
+      <div className={styles.vidhiSharma}>{JSON.parse(localStorage.loginInformation).data.name}</div>
       <div className={styles.softwareEngineer}>Software Engineer</div>
       <div className={styles.eploreLandingChild9} />
       <div className={styles.eploreLandingChild10} />
@@ -219,7 +219,7 @@ const EploreLanding = () => {
       <div className={styles.vidhiYourProfileContainer}>
         <p
           className={styles.advanceJavaProgramming}
-        >{`Vidhi, your profile has been created. Kindly go through it and see if you like to make additions, improve the the text. `}</p>
+        >{`${JSON.parse(localStorage.loginInformation).data.name}, your profile has been created. Kindly go through it and see if you like to make additions, improve the the text. `}</p>
         <p className={styles.advanceJavaProgramming}>
           You can edit each section by simply clicking on edit icon shown in
           every section.

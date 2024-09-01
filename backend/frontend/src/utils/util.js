@@ -111,42 +111,82 @@ export const refreshToken = async () => {
  */
 
 
+// export const getResume = async(userId)=> {
+//   try {
+//       const response = await fetch(`/api/get_resume/${userId}`, {
+//           method: 'GET',
+//           headers: {
+//               'Authorization': `Bearer ${JSON.parse(localStorage.loginInformation).data.access_token}`, // Assuming JWT token is stored in localStorage
+//               'Content-Type': 'application/pdf'
+//           }
+//       });
+//       console.log("response",response)
+
+//       if (response.ok) {
+//           // Check for PDF content type
+//           const contentType = response.headers.get('Content-Type');
+//           console.log("type",contentType)
+//           if (contentType === 'application/pdf') {
+//               const blob = await response.blob();
+//               const url = window.URL.createObjectURL(blob);
+//               const newTab = window.open(url, '_blank');
+//               if (newTab) {
+//                   newTab.focus();
+//               } else {
+//                   console.error('Failed to open new tab.');
+//               }
+//           } else {
+//               const data = await response.json();
+//               console.error('Failed to fetch resume:', data.message);
+//           }
+//       } else if (response.status === 404) {
+//           console.error('Resume not found');
+//       } else {
+//           const errorData = await response.json();
+//           console.error('Error fetching resume:', errorData.message);
+//       }
+//   } catch (error) {
+//       console.error('Error:', error);
+//   }
+// }
+
+
+
 export const getResume = async(userId)=> {
   try {
-      const response = await fetch(`/api/get-resume/${userId}`, {
-          method: 'GET',
-          headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming JWT token is stored in localStorage
-              'Content-Type': 'application/json'
-          }
-      });
-
-      if (response.ok) {
-          // Check for PDF content type
-          const contentType = response.headers.get('Content-Type');
-          if (contentType === 'application/pdf') {
-              const blob = await response.blob();
-              const url = window.URL.createObjectURL(blob);
-              const newTab = window.open(url, '_blank');
-              if (newTab) {
-                  newTab.focus();
-              } else {
-                  console.error('Failed to open new tab.');
-              }
-          } else {
-              const data = await response.json();
-              console.error('Failed to fetch resume:', data.message);
-          }
-      } else if (response.status === 404) {
-          console.error('Resume not found');
-      } else {
-          const errorData = await response.json();
-          console.error('Error fetching resume:', errorData.message);
+      // Make a request to the Django backend to get the PDF
+      const response = await fetch(`/api/get_resume/${userId}/`);
+      
+      // Check if the request was successful
+      if (!response.ok) {
+          throw new Error('Resume not found or there was an error fetching the file.');
       }
+      
+      // Get the PDF blob from the response
+      const blob = await response.blob();
+      
+      // Create a URL for the blob
+      const url = window.URL.createObjectURL(blob);
+      
+      // Create a link element
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'resume.pdf'; // Set the filename for download
+      document.body.appendChild(a);
+      
+      // Programmatically click the link to trigger the download
+      a.click();
+      
+      // Remove the link element
+      document.body.removeChild(a);
+      
+      // Revoke the object URL
+      window.URL.revokeObjectURL(url);
   } catch (error) {
-      console.error('Error:', error);
+      console.error('Error downloading resume:', error);
   }
 }
+
 
 
 

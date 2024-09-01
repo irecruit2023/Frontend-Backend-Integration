@@ -9,7 +9,7 @@ const ResumeAnalysis = ({ className = "" , handleResumeAnalysis2 }) => {
     <div className={[styles.root, className].join(" ")}>
       <section className={styles.sitBackAndSeeTheMaParent}>
         <h3 className={styles.sitBack}>
-          Vidhi, sit back and see the magic unfold!
+        {JSON.parse(localStorage.loginInformation).data.name}, sit back and see the magic unfold!
         </h3>
         <div className={styles.thisShouldTakeContainer}>
           <p className={styles.thisShouldTake}>This should take a moment.</p>

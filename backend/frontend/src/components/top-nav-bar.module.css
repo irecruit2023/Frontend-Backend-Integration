@@ -283,7 +283,7 @@
   gap: var(--gap-24xl);
 }
 .userNavContainerWrapper {
-  width: 600px;
+  width: auto;
   flex-direction: column;
   align-items: flex-start;
   padding: var(--padding-11xs) 0 0;

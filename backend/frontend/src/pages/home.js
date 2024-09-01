@@ -25,7 +25,7 @@ const Home = () => {
         <section className={styles.contentContainer}>
           <div className={styles.content}>
             <h2 className={styles.helloVidhiAndContainer}>
-              <span>Hello Vidhi,</span>
+              <span>Hello {JSON.parse(localStorage.loginInformation).data.name},</span>
               <span className={styles.andWelcomeTo}>
                 {" "}
                 and welcome to iRecruit!
