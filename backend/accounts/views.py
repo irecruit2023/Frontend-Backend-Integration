@@ -19,7 +19,7 @@ from rest_framework.exceptions import AuthenticationFailed
 #from rest_framework_simplejwt.tokens import RefreshToken
 import jwt
 import redis
-from bson.objectid import ObjectId
+from bson import ObjectId
 #from rest_framework.authtoken.models import Token
 import pymongo
 from django.contrib.auth.tokens import default_token_generator

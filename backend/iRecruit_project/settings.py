@@ -233,6 +233,7 @@ sendgrid_client = SendGridAPIClient(SENDGRID_API_KEY)
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
+    'Content-Disposition'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
