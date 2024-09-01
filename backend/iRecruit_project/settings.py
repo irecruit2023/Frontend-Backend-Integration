@@ -236,6 +236,9 @@ CORS_ALLOW_HEADERS = [
     'Content-Disposition'
 ]
 
+CORS_EXPOSE_HEADERS = ['Content-Disposition', 'Content-Type']
+
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
