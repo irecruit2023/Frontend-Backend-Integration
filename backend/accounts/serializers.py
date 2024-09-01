@@ -106,3 +106,31 @@ class ResumeSerializer(serializers.Serializer):
         resume.save()
 
         return resume
+    
+    def update(self, instance, validated_data):
+        user_id = self.context['user_id']
+        candidate = User.objects.get(candidate_id=user_id)
+        
+        file_data = validated_data.pop('file')
+
+        if not file_data.content_type.startswith('application/pdf'):
+            raise serializers.ValidationError({'file': 'PDF_FILES_ONLY'})
+        
+        filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
+
+        client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+        db = client[settings.DATABASES['default']['NAME']]
+        fs = gridfs.GridFS(db)
+
+        # Delete the old file from GridFS
+        fs.delete(id(instance.file))
+
+        # Save the new file to GridFS
+        file_id = fs.put(file_data.read(), filename=filename, content_type=file_data.content_type)
+
+        # Update the instance with the new file details
+        instance.file = str(file_id)
+        instance.filename = filename
+        instance.save()
+
+        return instance

@@ -239,7 +239,13 @@ class UploadResume(APIView):
         user = request.user
         user_id = str(user.candidate_id)
         
-        serializer = ResumeSerializer(data=request.data, context={'user_id': user_id})
+        existing_resume = Resume.objects.filter(candidate=user_id).first()
+        
+        if existing_resume:
+            serializer = ResumeSerializer(existing_resume, data=request.data, context={'user_id': user_id})
+        else:
+            serializer = ResumeSerializer(data=request.data, context={'user_id': user_id})
+            
         if serializer.is_valid():
             resume = serializer.save()
             
@@ -285,19 +291,19 @@ class GetResume(APIView):
     def get(self, request, user_id, *args, **kwargs):
         try:
             # Retrieve data from Redis cache
-            redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+            # redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
             
-            # Debugging: Print the key being used to fetch from Redis
-            logging.info(f"Attempting to fetch key from Redis: {user_id}")
+            # # Debugging: Print the key being used to fetch from Redis
+            # logging.info(f"Attempting to fetch key from Redis: {user_id}")
             
-            cached_resume = redis_client.get(user_id)
+            # cached_resume = redis_client.get(user_id)
 
-            if cached_resume:
-                # Print or log message indicating the file is coming from Redis
-                logging.info("Getting the resume from Redis")
-                response = HttpResponse(cached_resume, content_type='application/pdf')
-                response['Content-Disposition'] = f'attachment; filename="{user_id}.pdf"'
-                return response
+            # if cached_resume:
+            #     # Print or log message indicating the file is coming from Redis
+            #     logging.info("Getting the resume from Redis")
+            #     response = HttpResponse(cached_resume, content_type='application/pdf')
+            #     response['Content-Disposition'] = f'attachment; filename="{user_id}.pdf"'
+            #     return response
 
             # Initialize the MongoDB client and connect to the database if resume is not cached
             client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
@@ -307,7 +313,7 @@ class GetResume(APIView):
             resume_collection = db['candidate_resume']
 
             # Query the document based on the candidate ID
-            document = resume_collection.find_one({'candidate': user_id})
+            document = resume_collection.find_one({'candidate': user_id}, sort=[('upload_timestamp', pymongo.DESCENDING)])
 
             if document is None:
                 response={
@@ -331,8 +337,8 @@ class GetResume(APIView):
             file_content = resume_file.read()
 
             # Cache the file content in Redis
-            redis_client.set(user_id, file_content)
-            logging.info(f"Stored resume in Redis with key: {user_id}")
+            # redis_client.set(user_id, file_content)
+            # logging.info(f"Stored resume in Redis with key: {user_id}")
 
             # Construct the response with the resume file content
             response = HttpResponse(file_content, content_type='application/pdf')
