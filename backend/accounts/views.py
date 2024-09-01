@@ -342,7 +342,7 @@ class GetResume(APIView):
 
             # Construct the response with the resume file content
             response = HttpResponse(file_content, content_type='application/pdf')
-            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            response['Content-Disposition'] = f'inline; filename="{filename}"'
             
             # Print or log message indicating the file is coming from MongoDB
             logging.info('Getting the resume from MongoDB')
