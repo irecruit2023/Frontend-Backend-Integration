@@ -8,7 +8,7 @@ import Home from "./pages/home";
 import SignUp from "./pages/signUp";
 import SignUpMessage from "./pages/signUpMessage";
 import Main from "./pages/main";
-import Profile from "./pages/profile";
+import Profile from "./pages/profile-creation-page";
 
 function App() {
   const action = useNavigationType();

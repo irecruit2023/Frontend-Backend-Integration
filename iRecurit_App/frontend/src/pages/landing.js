@@ -1,4 +1,4 @@
-import TopNavBar1 from "../components/top-nav-bar1";
+import TopNavBarDefault from "../components/top-nav-bar-default";
 import styles from "./landing.module.css";
 import { ReactComponent as  GroupIcon } from "../assets/icons/group-56.svg";
 import { ReactComponent as  Ellipse1 } from "../assets/icons/ellipse-5.svg";
@@ -8,7 +8,7 @@ import { ReactComponent as  Ellipse2 } from "../assets/icons/ellipse-6.svg";
 const Landing = () => {
   return (
     <div className={styles.landing}>
-      <TopNavBar1 />
+      <TopNavBarDefault />
       <main className={styles.contentContainerWrapper}>
         <section className={styles.contentContainer}>
           <div className={styles.content}>

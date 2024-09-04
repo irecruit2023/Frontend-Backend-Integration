@@ -15,9 +15,11 @@ import { ReactComponent as  More } from "../assets/icons/vector-21.svg";
 import { ReactComponent as  Notification } from "../assets/icons/iconnotificationnew.svg";
 import { ReactComponent as  VerticalMenu } from "../assets/icons/overflowmenuvertical.svg";
 import { ReactComponent as  Avatar } from "../assets/icons/iconuseravatar.svg";
+import { useNavigate } from "react-router-dom";
 
 const TopNavBar = ({ className = "" }) => {
   const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -29,7 +31,7 @@ const TopNavBar = ({ className = "" }) => {
       <div className={styles.topNavBarInner}>
         <div className={styles.logoContainerParent}>
           <div className={styles.logoContainer}>
-            <div className={styles.irecruitLogoSmall}>
+            <div className={styles.irecruitLogoSmall} onClick={()=>{navigate("/home")}}>
               <Icon
                 className={styles.symbolIcon}
                 loading="lazy"
@@ -111,7 +113,7 @@ const TopNavBar = ({ className = "" }) => {
                 />
               </div>
               <div className={styles.user}>
-                <div className={styles.iconuserAvatarParent}>
+                <div className={styles.iconuserAvatarParent}  onClick={()=>{navigate('/profile')}}>
                   <Avatar
                     className={styles.iconuserAvatar}
                     loading="lazy"

@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import styles from "./top-nav-bar1.module.css";
+import styles from "./top-nav-bar-default.module.css";
 import { ReactComponent as  Icon } from "../assets/icons/symbol.svg";
 import { ReactComponent as  IconI } from "../assets/icons/vector.svg";
 import { ReactComponent as  IconR } from "../assets/icons/vector-1.svg";
@@ -14,7 +14,7 @@ import { ReactComponent as  IcontT } from "../assets/icons/vector-7.svg";
 import { ReactComponent as  Search } from "../assets/icons/iconsearch.svg";
 import { ReactComponent as  More } from "../assets/icons/vector-21.svg";
 
-const TopNavBar1 = ({ className = "" }) => {
+const TopNavBarDefault= ({ className = "" }) => {
   const navigate = useNavigate();
 
   const onLoginSignClick = useCallback((e) => {
@@ -107,8 +107,8 @@ const TopNavBar1 = ({ className = "" }) => {
   );
 };
 
-TopNavBar1.propTypes = {
+TopNavBarDefault.propTypes = {
   className: PropTypes.string,
 };
 
-export default TopNavBar1;
+export default TopNavBarDefault;

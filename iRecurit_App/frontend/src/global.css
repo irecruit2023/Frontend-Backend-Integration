@@ -241,6 +241,140 @@ body {
   --card-1: 0px 0px 16px 4px rgba(0, 0, 0, 0.04);
   --i-4x4: 0px 4px 8px rgba(0, 0, 0, 0.04);
   --i-16x4x4: 0px 0px 16px 4px rgba(0, 0, 0, 0.04);
+
+
+  --popins-sub-heading: Poppins;
+  --body-base: Inter;
+
+  /* font sizes */
+  --popins-sub-heading-subheader1-size: 19px;
+  --popins-body-copy-body-sembold-size: 15px;
+  --popins-sub-heading-size: 23px;
+  --font-size-lg: 18px;
+  --popins-body-copy-body-medium-size: 13px;
+  --popins-sub-heading-subheader-size: 17px;
+  --popins-heading-heading-medium-size: 32px;
+  --font-size-7xl: 26px;
+  --popins-heading-hero-text-size: 44px;
+  --font-size-16xl: 35px;
+  --body-base-size: 16px;
+
+  /* Colors */
+  --colour-tertiary-t6-all-white: #fff;
+  --colour-primary-p1: #f2665d;
+  --colour-tertiary-t3-outline: #e6e6e6;
+  --i-lightest-grey: #e3e3e3;
+  --colour-tertiary-t2-stroke: #dcdcdc;
+  --color-aliceblue: #ebf5ff;
+  --color-lightsteelblue: #c4d8f0;
+  --colour-primary-p4-text-light: #6e6e6e;
+  --colour-primary-p4-text: #303030;
+  --color-floralwhite: #fff9ec;
+  --color-moccasin: #ffe9ba;
+  --colour-secondary-s1: #ffc63d;
+  --color-peachpuff: #ffccb6;
+  --colour-secondary-s3: #66b0f0;
+  --color-steelblue: #519bdd;
+  --color-ghostwhite: #fbf8ff;
+  --colour-secondary-s2: #9a50f8;
+  --color-honeydew-300: #f0ffef;
+  --color-honeydew-100: #eefdf3;
+  --color-honeydew-200: #e6fcf4;
+  --color-lightgoldenrodyellow: #cef5cd;
+  --colour-secondary-s4: #3ace68;
+  --colour-primary-p2: #52bb77;
+  --colour-tertiary-t1-text-default: #c8c8c8;
+  --colour-primary-p4-text-lightest: #bbb;
+  --color-lavender: #ebdeff;
+  --color-lavender-200: #dae0ff;
+  --color-lavender-100: rgba(243, 231, 255, 0.48);
+  --text-brand-on-brand: #f5f5f5;
+  --colour-tertiary-t4: #f0f0f0;
+  --colour-tertiary-t5: #fafafa;
+  --text-default-default: #1e1e1e;
+  --colour-primary-p3-all-black: #000;
+
+  /* Spacing */
+  --space-200: 8px;
+  --boundvariablesdata: 24px;
+  --space-400: 16px;
+  --space-300: 12px;
+  --radius-200: 8px;
+
+  /* Gaps */
+  --gap-xl: 20px;
+  --gap-24xl: 43px;
+  --gap-2xl: 21px;
+  --gap-5xl: 24px;
+  --gap-5xl-5: 24.5px;
+  --gap-xs: 12px;
+  --gap-12xs: 1px;
+  --gap-113xl-5: 132.5px;
+  --gap-47xl: 66px;
+  --gap-106xl: 125px;
+  --gap-43xl: 62px;
+  --gap-8xs-4: 4.4px;
+  --gap-10xs: 3px;
+  --gap-13xl: 32px;
+  --gap-4xl: 23px;
+  --gap-36xl: 55px;
+  --gap-37xl: 56px;
+  --gap-mini: 15px;
+  --gap-base: 16px;
+  --gap-5xs: 8px;
+  --gap-9xl: 28px;
+  --gap-9xs: 4px;
+  --gap-33xl: 52px;
+  --gap-7xl: 26px;
+  --gap-53xl: 72px;
+  --gap-17xl: 36px;
+  --gap-8xl: 27px;
+  --gap-5xs-2: 7.2px;
+
+  /* Paddings */
+  --padding-2xl: 21px;
+  --padding-3xl-5: 22.5px;
+  --padding-xl: 20px;
+  --padding-smi: 13px;
+  --padding-48xl: 67px;
+  --padding-xs: 12px;
+  --padding-51xl: 70px;
+  --padding-3xl: 22px;
+  --padding-5xl: 24px;
+  --padding-5xs: 8px;
+  --padding-6xs: 7px;
+  --padding-4xl: 23px;
+  --padding-12xs: 1px;
+  --padding-4xs: 9px;
+  --padding-10xl: 29px;
+  --padding-base: 16px;
+  --padding-lg: 18px;
+  --padding-9xs: 4px;
+  --padding-12xl: 31px;
+  --padding-23xl: 42px;
+  --padding-8xs: 5px;
+  --padding-2xs: 11px;
+  --padding-11xs: 2px;
+  --padding-mini: 15px;
+  --padding-7xs: 6px;
+  --padding-29xl: 48px;
+  --padding-13xl: 32px;
+  --padding-27xl: 46px;
+  --padding-lgi: 19px;
+  --padding-38xl: 57px;
+  --padding-45xl: 64px;
+  --padding-9xl: 28px;
+  --padding-6xl: 25px;
+  --padding-11xl: 30px;
+  --padding-25xl: 44px;
+  --padding-15xl: 34px;
+  --padding-42xl: 61px;
+  --padding-14xl: 33px;
+  --padding-8xl: 27px;
+  --padding-28xl: 47px;
+  --padding-3xs: 10px;
+  --padding-20xl: 39px;
+  --padding-8xs-5: 4.5px;
 }
 
 
