@@ -190,12 +190,12 @@ SIMPLE_JWT = {
 }
 
 
-# CELERY Conf
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# REDIS_HOST = 'localhost'
-# REDIS_PORT = 6379
-# REDIS_DB = 0
+#CELERY Conf
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
 # CELERY_BROKER_URL = 'redis://default:sq0vadkhzf4l1aDuP29FlSJBlowDLRyj@redis-10276.c301.ap-south-1-1.ec2.cloud.redislabs.com:10276'
 
 # CELERY_RESULT_BACKEND = 'mongodb'
@@ -267,6 +267,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'frontend', 'build'),
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
