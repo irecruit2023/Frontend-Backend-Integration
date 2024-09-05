@@ -1,4 +1,5 @@
 from celery import shared_task
+import gridfs
 import requests
 from django.http import HttpResponse
 import json
@@ -22,6 +23,7 @@ import uuid
 import time
 import json
 import heapq
+from bson import Binary
 #from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -223,8 +225,56 @@ class JobScheduler:
 def start_job_scheduler():
     scheduler = JobScheduler()
     scheduler.run_scheduler()
+    
+    
+    
+@shared_task
+def remove_bg(user_id):
+    try:
+        logger.info(f"Started processing profile picture for user ID: {user_id}")
 
+        #fetching user instance
+        user = User.objects.get(candidate_id=user_id)
+        
+        # Fetch the ProfilePicture instance
+        profile_picture = ProfilePicture.objects(candidate=user).first()
+        if not profile_picture:
+            logger.error("ProfilePicture does not exist")
+            return
 
+        # Retrieve the original image from BinaryField or GridFS
+        if isinstance(profile_picture.original_picture, bytes):
+            original_image = profile_picture.original_picture
+            logger.info(f"Original image size: {len(original_image)} bytes")
+        else:
+            # Assuming the use of GridFS
+            client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+            db = client[settings.DATABASES['default']['NAME']]
+            fs = gridfs.GridFS(db)
+            original_image = fs.get(profile_picture.original_picture).read()
+            logger.info(f"Original image retrieved from GridFS, size: {len(original_image)} bytes")
+
+        # Use the removebg API to remove the background
+        response = requests.post(
+            'https://api.remove.bg/v1.0/removebg',
+            files={'image_file': original_image},
+            data={'size': 'auto'},
+            headers={'X-Api-Key': 'jvWf6hspK8gMnYzvuYS7mPoR'},
+        )
+
+        # logger.info(f"removebg API Response Status Code: {response.status_code}")
+        # logger.info(f"removebg API Response Content: {response.content[:100]}")  # Print first 100 bytes for debugging
+
+        if response.status_code == 200:
+            # Update the ProfilePicture with the processed image
+            profile_picture.processed_picture = Binary(response.content)
+            profile_picture.save()
+            logger.info("Profile picture updated successfully.")
+        else:
+            logger.error(f"Error: {response.status_code} - {response.text}")
+
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
 
 def profile_creation(data, user_id):
     data_dict = json.loads(data)

@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 
 from .authentication import JWTAuthentication
@@ -14,21 +16,21 @@ from rest_framework.views import APIView
 #from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode
 from .helpers import generate_token
-from .tasks import send_confirmation_email
+from .tasks import send_confirmation_email, remove_bg
 from rest_framework.exceptions import AuthenticationFailed
 #from rest_framework_simplejwt.tokens import RefreshToken
-import jwt
+import jwt, requests
 import redis
-from bson import ObjectId
+from bson.objectid import ObjectId
 #from rest_framework.authtoken.models import Token
 import pymongo
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.parsers import MultiPartParser, FormParser
 from .tasks import JobScheduler, start_job_scheduler
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
 import logging
 import os
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,7 +42,6 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
-
 
 def index_view(request):
     return render(request, 'index.html')
@@ -239,13 +240,7 @@ class UploadResume(APIView):
         user = request.user
         user_id = str(user.candidate_id)
         
-        existing_resume = Resume.objects.filter(candidate=user_id).first()
-        
-        if existing_resume:
-            serializer = ResumeSerializer(existing_resume, data=request.data, context={'user_id': user_id})
-        else:
-            serializer = ResumeSerializer(data=request.data, context={'user_id': user_id})
-            
+        serializer = ResumeSerializer(data=request.data, context={'user_id': user_id})
         if serializer.is_valid():
             resume = serializer.save()
             
@@ -291,19 +286,19 @@ class GetResume(APIView):
     def get(self, request, user_id, *args, **kwargs):
         try:
             # Retrieve data from Redis cache
-            # redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
+            redis_client = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB)
             
-            # # Debugging: Print the key being used to fetch from Redis
-            # logging.info(f"Attempting to fetch key from Redis: {user_id}")
+            # Debugging: Print the key being used to fetch from Redis
+            logging.info(f"Attempting to fetch key from Redis: {user_id}")
             
-            # cached_resume = redis_client.get(user_id)
+            cached_resume = redis_client.get(user_id)
 
-            # if cached_resume:
-            #     # Print or log message indicating the file is coming from Redis
-            #     logging.info("Getting the resume from Redis")
-            #     response = HttpResponse(cached_resume, content_type='application/pdf')
-            #     response['Content-Disposition'] = f'attachment; filename="{user_id}.pdf"'
-            #     return response
+            if cached_resume:
+                # Print or log message indicating the file is coming from Redis
+                logging.info("Getting the resume from Redis")
+                response = HttpResponse(cached_resume, content_type='application/pdf')
+                response['Content-Disposition'] = f'attachment; filename="{user_id}.pdf"'
+                return response
 
             # Initialize the MongoDB client and connect to the database if resume is not cached
             client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
@@ -313,7 +308,7 @@ class GetResume(APIView):
             resume_collection = db['candidate_resume']
 
             # Query the document based on the candidate ID
-            document = resume_collection.find_one({'candidate': user_id}, sort=[('upload_timestamp', pymongo.DESCENDING)])
+            document = resume_collection.find_one({'candidate': user_id})
 
             if document is None:
                 response={
@@ -337,12 +332,14 @@ class GetResume(APIView):
             file_content = resume_file.read()
 
             # Cache the file content in Redis
-            # redis_client.set(user_id, file_content)
-            # logging.info(f"Stored resume in Redis with key: {user_id}")
+            redis_client.set(user_id, file_content)
+            logging.info(f"Stored resume in Redis with key: {user_id}")
 
             # Construct the response with the resume file content
             response = HttpResponse(file_content, content_type='application/pdf')
-            response['Content-Disposition'] = f'inline; filename="{filename}"'
+            response['Content-Disposition'] = f'attachment; filename="{filename}"'
+            
+            print(response.headers)
             
             # Print or log message indicating the file is coming from MongoDB
             logging.info('Getting the resume from MongoDB')
@@ -404,3 +401,53 @@ class UpdateJobStatus(APIView):
                     "message": "JOB_NOT_FOUND"
                 }    
         return Response(response, status=status.HTTP_404_NOT_FOUND)
+    
+
+class Upload_profile_picture(APIView):
+    
+    authentication_classes = [JWTAuthentication]
+    
+    def post(self, request):
+        
+        serializer = ProfilePictureSerializer(data=request.data, context={'user_id': request.user.id})
+        
+        if serializer.is_valid():
+            # Save the ProfilePicture instance
+            profile_picture = serializer.save()
+            
+            # Call the background removal task directly
+            remove_bg(request.user.id)
+            
+            return Response({
+                'message': 'Photo uploaded successfully, background removal in progress.',
+                'image_url': f'/api/get_profile_photo/{request.user.id}/'
+            }, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class Profile_Picture_Retrieve(APIView):
+    authentication_classes = [JWTAuthentication]
+    """
+    API endpoint to retrieve the processed profile photo.
+    """
+    def get(self, request, user_id, *args, **kwargs):
+        try:
+            #fetching user instance
+            user = User.objects.get(candidate_id=user_id)
+            
+            # Fetch the ProfilePhoto instance by ID
+            profile_picture = ProfilePicture.objects(candidate=user).first()
+            
+            if profile_picture.processed_picture:
+                # Return the processed image
+                return HttpResponse(profile_picture.processed_picture, content_type='image/png')
+            else:
+                return Response({'message': 'Image is still being processed.'}, status=status.HTTP_202_ACCEPTED)
+        
+        except ProfilePicture.DoesNotExist:
+            return Response({'error': 'Profile photo not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+    
+    

@@ -36,10 +36,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default_secret_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 DEBUG = False
-# ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,hazel-tea-419405.el.r.appspot.com').split(',')
-
-# for testting purpose  by @deepak  and you need to add domain name 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,hazel-tea-419405.el.r.appspot.com').split(',')
 
 
 # Application definition
@@ -141,8 +138,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-
-
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -191,11 +188,11 @@ SIMPLE_JWT = {
 
 
 # CELERY Conf
-# CELERY_BROKER_URL = 'redis://localhost:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# REDIS_HOST = 'localhost'
-# REDIS_PORT = 6379
-# REDIS_DB = 0
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_DB = 0
 # CELERY_BROKER_URL = 'redis://default:sq0vadkhzf4l1aDuP29FlSJBlowDLRyj@redis-10276.c301.ap-south-1-1.ec2.cloud.redislabs.com:10276'
 
 # CELERY_RESULT_BACKEND = 'mongodb'
@@ -233,11 +230,7 @@ sendgrid_client = SendGridAPIClient(SENDGRID_API_KEY)
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
-    'Content-Disposition'
 ]
-
-CORS_EXPOSE_HEADERS = ['Content-Disposition', 'Content-Type']
-
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
@@ -254,37 +247,7 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Replace with your React development server port
     "http://127.0.0.1:8000",
-    "https://hazel-tea-419405.el.r.appspot.com",
-    "https://irecruit-u.com"
+    "https://hazel-tea-419405.el.r.appspot.com" 
     
 ]
 
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'frontend', 'build'),
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-
-
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

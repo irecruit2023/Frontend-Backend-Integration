@@ -1,6 +1,6 @@
 import uuid
 from django.contrib.auth.models import AbstractUser
-from mongoengine import Document, StringField, EmailField, ReferenceField, UUIDField, BooleanField, DateTimeField, ReferenceField, FileField, IntField
+from mongoengine import Document, StringField, EmailField, ReferenceField, UUIDField, BooleanField, DateTimeField, ReferenceField, FileField, IntField, BinaryField
 from django.db import models 
 import connection
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -54,3 +54,12 @@ class Job(Document):
     max_interval = IntField(default = 3)
     
     meta = {'collection': 'jobs'}
+    
+class ProfilePicture(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    candidate = ReferenceField(User)
+    original_picture = BinaryField()
+    processed_picture = BinaryField()
+    picture_name = StringField()
+    
+    meta = {'collection': 'candidate_picture'}

@@ -1,6 +1,6 @@
 import uuid
 from rest_framework import serializers
-from .models import User, Resume
+from .models import *
 from accounts import models
 import gridfs
 from pymongo import MongoClient
@@ -8,6 +8,7 @@ from django.conf import settings
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import pymongo
+from bson import Binary
 #from .helpers import generate_confirmation_token
 
 # serializers.py
@@ -106,6 +107,7 @@ class ResumeSerializer(serializers.Serializer):
         resume.save()
 
         return resume
+        return resume
     
     def update(self, instance, validated_data):
         user_id = self.context['user_id']
@@ -134,3 +136,45 @@ class ResumeSerializer(serializers.Serializer):
         instance.save()
 
         return instance
+    
+class ProfilePictureSerializer(serializers.Serializer):
+    picture = serializers.ImageField()
+    
+    def create(self, validated_data):
+        user_id = self.context['user_id']
+        candidate = User.objects.get(candidate_id=user_id)
+        
+        picture_data = validated_data['picture']
+        
+        if picture_data.content_type not in ['image/png', 'image/jpeg']:
+            raise serializers.ValidationError({'photo': 'Only PNG and JPEG files are supported.'})
+        
+        filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.{picture_data.content_type.split('/')[-1]}"
+
+        image_binary_data = picture_data.read()
+        
+        # Connect to MongoDB and GridFS
+        client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+        db = client[settings.DATABASES['default']['NAME']]
+        fs = gridfs.GridFS(db)
+        
+        file_id = fs.put(image_binary_data, filename=filename, content_type=picture_data.content_type)
+
+        # Create the ProfilePhoto object with the user and file data
+        profile_picture = ProfilePicture.objects(candidate=candidate).first()
+        
+        
+        if profile_picture:
+            profile_picture.original_picture = Binary(image_binary_data)  # or you can use file_id if stored in GridFS
+            profile_picture.picture_name = filename
+            profile_picture.save()
+        else:
+            # Create new profile picture
+            profile_picture = ProfilePicture(
+                candidate=candidate,
+                original_picture=Binary(image_binary_data),
+                picture_name=filename
+            )
+            profile_picture.save()
+
+        return profile_picture
