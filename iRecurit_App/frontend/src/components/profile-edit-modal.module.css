@@ -1,0 +1,175 @@
+.internshipworkExperience {
+    align-self: stretch;
+    position: relative;
+    font-weight: 500;
+  }
+  .internshipworkExperienceWrapper {
+    width: 662px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  .razorpay {
+    margin: 0;
+    font-weight: 500;
+    color: var(--colour-primary-p4-text);
+  }
+  .softwareEngineeringInternshi {
+    margin: 0;
+  }
+  .jan2024 {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  .blankLine,
+  .gurgaonIndia {
+    margin: 0;
+  }
+  .mg {
+    font-weight: 500;
+    color: var(--colour-primary-p4-text);
+  }
+  .mg,
+  .softwareEngineeringInternshi1 {
+    margin: 0;
+  }
+  .oct2023 {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  .blankLine1,
+  .gurgaonIndia1 {
+    margin: 0;
+  }
+  .mg1 {
+    font-weight: 500;
+    color: var(--colour-primary-p4-text);
+  }
+  .mg1,
+  .trainee {
+    margin: 0;
+  }
+  .july2023 {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  .gurgaonIndia2 {
+    margin: 0;
+  }
+  .razorpaySoftwareEngineeringContainer {
+    flex: 1;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .frameWrapper,
+  .razorpaySoftwareEngineeringWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  .razorpaySoftwareEngineeringWrapper {
+    flex: 1;
+  }
+  .frameWrapper {
+    align-self: stretch;
+    border-radius: var(--br-5xs);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-tertiary-t2-stroke);
+    box-sizing: border-box;
+    padding: var(--padding-3xl) var(--padding-4xl);
+  }
+  .div {
+    width: 52px;
+    position: relative;
+    line-height: 140%;
+    font-weight: 500;
+    font-family: var(--body-base);
+    color: rgba(131, 131, 131, 0.5);
+    text-align: right;
+    display: inline-block;
+    min-width: 52px;
+  }
+  .frameParent {
+    width: 662px;
+    border-radius: var(--br-5xs);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: var(--gap-5xs);
+    max-width: 100%;
+    text-align: left;
+    font-size: var(--popins-body-copy-body-sembold-size);
+    color: var(--colour-primary-p4-text-light);
+    font-family: var(--popins-ctas-primary-medium);
+  }
+  .secondary {
+    position: relative;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 61px;
+  }
+  .a,
+  .secondaryButton,
+  .secondaryButtonParent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .secondaryButton {
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-primary-p1);
+    overflow: hidden;
+    justify-content: center;
+    padding: var(--padding-6xs) 49px;
+  }
+  .a,
+  .secondaryButtonParent {
+    justify-content: flex-start;
+    gap: var(--gap-13xl);
+    max-width: 100%;
+    text-align: left;
+    font-size: var(--popins-ctas-secondray-medium-size);
+    color: var(--colour-primary-p1);
+    font-family: var(--popins-ctas-primary-medium);
+  }
+  .a {
+    width: 854px;
+    box-shadow: var(--i-16x4x4);
+    border-radius: var(--br-base);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-tertiary-t1-text-default);
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--padding-27xl) var(--padding-xl);
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    font-size: var(--popins-ctas-primary-medium-size);
+    color: var(--colour-primary-p4-text);
+  }
+  @media screen and (max-width: 700px) {
+    .a,
+    .internshipworkExperienceWrapper {
+      gap: var(--gap-base);
+    }
+  }
+  @media screen and (max-width: 450px) {
+    .frameWrapper {
+      padding-top: var(--padding-xl);
+      padding-bottom: var(--padding-xl);
+      box-sizing: border-box;
+    }
+    .secondaryButtonParent {
+      gap: var(--gap-base);
+      flex-wrap: wrap;
+    }
+  }
+  

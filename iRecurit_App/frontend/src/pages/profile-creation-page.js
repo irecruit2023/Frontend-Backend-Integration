@@ -13,10 +13,23 @@ import rocketIcon from "../assets/icons/lni-lnirocket.svg"
 import clgIcon from "../assets/images/8ba615e8c14d1ebb6cb54ead8bd6e175-1@2x.png" 
 import graph from "../assets/images/graph.png" 
 import TopNavBar from "../components/top-nav-bar";
-import PrimaryButton from "../components/primary-button";
+import PrimaryButton from "../components/primary-button-2";
+import { getResume } from "../utils/util";
 
 
 const ProfileCreationPage = () => {
+  
+  const handleResumeClick = () => {
+
+    if(JSON.parse(localStorage.getItem("loginInformation"))){
+    console.log(JSON.parse(localStorage?.loginInformation)?.data)
+    const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id; // Replace this with the actual user ID or fetch it dynamically
+    getResume(userId).then(data=>{
+      console.log(data)
+    });
+  }
+};
+
   return (
     <div className={styles.profileCreationPage}>
       <div className={styles.profileCreationPageChild} />
@@ -52,6 +65,7 @@ const ProfileCreationPage = () => {
                           alt=""
                           src={christinawocintechchatcom0zx1bdv5bnyunsplashremovebgpreviewIcon}
                         />
+                        {/* <div  className={styles.profileEditImageText}> click to upload photo </div>                        */}
                         <div className={styles.fresherWrapper}>
                           <div className={styles.fresher}>Fresher</div>
                         </div>
@@ -80,7 +94,7 @@ const ProfileCreationPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className={styles.secondaryButtonWrapper}>
+                <div className={styles.secondaryButtonWrapper}  style={{"cursor":"pointer"}} onClick={handleResumeClick} >
                   <div className={styles.secondaryButton}>
                     <div className={styles.secondary}>My Resume</div>
                   </div>
@@ -349,7 +363,7 @@ const ProfileCreationPage = () => {
                         />
                       </div>
                     </div>
-                      {/* <PrimaryButton
+                    <PrimaryButton
                         propPadding="22.5px 20px"
                         propAlignSelf="stretch"
                         primary="Try iRecruit Premium "
@@ -363,7 +377,7 @@ const ProfileCreationPage = () => {
                         primaryButtonLeft="unset"
                         primaryButtonWidth="unset"
                         primaryButtonHeight="unset"
-                      /> */}
+                      /> 
                   </div>
                 </div>
               </div>
