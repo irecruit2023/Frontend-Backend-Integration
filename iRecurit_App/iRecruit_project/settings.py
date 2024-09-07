@@ -191,11 +191,13 @@ SIMPLE_JWT = {
 
 
 #CELERY Conf
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+#CELERY_BROKER_URL = 'redis://localhost:6379/0'
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 REDIS_DB = 0
+CELERY_BROKER_URL = 'redis://default:dMl24vc8Em0AkFexWYJ56aj3NHpfbTGq@redis-17237.c305.ap-south-1-1.ec2.redns.redis-cloud.com:17237'
+CELERY_RESULT_BACKEND = 'redis://default:dMl24vc8Em0AkFexWYJ56aj3NHpfbTGq@redis-17237.c305.ap-south-1-1.ec2.redns.redis-cloud.com:17237'
 # CELERY_BROKER_URL = 'redis://default:sq0vadkhzf4l1aDuP29FlSJBlowDLRyj@redis-10276.c301.ap-south-1-1.ec2.cloud.redislabs.com:10276'
 
 # CELERY_RESULT_BACKEND = 'mongodb'
@@ -230,6 +232,10 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'adavadkardhruv@gmail.com'
 sendgrid_client = SendGridAPIClient(SENDGRID_API_KEY)
 
+#remove.bg api for removing the bg of profile_picture
+REMOVE_BG_API = os.getenv('REMOVE_BG_API')
+
+
 CORS_ALLOW_HEADERS = [
     'Content-Type',
     'Authorization',
@@ -255,7 +261,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Replace with your React development server port
     "http://127.0.0.1:8000",
     "https://hazel-tea-419405.el.r.appspot.com",
-    "https://irecruit-u.com"
+    "https://irecruit-u.com",
     
 ]
 
