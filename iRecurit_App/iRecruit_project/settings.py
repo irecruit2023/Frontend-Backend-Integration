@@ -205,7 +205,7 @@ CELERY_RESULT_BACKEND = 'redis://default:dMl24vc8Em0AkFexWYJ56aj3NHpfbTGq@redis-
 #     'host': 'hussain-cluster.x4qzsy8.mongodb.net/?retryWrites=true&w=majority&appName=hussain-cluster',
 #     # 'host': 'hussain-cluster.x4qzsy8.mongodb.net/?retryWrites=true&w=majority&appName=hussain-cluster',
 #     # 'username': "hussainazad01",
-#     # 'password': "hussainazad",
+#     # 'password': "hussainazad"
 #     'ssl': True,
 #     'ssl_cert_reqs': ssl.CERT_NONE,
 #     'database': 'iRecruit',
