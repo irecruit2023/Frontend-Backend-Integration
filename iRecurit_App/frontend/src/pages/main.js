@@ -1,4 +1,3 @@
-import FrameComponent2 from "../components/frame-component2";
 import ContentContainer from "../components/content-container";
 import LowerContent from "../components/lower-content";
 import BottomContent from "../components/bottom-content";
