@@ -3,6 +3,8 @@
  * @namespace utils
  */
 
+import { notifyError } from "../helper";
+
 /**
  * Sign up a new candidate by sending their details to the backend.
  * @function
@@ -58,30 +60,78 @@ export const userLogin = async (candidate_email , password) => {
  */
 export const uploadResume = async (file) => {
   const formData = new FormData();
-  formData.append('file', file); // Changed from 'resume' to 'file'
+  formData.append('file', file); // Append the file to formData
 
   try {
     const response = await fetch('/api/upload_resume/', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${JSON.parse(localStorage.loginInformation).data.access_token}` // Assuming JWT token is stored in local storage
-        // Note: You don't need 'Content-Type' here because fetch will automatically set it to 'multipart/form-data' when using FormData
+        'Authorization': `Bearer ${JSON.parse(localStorage.loginInformation).data.access_token}`, // Add token for auth
+        // Note: No 'Content-Type' needed for FormData, it's handled automatically
       },
       body: formData,
     });
 
+    // Check for non-JSON response, such as an HTML error page (often caused by a proxy or server issue)
+    const contentType = response.headers.get('content-type');
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to upload resume');
+      if (contentType && contentType.includes('application/json')) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to upload resume');
+      } else {
+        throw new Error('Failed to upload resume (Invalid server response)');
+      }
     }
 
-    const data = await response.json();
-    return data; // Return the response data
+    // If the response is OK and is JSON, return it
+    if (contentType && contentType.includes('application/json')) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error('Unexpected response format');
+    }
+
   } catch (error) {
-    console.error('Error uploading resume:', error.message);
-    throw new Error(error.message || 'Failed to upload resume');
+    console.error('Upload resume error:', error);
+    notifyError(error)
+    throw new Error(error || 'Failed to upload resume');
   }
 };
+
+
+
+export const generateProfile = async () => {
+  const token = JSON.parse(localStorage.getItem('loginInformation')).data.access_token;
+
+  try {
+    const response = await fetch('/api/generate_profile/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // Check if the response is successful (status 200-299)
+    if (!response.ok) {
+      // Attempt to parse the error message
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error generating profile');
+    }
+
+    // Parse the successful response
+    const data = await response.json();
+    return data;
+
+  } catch (error) {
+    console.error('Error generating profile:', error.message);
+    throw new Error(error.message || 'Failed to generate profile');
+  }
+};
+
+
+
+
 
 
 /**

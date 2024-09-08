@@ -328,6 +328,11 @@
   }
   
 
+  .dragOver {
+    border: 2px dashed #4CAF50;
+    background-color: #f0f9f0;
+  }
+  
   
 
 

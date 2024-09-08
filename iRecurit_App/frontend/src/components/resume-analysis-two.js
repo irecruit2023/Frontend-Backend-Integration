@@ -2,9 +2,10 @@ import SecondaryButton from "./secondary-button";
 import PropTypes from "prop-types";
 import styles from "./resume-analysis-two.module.css";
 import dice from "../assets/images/dice.png"
+import { useNavigate } from "react-router-dom";
 
 const ResumeAnalysisTwo = ({ className = "" }) => {
-  console.log("cummmmm")
+  const navigate = useNavigate();
   return (
     <div className={[styles.root, className].join(" ")}>
       <section className={styles.notificationParent}>
@@ -24,7 +25,7 @@ const ResumeAnalysisTwo = ({ className = "" }) => {
           src= {dice}
         />
         <div className={styles.secondaryButtonParent}>
-          <div style ={{color :'#f2665d'}}  className={styles.secondaryButton}>
+          <div style ={{color :'#f2665d'}}  className={styles.secondaryButton} onClick={()=>{navigate("/main")}}>
             <SecondaryButton
               secondary="Explore iRecruit"
               secondaryFontWeight="500"

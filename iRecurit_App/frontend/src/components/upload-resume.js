@@ -4,7 +4,8 @@ import styles from './upload-resume.module.css'; // Ensure you have CSS for moda
 import ResumeUploaded from "./resume-uploaded";
 import ResumeAnalysis from "./resume-analysis";
 import ResumeAnalysisTwo from "./resume-analysis-two";
-import { uploadResume } from '../utils/util';
+import { uploadResume, generateProfile } from '../utils/util';
+import { notifyError, notifySuccess } from '../helper';
 
 const UploadResume = ({ className = "" }) => {
   const [isUploaded, setIsUploaded] = useState(false);
@@ -13,15 +14,30 @@ const UploadResume = ({ className = "" }) => {
   const [showResumeAnalysis2, setShowResumeAnalysis2] = useState(false);
   const [fileName, setFileName] = useState("");
   const [error, setError] = useState(null); // State to handle error messages
+  const [isDragOver, setIsDragOver] = useState(false); // Drag state
 
-  const handleResumeAnalysis = () => {
-    console.log("called");
+  const handleResumeAnalysis = async() => {
     setShowResumeAnalysis(true);
     setShowResumeAnalysis2(false);
+    try {
+      const response = await generateProfile();
+      console.log("rese",response)
+      if (response.success) {
+        notifySuccess(response.success)
+        console.log('Resume uploaded successfully:', response);
+      } else {
+        notifyError(response.error);
+      }
+    } catch (error) {
+      console.log("rese",error)
+      notifyError(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleResumeAnalysis2 = () => {
-    console.log("called", "showResumeAnalysis2");
+
     setShowResumeAnalysis(false);
     setShowResumeAnalysis2(true);
   };
@@ -31,37 +47,67 @@ const UploadResume = ({ className = "" }) => {
     setFileName(''); // Clear the file name
   };
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     setFileName(file.name);
-  //     setIsLoading(true);
-
-  //     // Simulate file upload logic with a timeout
-  //     setTimeout(() => {
-  //       setIsUploaded(true);
-  //       setIsLoading(false);
-  //     }, 2000); // Simulate a 2-second upload time
-  //   }
-  // };
-
   const handleUploadClick = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
     setFileName(file.name);
     setIsLoading(true);
-    setError(null);
+    // setError(null);
 
     try {
       const response = await uploadResume(file);
-      setFileName(file.name);
-      setIsUploaded(true);
-      console.log('Resume uploaded successfully:', response);
+      console.log("rese",response)
+      if (response.success) {
+        setFileName(file.name);
+        setIsUploaded(true);
+        console.log('Resume uploaded successfully:', response);
+      } else {
+        notifyError(response.error);
+      }
     } catch (error) {
-      setError(error.message);
+      console.log("rese",error)
+      notifyError(error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle file drop
+  const handleDrop = async (event) => {
+    event.preventDefault();
+    setIsDragOver(false);
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    setFileName(file.name);
+    setIsLoading(true);
+    // setError(null);
+
+    try {
+      const response = await uploadResume(file);
+      if (response.success) {
+        setFileName(file.name);
+        setIsUploaded(true);
+        console.log('Resume uploaded successfully:', response);
+      } else {
+        notifyError(response.error);
+      }
+    } catch (error) {
+      notifyError(error)
+      // setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle drag over to highlight dropzone
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
+
+  // Handle drag leave to reset styles
+  const handleDragLeave = () => {
+    setIsDragOver(false);
   };
 
   return (
@@ -87,13 +133,17 @@ const UploadResume = ({ className = "" }) => {
             <h1 className={styles.uploadResume}>Upload Resume</h1>
           </div>
           {!isUploaded && !isLoading && (
-            <div className={styles.dropzoneWrapper}>
+            <div
+              className={`${styles.dropzoneWrapper} ${isDragOver ? styles.dragOver : ''}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
               <input
                 type="file"
                 accept=".docx, .pdf"
                 style={{ display: 'none' }}
                 id="fileInput"
-                // onChange={handleFileChange}
                 onChange={handleUploadClick}
               />
               <div className={styles.dropzone} onClick={() => document.getElementById('fileInput').click()}>
@@ -137,7 +187,7 @@ const UploadResume = ({ className = "" }) => {
             </div>
           )}
 
-          {isUploaded && <ResumeUploaded handleResumeAnalysis={handleResumeAnalysis} fileName={fileName}  onClose={handleClose}/>}
+          {isUploaded && <ResumeUploaded handleResumeAnalysis={handleResumeAnalysis} fileName={fileName} onClose={handleClose} />}
 
           <div className={styles.rootInner}>
             <div className={styles.textBoxParent}>
