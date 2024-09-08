@@ -622,7 +622,7 @@
   height: 371.7px;
   flex: 1;
   position: relative;
-  background-image: url(../assets//images/graph.png);
+  /* background-image: url(../assets//images/graph.png); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top;
