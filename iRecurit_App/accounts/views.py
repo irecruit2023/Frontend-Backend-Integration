@@ -7,20 +7,15 @@ from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework import status
-
-
 from .authentication import JWTAuthentication
 from rest_framework.views import APIView
-#from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode
 from .helpers import generate_token
-from .tasks import send_confirmation_email
+from .tasks import send_confirmation_email, remove_bg
 from rest_framework.exceptions import AuthenticationFailed
-#from rest_framework_simplejwt.tokens import RefreshToken
 import jwt
 import redis
 from bson import ObjectId
-#from rest_framework.authtoken.models import Token
 import pymongo
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -252,9 +247,6 @@ class UploadResume(APIView):
             # Celery task
             # process_resume.delay(str(resume.id))  
             
-            # Scheduler job
-            scheduler.add_job(30, resume.id)
-            
             response = {
                 "status_code": status.HTTP_200_OK,
                 "success": True,
@@ -283,6 +275,59 @@ class UploadResume(APIView):
             #return HttpResponse(error_messages, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
         
         
+class Generate_Profile(APIView):
+    authentication_classes = [JWTAuthentication]
+    
+    def post(self, request):
+        user = request.user
+        user_id = str(user.candidate_id)
+        
+        # Find the most recent resume for the user (or adjust as needed)
+        try:
+            resume = Resume.objects.get(candidate=user_id)
+        except Resume.DoesNotExist:
+            return Response(
+                {
+                    "status_code": status.HTTP_404_NOT_FOUND,
+                    "success": False,
+                    "message": "NO_RESUME_FOUND_FOR_USER"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {
+                    "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    "success": False,
+                    "message": f"INTERNAL_SERVER_ERROR: {str(e)}"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+        resume_id = resume.id
+        
+        try:
+            # Schedule the job
+            scheduler.add_job(30, resume_id)  # Adjust the parameters as needed
+            
+            return Response(
+                {
+                    "status_code": status.HTTP_200_OK,
+                    "success": True,
+                    "message": "JOB_SCHEDULED_SUCCESSFULLY"
+                },
+                status=status.HTTP_200_OK
+            )
+        
+        except Exception as e:
+            return Response(
+                {
+                    "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    "success": False,
+                    "message": f"ERROR_SCHEDULING_JOB: {str(e)}"
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         
 class GetResume(APIView):
     authentication_classes = [JWTAuthentication]
@@ -404,3 +449,63 @@ class UpdateJobStatus(APIView):
                     "message": "JOB_NOT_FOUND"
                 }    
         return Response(response, status=status.HTTP_404_NOT_FOUND)
+    
+    
+class Upload_profile_picture(APIView):
+    
+    authentication_classes = [JWTAuthentication]
+    
+    def post(self, request):
+        
+        serializer = ProfilePictureSerializer(data=request.data, context={'user_id': request.user.id})
+        
+        if serializer.is_valid():
+            # Save the ProfilePicture instance
+            profile_picture = serializer.save()
+            
+            # Call the background removal task directly
+            remove_bg(request.user.id)
+            
+            return Response({
+                'Status_code': status.HTTP_201_CREATED,
+                'Success': True,
+                'Data': f'/api/get_profile_picture/{request.user.id}/',
+                'message': 'Photo uploaded successfully, background removal in progress.',
+                
+            })
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class Profile_Picture_Retrieve(APIView):
+    authentication_classes = [JWTAuthentication]
+    """
+    API endpoint to retrieve the processed profile photo.
+    """
+    def get(self, request, user_id, *args, **kwargs):
+        try:
+            #fetching user instance
+            user = User.objects.get(candidate_id=user_id)
+            
+            # Fetch the ProfilePhoto instance by ID
+            profile_picture = ProfilePicture.objects(candidate=user).first()
+            
+            if profile_picture.processed_picture:
+                # Return the processed image
+                return HttpResponse(profile_picture.processed_picture, content_type='image/png')
+            else:
+                return Response({
+                    'Status':status.HTTP_200_OK,
+                    'Success':True, 
+                    'Data':None,
+                    'message': 'Image is still being processed or something went wrong.'
+                    })
+        
+        except ProfilePicture.DoesNotExist:
+            return Response({               
+                'Status':status.HTTP_404_NOT_FOUND,
+                'Success': False,
+                'Data':None,
+                'Message': 'Profile photo not found.'
+                })
+

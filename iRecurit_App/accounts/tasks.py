@@ -1,7 +1,7 @@
 from celery import shared_task
-import requests
 from django.http import HttpResponse
 import json
+from bson import Binary
 from .models import *
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -10,18 +10,10 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from .helpers import generate_token
 from django.conf import settings
-import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import smtplib
-import time
-import pymongo
-import asyncio
-import threading
-import uuid
-import time
-import json
-import heapq
+import smtplib, time, pymongo, asyncio, threading, uuid, heapq, requests, gridfs, logging
+from rest_framework import status
 #from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -223,6 +215,62 @@ class JobScheduler:
 def start_job_scheduler():
     scheduler = JobScheduler()
     scheduler.run_scheduler()
+    
+
+@shared_task
+def remove_bg(user_id):
+    try:
+        logger.info(f"Started processing profile picture for user ID: {user_id}")
+
+        #fetching user instance
+        user = User.objects.get(candidate_id=user_id)
+        
+        # Fetch the ProfilePicture instance
+        profile_picture = ProfilePicture.objects(candidate=user).first()
+        if not profile_picture:
+            response={
+                "Status": status.HTTP_400_BAD_REQUEST,
+                "Success": False,
+                "Data": None,
+                "Message": "ProfilePicture does not exist"
+            }
+            #logger.error("ProfilePicture does not exist")
+            return response
+
+        # Retrieve the original image from BinaryField or GridFS
+        if isinstance(profile_picture.original_picture, bytes):
+            original_image = profile_picture.original_picture
+            logger.info(f"Original image size: {len(original_image)} bytes")
+        else:
+            # Assuming the use of GridFS
+            client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+            db = client[settings.DATABASES['default']['NAME']]
+            fs = gridfs.GridFS(db)
+            original_image = fs.get(profile_picture.original_picture).read()
+            logger.info(f"Original image retrieved from GridFS, size: {len(original_image)} bytes")
+
+        # Use the removebg API to remove the background
+        response = requests.post(
+            'https://api.remove.bg/v1.0/removebg',
+            files={'image_file': original_image},
+            data={'size': 'auto'},
+            headers={'X-Api-Key': settings.REMOVE_BG_API},
+        )
+
+        # logger.info(f"removebg API Response Status Code: {response.status_code}")
+        # logger.info(f"removebg API Response Content: {response.content[:100]}")  # Print first 100 bytes for debugging
+
+        if response.status_code == 200:
+            # Update the ProfilePicture with the processed image
+            profile_picture.processed_picture = Binary(response.content)
+            profile_picture.save()
+            logger.info("Profile picture updated successfully.")
+        else:
+            logger.error(f"Error: {response.status_code} - {response.text}")
+
+    except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+
 
 
 
