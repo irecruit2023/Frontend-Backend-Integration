@@ -121,29 +121,29 @@ def login_view(request):
         candidate_email = serializer.validated_data.get('candidate_email')
         # Optionally, you can retrieve the user object if needed
         user = User.objects.filter(candidate_email=candidate_email).first()
-        if user.is_email_verified:
+        #if user.is_email_verified:
             #creating tokens for the user
-            access_token, refresh_token = JWTAuthentication.create_tokens(user)
+        access_token, refresh_token = JWTAuthentication.create_tokens(user)
 
-            # Authentication successful, return a success message or token
-            response_data = {
-                "status_code": status.HTTP_200_OK,
-                "success": True,
-                "data": {
-                    'access_token': access_token,
-                    'refresh_token': refresh_token,
-                    'user_id': user.id,
-                    'email':user.candidate_email,
-                    'name':user.candidate_first_name + " " + user.candidate_last_name
-                },
-                "message": "LOGIN_SUCCESSFUL"
-            }
-            #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
-            response= Response(response_data, status=status.HTTP_200_OK)
-            response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
-            return response
-        else:
-            return Response({"message": "Email not verified."}, status=status.HTTP_403_FORBIDDEN)
+                # Authentication successful, return a success message or token
+        response_data = {
+            "status_code": status.HTTP_200_OK,
+            "success": True,
+            "data": {
+                'access_token': access_token,
+                'refresh_token': refresh_token,
+                'user_id': user.id,
+                'email':user.candidate_email,
+                'name':user.candidate_first_name + " " + user.candidate_last_name
+            },
+            "message": "LOGIN_SUCCESSFUL"
+        }
+        #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
+        response= Response(response_data, status=status.HTTP_200_OK)
+        response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
+        return response
+        # else:
+        #     return Response({"message": "Email not verified."}, status=status.HTTP_403_FORBIDDEN)
     else:
         # Custom error handling
         error_messages = []
