@@ -71,7 +71,6 @@ const Cts = ({
         }
       }
     } else if (primary === "Login") {
-        console.log("enter")
 
       if (validateLoginData()) {
         // navigate('/home');

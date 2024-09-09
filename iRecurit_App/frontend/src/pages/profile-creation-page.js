@@ -13,6 +13,7 @@ import rocketIcon from "../assets/icons/lni-lnirocket.svg"
 import clgIcon from "../assets/images/8ba615e8c14d1ebb6cb54ead8bd6e175-1@2x.png" 
 import graph from "../assets/images/graph.png" 
 import TopNavBar from "../components/top-nav-bar";
+import RadarChart  from "../components/skill-analysis-chart";
 import PrimaryButton from "../components/primary-button-2";
 import { getResume } from "../utils/util";
 
@@ -209,7 +210,8 @@ const ProfileCreationPage = () => {
                   <div className={styles.skillAnalysis}>Skill Analysis</div>
                   <div className={styles.assessmentChart}>
                     <div className={styles.employeeSkillsIndividual11Parent}>
-                      <img
+                      <RadarChart/>
+                      {/* <img
                         className={styles.employeeSkillsIndividual11Icon}
                         alt=""
                         src= {employeeskillsindividual1Image}
@@ -218,7 +220,7 @@ const ProfileCreationPage = () => {
                         className={styles.screenshot20240830At1150}
                         alt=""
                         src={graph}
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
