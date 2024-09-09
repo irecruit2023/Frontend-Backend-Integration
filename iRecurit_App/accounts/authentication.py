@@ -2,7 +2,7 @@ from datetime import datetime
 import jwt
 from django.conf import settings
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework import authentication
+from rest_framework import authentication, status
 from .models import User
 
 class JWTAuthentication(authentication.BaseAuthentication):
@@ -16,9 +16,19 @@ class JWTAuthentication(authentication.BaseAuthentication):
             token = self.get_token_from_header(jwt_token)
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
-            raise AuthenticationFailed('TOKEN_EXPIRED')
+            raise AuthenticationFailed({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'TOKEN_EXPIRED'
+                })
         except (jwt.InvalidTokenError, jwt.DecodeError):
-            raise AuthenticationFailed('INVALID_TOKEN')
+            raise AuthenticationFailed({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'INVALID_TOKEN'
+                })
 
         candidate_id = payload.get('candidate_id')
         if not candidate_id:
@@ -26,7 +36,12 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         user = User.objects.filter(candidate_id=candidate_id).first()
         if not user:
-            raise AuthenticationFailed('USER_NOT_FOUND')
+            raise AuthenticationFailed({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'USER_NOT_FOUND'
+                })
 
         return user, payload
 
@@ -37,7 +52,12 @@ class JWTAuthentication(authentication.BaseAuthentication):
         # Clean the token and extract the actual token value
         prefix, value = token.split()
         if prefix.lower() != 'bearer':
-            raise AuthenticationFailed('INVALID_TOKEN_FORMAT')
+            raise AuthenticationFailed({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'INVALID_TOKEN_FORMAT'
+                })
         return value
 
     @classmethod
