@@ -14,6 +14,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib, time, pymongo, asyncio, threading, uuid, heapq, requests, gridfs, logging
 from rest_framework import status
+from .helpers import generate_token
 #from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -52,7 +53,7 @@ def send_confirmation_email(user, request):
         logger.info(f"Confirmation email sent to {user.candidate_email}")
 
     except Exception as e:
-        logger.error(f"ERROR_SENDING_MAIL")    
+        logger.error(f"ERROR_SENDING_MAIL: {str(e)}")    
         
         
 

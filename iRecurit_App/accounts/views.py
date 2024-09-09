@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
 from .models import *
+import random
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
@@ -10,6 +11,7 @@ from rest_framework import status
 from .authentication import JWTAuthentication
 from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
 from .helpers import generate_token
 from .tasks import send_confirmation_email, remove_bg
 from rest_framework.exceptions import AuthenticationFailed
@@ -24,6 +26,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 import logging
 import os
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 
 logging.basicConfig(
     level=logging.INFO,
@@ -91,6 +95,24 @@ def signup_view(request):
         #return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
     
     
+# @api_view(['GET'])
+# def verify_email(request, uidb64, token):
+#     try:
+#         uid = urlsafe_base64_decode(uidb64).decode()
+#         user = User.objects.get(pk=uid)
+#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+#         user = None
+
+#     if user is not None and generate_token.check_token(user, token):
+#         if not user.is_email_verified:
+#             user.is_email_verified = True
+#             user.save()
+#             return HttpResponse('Email successfully verified! You can now log in.')
+#         else:
+#             return HttpResponse('Email is already verified.', status=400)
+#     else:
+#         return HttpResponse('Invalid verification link!', status=400)
+
 @api_view(['POST'])
 @csrf_exempt
 def login_view(request):
@@ -99,26 +121,29 @@ def login_view(request):
         candidate_email = serializer.validated_data.get('candidate_email')
         # Optionally, you can retrieve the user object if needed
         user = User.objects.filter(candidate_email=candidate_email).first()
-        #creating tokens for the user
-        access_token, refresh_token = JWTAuthentication.create_tokens(user)
+        if user.is_email_verified:
+            #creating tokens for the user
+            access_token, refresh_token = JWTAuthentication.create_tokens(user)
 
-        # Authentication successful, return a success message or token
-        response_data = {
-            "status_code": status.HTTP_200_OK,
-            "success": True,
-            "data": {
-                'access_token': access_token,
-                'refresh_token': refresh_token,
-                'user_id': user.id,
-                'email':user.candidate_email,
-                'name':user.candidate_first_name + " " + user.candidate_last_name
-            },
-            "message": "LOGIN_SUCCESSFUL"
-        }
-        #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
-        response= Response(response_data, status=status.HTTP_200_OK)
-        response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
-        return response
+            # Authentication successful, return a success message or token
+            response_data = {
+                "status_code": status.HTTP_200_OK,
+                "success": True,
+                "data": {
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'user_id': user.id,
+                    'email':user.candidate_email,
+                    'name':user.candidate_first_name + " " + user.candidate_last_name
+                },
+                "message": "LOGIN_SUCCESSFUL"
+            }
+            #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
+            response= Response(response_data, status=status.HTTP_200_OK)
+            response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
+            return response
+        else:
+            return Response({"message": "Email not verified."}, status=status.HTTP_403_FORBIDDEN)
     else:
         # Custom error handling
         error_messages = []
@@ -138,7 +163,8 @@ def login_view(request):
         }
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
         
-        
+
+
 class VerifyUser(APIView):
     authentication_classes = [JWTAuthentication]
     def get(self, request):
@@ -509,3 +535,51 @@ class Profile_Picture_Retrieve(APIView):
                 'Message': 'Profile photo not found.'
                 })
 
+possible_labels = [
+    'JavaScript', 'Python', 'Machine Learning', 'Cloud', 'Java', 'C++', 'Ruby', 
+    'Django', 'NextJS', 'Shell scripting', 'Database', 'Docker', 'FastAPI', 'Go Lang'
+]
+
+class Chart_Data_API(APIView):
+    authentication_classes = [JWTAuthentication]
+    
+    def get(self, request, *args, **kwargs):
+        
+        # Randomly select 7 unique labels from POSSIBLE_LABEL
+        labels= random.sample(possible_labels,6)
+        
+        # Generate two sets of random data, each having values between 0 and 100
+        dataset_1 = [random.randint(0,100) for _ in range(6)]
+        dataset_2 = [random.randint(0,100) for _ in range(6)]
+        
+        
+        #generating response
+        data = {
+            "labels": labels,
+            "datasets": [
+                {
+                    "label": 'My First Dataset',
+                    "data": dataset_1,
+                    "fill": True,
+                    "backgroundColor": 'rgba(255, 99, 132, 0.2)',
+                    "borderColor": 'rgb(255, 99, 132)',
+                    "pointBackgroundColor": 'rgb(255, 99, 132)',
+                    "pointBorderColor": '#fff',
+                    "pointHoverBackgroundColor": '#fff',
+                    "pointHoverBorderColor": 'rgb(255, 99, 132)',
+                },
+                {
+                    "label": 'My Second Dataset',
+                    "data": dataset_2,
+                    "fill": True,
+                    "backgroundColor": 'rgba(54, 162, 235, 0.2)',
+                    "borderColor": 'rgb(54, 162, 235)',
+                    "pointBackgroundColor": 'rgb(54, 162, 235)',
+                    "pointBorderColor": '#fff',
+                    "pointHoverBackgroundColor": '#fff',
+                    "pointHoverBorderColor": 'rgb(54, 162, 235)',
+                }
+            ]
+        }
+        
+        return Response(data)

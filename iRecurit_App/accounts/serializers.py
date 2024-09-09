@@ -8,6 +8,7 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import pymongo
 from bson import Binary
+from rest_framework import status
 #from .helpers import generate_confirmation_token
 
 # serializers.py
@@ -83,7 +84,12 @@ class ResumeSerializer(serializers.Serializer):
         file_data = validated_data.pop('file')  # Remove 'file' from validated_data
 
         if not file_data.content_type.startswith('application/pdf'):
-            raise serializers.ValidationError({'file': 'PDF_FILES_ONLY'})
+            raise serializers.ValidationError({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'PDF_FILES_ONLY'
+                })
         
         # Generate filename
         filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
@@ -114,7 +120,12 @@ class ResumeSerializer(serializers.Serializer):
         file_data = validated_data.pop('file')
 
         if not file_data.content_type.startswith('application/pdf'):
-            raise serializers.ValidationError({'file': 'PDF_FILES_ONLY'})
+            raise serializers.ValidationError({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'PDF_FILES_ONLY'
+                })
         
         filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
 
@@ -146,7 +157,12 @@ class ProfilePictureSerializer(serializers.Serializer):
         picture_data = validated_data['picture']
         
         if picture_data.content_type not in ['image/png', 'image/jpeg']:
-            raise serializers.ValidationError({'photo': 'Only PNG and JPEG files are supported.'})
+            raise serializers.ValidationError({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data':None,
+                'message': 'PNG_&_JPEG_FILES_ONLY'
+                })
         
         filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.{picture_data.content_type.split('/')[-1]}"
 

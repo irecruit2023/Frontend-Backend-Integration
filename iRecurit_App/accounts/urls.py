@@ -8,6 +8,7 @@ urlpatterns = [
     #path('api/test', views.test, name="test"),
     path('api/login/', login_view),  ##endpoint for login
     path('api/signup/', signup_view),
+    #path('api/verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
     path('api/test/', ExampleAPIView.as_view()),
     path('api/verify/', VerifyUser.as_view()),
     path('api/refresh_token/', refresh_token_view, name='refresh-token'),
@@ -20,5 +21,5 @@ urlpatterns = [
     #re_path(r'^.*$', index_view, name='catch-all'),  # Catch-all for any other path
     path('api/upload_profile_picture/', Upload_profile_picture.as_view(), name='Upload_profile_picture'),
     path('api/get_profile_picture/<str:user_id>/',  Profile_Picture_Retrieve.as_view(), name=' Profile_Picture_Retrieve'),
+    path('api/chart-data/', Chart_Data_API.as_view(), name='chart-data'),
 ]
-    
