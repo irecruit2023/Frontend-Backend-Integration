@@ -64,7 +64,7 @@ const TopNavBar = ({ className = "" }) => {
                   alt=""
                 />
               </div>
-              <div className={styles.user}>
+              <div className={styles.user} style ={{cursor:'pointer'}}>
                 <div className={styles.iconuserAvatarParent}  onClick={()=>{navigate('/profile')}}>
                   <Avatar
                     className={styles.iconuserAvatar}

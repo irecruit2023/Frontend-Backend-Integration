@@ -26,7 +26,7 @@ const UploadResume = ({ className = "" }) => {
         notifySuccess(response.success)
         console.log('Resume uploaded successfully:', response);
       } else {
-        notifyError(response.error);
+        notifyError(response.message);
       }
     } catch (error) {
       console.log("rese",error)
@@ -62,7 +62,7 @@ const UploadResume = ({ className = "" }) => {
         setIsUploaded(true);
         console.log('Resume uploaded successfully:', response);
       } else {
-        notifyError(response.error);
+        notifyError(response.message);
       }
     } catch (error) {
       console.log("rese",error)
@@ -89,7 +89,7 @@ const UploadResume = ({ className = "" }) => {
         setIsUploaded(true);
         console.log('Resume uploaded successfully:', response);
       } else {
-        notifyError(response.error);
+        notifyError(response.message);
       }
     } catch (error) {
       notifyError(error)

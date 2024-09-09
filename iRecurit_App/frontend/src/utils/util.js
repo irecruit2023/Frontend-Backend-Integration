@@ -59,42 +59,32 @@ export const userLogin = async (candidate_email , password) => {
  * @returns {Promise<Object>} The response from the backend.
  */
 export const uploadResume = async (file) => {
+  let response = null;
   const formData = new FormData();
   formData.append('file', file); // Append the file to formData
 
   try {
-    const response = await fetch('/api/upload_resume/', {
+    const loginInfo = localStorage.getItem('loginInformation');
+    if (!loginInfo) {
+      throw new Error("Login information not found in localStorage");
+    }
+
+    const token = JSON.parse(loginInfo).data.access_token;
+
+    const res = await fetch('/api/upload_resume/', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${JSON.parse(localStorage.loginInformation).data.access_token}`, // Add token for auth
-        // Note: No 'Content-Type' needed for FormData, it's handled automatically
+        'Authorization': `Bearer ${token}`, // Add token for auth
       },
       body: formData,
     });
 
-    // Check for non-JSON response, such as an HTML error page (often caused by a proxy or server issue)
-    const contentType = response.headers.get('content-type');
-    if (!response.ok) {
-      if (contentType && contentType.includes('application/json')) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to upload resume');
-      } else {
-        throw new Error('Failed to upload resume (Invalid server response)');
-      }
-    }
-
-    // If the response is OK and is JSON, return it
-    if (contentType && contentType.includes('application/json')) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error('Unexpected response format');
-    }
+    response = await res.json(); // Parse the JSON response
+    return response;
 
   } catch (error) {
     console.error('Upload resume error:', error);
-    notifyError(error)
-    throw new Error(error || 'Failed to upload resume');
+    throw new Error(error.message || 'Failed to upload resume');
   }
 };
 
@@ -236,6 +226,41 @@ export const getResume = async(userId)=> {
       console.error('Error downloading resume:', error);
   }
 }
+
+
+export const skillAnalysisData = async () => {
+  try {
+    const loginInfo = localStorage.getItem('loginInformation');
+    if (!loginInfo) {
+      console.error("No login information found in localStorage.");
+      return null;
+    }
+
+    const token = JSON.parse(loginInfo).data.access_token;
+    console.log("Token:", token);  // Log the token to verify it's correct
+
+    const response = await fetch("/api/chart-data/", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch chart data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("API Response Data:", data);  // Log the data to check the API response
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching chart data:", error);
+    return null; // Handle the error
+  }
+};
+
 
 
 
