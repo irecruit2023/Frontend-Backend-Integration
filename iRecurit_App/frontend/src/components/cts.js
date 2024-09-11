@@ -61,7 +61,7 @@ const Cts = ({
         try {
           const response = await signup(formData.email,formData.firstName, formData.lastName,formData.password );
           if (response.success) {
-            navigate('/login');
+            navigate('/signupMessage');
           } else {
           
             notifyError(response.message || "Sign up failed.");
