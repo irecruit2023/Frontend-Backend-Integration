@@ -92,7 +92,7 @@ const signUpMessage = () => {
                   Please go to your Gmail account and confirm your account
                 </p>
               </div>
-              <div className={styles.description6}>JSON.parse(localStorage.loginInformation)?.data?.email</div>
+              <div className={styles.description6}>{JSON.parse(localStorage.loginInformation)?.data?.email}</div>
             </div>
             <div className={styles.textLink} onClick={openGmail}>
               <div className={styles.secondary}>Open Gmail account</div>
