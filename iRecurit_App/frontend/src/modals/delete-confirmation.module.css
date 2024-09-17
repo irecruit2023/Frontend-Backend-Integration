@@ -1,0 +1,73 @@
+/* src/Confirmation.css */
+.confirmationContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #f5f5f5; */
+  }
+  
+  .confirmationContent {
+    background: white;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+
+
+    display: flex;
+    /* align-content: center; */
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 48px;
+  }
+  
+  .icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .confirmationMessage {
+    height: 136px ;
+  }
+  
+
+  
+  .confirmationTitle {
+    font-size: 32px;
+    line-height: 31px;
+    font-weight: 600;
+    height: 47px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    color: #52BB77;
+
+  }
+  
+  .confirmationSummary {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 25.5px;
+    height: 22px;
+    margin-bottom: 24px;
+
+  }
+
+  .confirmationWrapper {
+    font-size: 17px;
+    height: 73px;
+    gap: 24px;
+  }
+  
+  .undo {
+    color: #303030;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  
+  .undoLink {
+    color: #F2665D;
+    cursor: pointer;
+    text-decoration: underline;
+  }

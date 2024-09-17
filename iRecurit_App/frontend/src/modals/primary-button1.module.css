@@ -1,0 +1,27 @@
+.primary {
+    position: relative;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .primaryButton {
+    position: absolute;
+    top: 1796px;
+    left: 1293px;
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-primary-p1);
+    width: 391px;
+    height: 74px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: var(--padding-5xs);
+    box-sizing: border-box;
+    text-align: left;
+    cursor: pointer;
+    font-size: var(--popins-ctas-primary-medium-size);
+    color: var(--colour-tertiary-t6-all-white);
+    font-family: var(--popins-ctas-primary-medium);
+  }
+  

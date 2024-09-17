@@ -1,0 +1,34 @@
+.primary {
+    position: relative;
+    line-height: 31px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .primaryButton {
+    position: relative;
+    cursor: pointer;
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-primary-p1);
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--padding-3xl-5) 59px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    max-width: 100%;
+    text-align: left;
+    font-size: var(--popins-heading-heading-medium-size);
+    color: var(--colour-tertiary-t6-all-white);
+    font-family: var(--popins-ctas-primary-medium);
+  }
+  @media screen and (max-width: 450px) {
+    .primaryButton {
+      padding-left: var(--padding-xl);
+      padding-right: var(--padding-xl);
+      box-sizing: border-box;
+    }
+  }
+  

@@ -1,6 +1,7 @@
 // import FrameComponent3 from "../components/frame-component3";
 // import PrimaryButton from "../components/primary-button1";
 import styles from "./profile-creation-page.module.css";
+import { useState } from "react";
 
 import cIcon from '../assets/images/c@2x.png';
 import javascriptIcon from '../assets/images/javascript@2x.png';
@@ -16,9 +17,37 @@ import TopNavBar from "../components/top-nav-bar";
 import RadarChart  from "../components/skill-analysis-chart";
 import PrimaryButton from "../components/primary-button-2";
 import { getResume } from "../utils/util";
+import editIcon from "../assets/icons/mode-edit.svg"
+import DeleteIcon from "../assets/icons/delete.svg"
+import WorkExpModal from "../modals/profile-work-exp-modal";
+import ObjectiveModal from "../modals/objective-modal";
+import DeleteModal from "../modals/delete-modal";
 
 
 const ProfileCreationPage = () => {
+
+  const [isExpModalOpen, setExpModalOpen] = useState(false);
+  const [isobjectiveModalOpen, setobjectiveModalOpen] = useState(false);
+  const [isDeleteeModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('');
+
+  const handleExpOpenModal = () => setExpModalOpen(true);
+  const handleExpCloseModal = () => setExpModalOpen(false);
+
+
+  const handleObjectiveOpenModal = () => setobjectiveModalOpen(true);
+  const handleObjectiveCloseModal = () => setobjectiveModalOpen(false);
+
+  
+  const handleDeleteOpenModal = (item) => 
+    {
+      setSelectedItem(item);
+      setDeleteModalOpen(true)
+
+    };
+  const handleDeleteCloseModal = () => setDeleteModalOpen(false);
+
+
   
   const handleResumeClick = () => {
 
@@ -102,8 +131,12 @@ const ProfileCreationPage = () => {
                 </div>
                 <div className={styles.experienceSkills}>
                   <div className={styles.experienceSkillsChild} />
+                  <div>
                   <div className={styles.internshipworkExperience}>
                     Internship/Work Experience
+                    
+                  </div>
+                  <img   style ={{cursor:'pointer'}}onClick ={handleExpOpenModal}className={styles.modeEditIcon} alt="" src= {editIcon}/>
                   </div>
                   <img
                     className={styles.experienceSkillsItem}
@@ -116,6 +149,7 @@ const ProfileCreationPage = () => {
                       <div className={styles.experienceDetails}>
                         <div className={styles.experienceIcons} />
                       </div>
+                      
                       <div
                         className={styles.razorpaySoftwareEngineeringContainer}
                       >
@@ -235,6 +269,7 @@ const ProfileCreationPage = () => {
                       ensuring that every action I take is driven by integrity
                       and good values.
                     </h3>
+                    <img  style ={{cursor:'pointer'}} onClick ={handleObjectiveOpenModal}className={styles.modeEditIcon} alt="" src= {editIcon}/>
                   </div>
                   <div className={styles.caseStudy}>
                     <div className={styles.caseStudyChild} />
@@ -303,8 +338,11 @@ const ProfileCreationPage = () => {
                             Oct 2023
                           </p>
                         </div>
+                       
                       </div>
+                  
                     </div>
+                    <img  style ={{alignSelf:'self-end', cursor:'pointer',paddingTop:'32px'}} onClick ={()=>handleDeleteOpenModal("Certifications")}className={styles.modeEditIcon} alt="" src= {DeleteIcon}/>            
                   </div>
                   <div className={styles.rectangleContainer}>
                     <div className={styles.rectangleDiv} />
@@ -323,6 +361,8 @@ const ProfileCreationPage = () => {
                         </p>
                       </div>
                     </div>
+                    <img  style ={{alignSelf:'self-end', cursor:'pointer',paddingTop:'32px'}} onClick ={()=>handleDeleteOpenModal("Achievements")}className={styles.modeEditIcon} alt="" src= {DeleteIcon}/>                  
+                    
                   </div>
                   <div className={styles.skillsAndButton}>
                     <div className={styles.frameParent1}>
@@ -385,6 +425,9 @@ const ProfileCreationPage = () => {
               </div>
             </div>
           </div>
+          <WorkExpModal isOpen={isExpModalOpen} onClose={handleExpCloseModal} /> 
+          <ObjectiveModal isOpen={isobjectiveModalOpen} onClose={handleObjectiveCloseModal} /> 
+          <DeleteModal isOpen={isDeleteeModalOpen} onClose={handleDeleteCloseModal}  selectedItem={selectedItem} /> 
         </section>
       </main>
     </div>

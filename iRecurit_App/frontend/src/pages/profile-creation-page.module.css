@@ -892,6 +892,7 @@
 }
 .certificationsContent {
   flex: 0.8633;
+  height: 267px;;
   background-color: var(--colour-tertiary-t6-all-white);
   border: 1px solid var(--colour-tertiary-t3-outline);
   display: flex;
@@ -944,6 +945,7 @@
 }
 .rectangleContainer {
   flex: 0.8728;
+  height: 267px;
   box-shadow: var(--i-16x4x4);
   background-color: var(--color-aliceblue);
   border: 1px solid var(--color-lightsteelblue);

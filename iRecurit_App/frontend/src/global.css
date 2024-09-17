@@ -258,6 +258,10 @@ body {
   --popins-heading-hero-text-size: 44px;
   --font-size-16xl: 35px;
   --body-base-size: 16px;
+  --popins-ctas-primary-medium-size: 19px;
+  --popins-ctas-secondray-medium-size: 17px;
+  --popins-body-copy-body-sembold-size: 15px;
+  --popins-sub-heading-size: 23px;
 
   /* Colors */
   --colour-tertiary-t6-all-white: #fff;
