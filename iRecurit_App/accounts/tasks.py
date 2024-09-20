@@ -360,11 +360,7 @@ def remove_bg(user_id):
 #     "Resume content:\n"
 #     f"{document_text}" }
     
-<<<<<<< HEAD
-#    
-=======
-#     
->>>>>>> e8aaeb1601409abd5ce501c92f8437eaec842388
+
 
 #     # Call the AI engine (using OpenAI in this case)
 #     
