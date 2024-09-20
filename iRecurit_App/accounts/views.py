@@ -3,6 +3,7 @@ from django.conf import settings
 from django.shortcuts import render
 from .models import *
 import random
+from django.utils.timezone import make_aware
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
@@ -16,7 +17,9 @@ from .helpers import generate_token
 from .tasks import send_confirmation_email, remove_bg
 from rest_framework.exceptions import AuthenticationFailed
 import jwt
+from django.utils.timezone import now
 import redis
+from django.utils import timezone
 from bson import ObjectId
 import pymongo
 from django.contrib.auth.tokens import default_token_generator
@@ -26,8 +29,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 import logging
 import os
+from django.shortcuts import redirect
+from datetime import datetime, timedelta
+from datetime import timedelta, datetime
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.contrib.sites.shortcuts import get_current_site
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -58,8 +66,8 @@ def signup_view(request):
     if serializer.is_valid():
         user = serializer.save()
         
-        #sending email to the user in bg
-        send_confirmation_email(user,request)
+        # Send email to the user in the background
+        send_confirmation_email(user, request)
         
         response_data = serializer.data
         response_data.pop('password', None)
@@ -68,11 +76,11 @@ def signup_view(request):
             "status_code": status.HTTP_201_CREATED,
             "success": True,
             "data": response_data,
-            "message": "USER_REGISTERED_SUCCESSFULLY"
+            # "message": "USER_REGISTERED_SUCCESSFULLY"
+            "message": "USER_ENTRY_SAVED & EMAIL_SENT_SUCCESSFULLY"
         }
         
         return Response(response, status=status.HTTP_201_CREATED)
-        #return HttpResponse('User_registered_successfully', status=status.HTTP_201_CREATED, content_type='text/plain')
     else:
         # Custom error handling
         error_messages = []
@@ -93,25 +101,56 @@ def signup_view(request):
         
         return Response(response, status=status.HTTP_400_BAD_REQUEST)
         #return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
-    
-    
-# @api_view(['GET'])
-# def verify_email(request, uidb64, token):
-#     try:
-#         uid = urlsafe_base64_decode(uidb64).decode()
-#         user = User.objects.get(pk=uid)
-#     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-#         user = None
 
-#     if user is not None and generate_token.check_token(user, token):
-#         if not user.is_email_verified:
-#             user.is_email_verified = True
-#             user.save()
-#             return HttpResponse('Email successfully verified! You can now log in.')
-#         else:
-#             return HttpResponse('Email is already verified.', status=400)
-#     else:
-#         return HttpResponse('Invalid verification link!', status=400)
+
+@csrf_exempt
+@api_view(['GET'])
+def verify_email(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+        logger.info("User does not exist or invalid uid.")
+
+    if user is not None:
+        logger.info(f"Checking token for user: {user.candidate_email}")
+        if generate_token.check_token(user, token):
+            current_time = timezone.now()
+
+            # Ensure registration_time is in UTC
+            registration_time = user.registration_time
+
+            if registration_time.tzinfo is None:  # Check if naive
+                registration_time = make_aware(registration_time)  # Convert to aware if necessary
+            
+            registration_time = registration_time.astimezone(timezone.utc)  # Ensure it is UTC
+
+            logger.info(f"Current Time: {current_time}")
+            logger.info(f"Registration Time: {registration_time}")
+
+            # Log timezone information
+            logger.info(f"Registration Time Timezone: {registration_time.tzinfo}")
+
+            # Check if the token has expired (5 minutes)
+            if (current_time - registration_time).total_seconds() > 19950:
+                logger.info(f"Token expired. Difference in seconds: {(current_time - registration_time).total_seconds()}")
+                return redirect('https://irecruit-u.com/register?error=TOKEN_EXPIRED')
+
+            # Email verification logic
+            if not user.is_email_verified:
+                user.is_email_verified = True
+                user.save()
+                logger.info("Email verified successfully.")
+                return redirect('https://irecruit-u.com/login')
+            else:
+                logger.info("Email already verified.")
+                return redirect('https://irecruit-u.com/login')
+        else:
+            logger.info("Token validation failed.")
+            return redirect('https://irecruit-u.com/register?error=INVALID_TOKEN')
+    else:
+        return redirect('https://irecruit-u.com/register?error=INVALID_TOKEN')
 
 @api_view(['POST'])
 @csrf_exempt
@@ -121,29 +160,33 @@ def login_view(request):
         candidate_email = serializer.validated_data.get('candidate_email')
         # Optionally, you can retrieve the user object if needed
         user = User.objects.filter(candidate_email=candidate_email).first()
-        #if user.is_email_verified:
+        if user.is_email_verified:
             #creating tokens for the user
-        access_token, refresh_token = JWTAuthentication.create_tokens(user)
+            access_token, refresh_token = JWTAuthentication.create_tokens(user)
 
-                # Authentication successful, return a success message or token
-        response_data = {
-            "status_code": status.HTTP_200_OK,
-            "success": True,
-            "data": {
-                'access_token': access_token,
-                'refresh_token': refresh_token,
-                'user_id': user.id,
-                'email':user.candidate_email,
-                'name':user.candidate_first_name + " " + user.candidate_last_name
-            },
-            "message": "LOGIN_SUCCESSFUL"
-        }
-        #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
-        response= Response(response_data, status=status.HTTP_200_OK)
-        response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
-        return response
-        # else:
-        #     return Response({"message": "Email not verified."}, status=status.HTTP_403_FORBIDDEN)
+                    # Authentication successful, return a success message or token
+            response_data = {
+                "status_code": status.HTTP_200_OK,
+                "success": True,
+                "data": {
+                    'access_token': access_token,
+                    'refresh_token': refresh_token,
+                    'user_id': user.id,
+                    'email':user.candidate_email,
+                    'name':user.candidate_first_name + " " + user.candidate_last_name
+                },
+                "message": "USER_REGISTERED & LOGGED_IN_SUCCESSFULLY"
+            }
+            #response = Response({'message':'Login_successful', 'access_token': access_token, 'refresh_token':refresh_token, 'user_id':user.id}, status=status.HTTP_200_OK)
+            response= Response(response_data, status=status.HTTP_200_OK)
+            response.set_cookie('refresh_token', refresh_token, httponly=True, secure=True)
+            return response
+        else:
+            return Response({
+                "staus_code": status.HTTP_400_BAD_REQUEST,
+                "success": False,
+                "message": "EMAIL_NOT_VERIFIED",
+                }, status=status.HTTP_403_FORBIDDEN)
     else:
         # Custom error handling
         error_messages = []
@@ -183,31 +226,14 @@ class VerifyUser(APIView):
        # serializer = UserSignupSerializer(user)
        # return Response(serializer.data)
     
-class ExampleAPIView(APIView):
-    authentication_classes = [JWTAuthentication]  # Apply JWTAuthentication to this API vie
-    #permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access this view
+# class ExampleAPIView(APIView):
+#     authentication_classes = [JWTAuthentication]  # Apply JWTAuthentication to this API vie
+#     #permission_classes = [IsAuthenticated]  # Ensure only authenticated users can access this view
 
-    def get(self, request, *args, **kwargs):
-        user = request.user  # Retrieve authenticated user
-        return Response({'message': f'Hello, {user.candidate_email}!'})
+#     def get(self, request, *args, **kwargs):
+#         user = request.user  # Retrieve authenticated user
+#         return Response({'message': f'Hello, {user.candidate_email}!'})
 
-
-def activate_user(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
-
-    if user and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
-        # Redirect to a success page or display a success message
-        return render(request, 'activation_success.html')
-    else:
-        # Activation link is invalid or expired
-        return render(request, 'activation_failure.html')
-    
 
 
 @api_view(['POST'])
@@ -334,13 +360,16 @@ class Generate_Profile(APIView):
         
         try:
             # Schedule the job
-            scheduler.add_job(30, resume_id)  # Adjust the parameters as needed
+            scheduler.add_job(30, resume_id) 
+            # process_resume.delay(resume_id)
+            # result = process_resume(user_id)
             
             return Response(
                 {
                     "status_code": status.HTTP_200_OK,
                     "success": True,
-                    "message": "JOB_SCHEDULED_SUCCESSFULLY"
+                    "message": "JOB_SCHEDULED_SUCCESSFULLY",
+                    # "ai_response": result
                 },
                 status=status.HTTP_200_OK
             )
@@ -354,6 +383,7 @@ class Generate_Profile(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+            
         
 class GetResume(APIView):
     authentication_classes = [JWTAuthentication]
@@ -414,10 +444,13 @@ class GetResume(APIView):
             # Construct the response with the resume file content
             response = HttpResponse(file_content, content_type='application/pdf')
             response['Content-Disposition'] = f'inline; filename="{filename}"'
-            
+            logging.info(f"Response headers: {response.headers}")
+
             # Print or log message indicating the file is coming from MongoDB
             logging.info('Getting the resume from MongoDB')
             return response
+            
+        
 
         except gridfs.errors.NoFile:
             response={
@@ -437,6 +470,7 @@ class GetResume(APIView):
                     "message": {str(e)}
                 }
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
         
 
 

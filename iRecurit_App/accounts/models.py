@@ -5,6 +5,7 @@ from django.db import models
 import connection
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password, check_password
+from django.utils import timezone
 # Create your models here.
 
 # models.py
@@ -20,6 +21,7 @@ class User(Document):
     password = StringField(max_length=128)  # Store hashed password
     is_email_verified = BooleanField(default=False)
     is_profile_created = BooleanField(default=False)
+    registration_time = DateTimeField(default=timezone.now)
 
     meta = {'collection': 'candidate_users'}  # Specify the MongoDB collection name
 

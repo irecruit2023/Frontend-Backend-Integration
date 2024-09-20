@@ -8,10 +8,12 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import pymongo
 from bson import Binary
+from mongoengine.errors import NotUniqueError
 from rest_framework import status
 #from .helpers import generate_confirmation_token
 
 # serializers.py
+
 
 class UserSerializer(serializers.Serializer):
     candidate_email = serializers.EmailField()
@@ -20,37 +22,48 @@ class UserSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128, write_only=True)  # Use write_only for security
 
     def create(self, validated_data):
-        # Create and return a new User instance using validated data
-        return User.objects.create(**validated_data)
+        candidate_email = validated_data.get('candidate_email')
+
+        # Check if email already exists
+        user = User.objects.filter(candidate_email=candidate_email).first()
+        if user:
+            if user.is_email_verified:
+                raise serializers.ValidationError('EMAIL_EXISTS')
+            else:
+                # Update the existing user if the email is not verified
+                user.candidate_first_name = validated_data.get('candidate_first_name')
+                user.candidate_last_name = validated_data.get('candidate_last_name')
+                user.set_password(validated_data.get('password'))
+                user.registration_time = timezone.now()
+                user.save()
+                return user
+
+        # Create new User instance and set hashed password if email is not in use
+        user = User(candidate_email=candidate_email, candidate_first_name=validated_data.get('candidate_first_name'), candidate_last_name=validated_data.get('candidate_last_name'), registration_time=timezone.now())
+        user.set_password(validated_data.get('password'))
+        user.save()
+
+        return user
 
     def validate(self, data):
         candidate_email = data.get('candidate_email')
-        candidate_first_name = data.get('candidate_first_name')
-        candidate_last_name = data.get('candidate_last_name')
         password = data.get('password')
 
-        # Check if email is already registered
-        if User.objects.filter(candidate_email=candidate_email).first():
-            raise serializers.ValidationError('EMAIL_EXISTS')
+        # Check if email exists and if it is verified
+        user = User.objects.filter(candidate_email=candidate_email).first()
+        if user:
+            if user.is_email_verified:
+                raise serializers.ValidationError('EMAIL_EXISTS')
+            else:
+                # Optionally, handle the case where the email exists but is not verified
+                pass
 
         # Validate password requirements (e.g., minimum length)
         if len(password) < 8:
             raise serializers.ValidationError('PASSWORD_MUST_BE_OF_8_CHARACTERS')
 
         return data
-
-    def create(self, validated_data):
-        candidate_email = validated_data.get('candidate_email')
-        candidate_first_name = validated_data.get('candidate_first_name')
-        candidate_last_name = validated_data.get('candidate_last_name')
-        password = validated_data.get('password')
-
-        # Create new User instance and set hashed password
-        user = User(candidate_email=candidate_email,candidate_first_name=candidate_first_name, candidate_last_name=candidate_last_name)
-        user.set_password(password)
-        user.save()
-        
-        return user
+    
     
 class LoginSerializer(serializers.Serializer):
     candidate_email = serializers.EmailField()

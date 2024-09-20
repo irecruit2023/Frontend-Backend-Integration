@@ -134,9 +134,13 @@
       </div>
       <h2>We’re excited to have you!<br />Welcome aboard</h2>
       <p>
-        Hi {{user.candidate_first_name}}, please click the link below to confirm
+        Hi {{user.candidate_first_name}}, Thank you for signing up! Please click the link below to verify your email address:
       </p>
+<<<<<<< HEAD
       <a href="https://irecruit-u.com/login" class="confirm-button">Confirm</a>
+=======
+      <a href="{{protocol}}://{{ domain }}/api/verify-email/{{ uid }}/{{ token }}/" class="confirm-button">Verify Email</a>
+>>>>>>> e7980be (updated verify_email api)
     </div>
   </body>
 </html>

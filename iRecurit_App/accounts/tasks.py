@@ -1,7 +1,10 @@
 from celery import shared_task
 from django.http import HttpResponse
+from rest_framework.response import Response
 import json
 from bson import Binary
+# import PyPDF2
+from io import BytesIO
 from .models import *
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
@@ -14,10 +17,12 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib, time, pymongo, asyncio, threading, uuid, heapq, requests, gridfs, logging
 from rest_framework import status
-from .helpers import generate_token
+from bson import ObjectId
+
 #from datetime import datetime
 
 logger = logging.getLogger(__name__)
+
 
 @shared_task
 def send_confirmation_email(user, request):
@@ -25,11 +30,17 @@ def send_confirmation_email(user, request):
         current_site = get_current_site(request)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = generate_token.make_token(user)
+        
+        if request.is_secure():
+            protocol = 'https'
+        else:
+            protocol = 'http'
 
         email_subject = 'Welcome! Please Confirm Your Email'
         email_body = render_to_string('email_activation.html', {
             'user': user,
             'domain': current_site.domain,
+            'protocol' : protocol,
             'uid': uid,
             'token': token
         })
@@ -54,7 +65,7 @@ def send_confirmation_email(user, request):
 
     except Exception as e:
         logger.error(f"ERROR_SENDING_MAIL: {str(e)}")    
-        
+
         
 
 
@@ -113,24 +124,26 @@ class JobScheduler:
             #write_jobs_data(jobs_data)
             
         #Notify AI engine
-        #self.notify_ai_engine
+            # self.notify_ai_engine
+            
+
         
         logging.info(f"Job {job.id} added to the queue")
         return job.id
     
-    #def notify_ai_engine(self,job):
-    #    ai_engine_url = ""
-    #    payload = {
-    #        "job_id": job.id,
-    #        "resume_id": job.resume_id
-    #    }
-    #    
-    #    try: 
-    #        response = requests.post(ai_engine_url, json=payload)
-    #        response.raise_for_status()
-    #        print(f"Successfully notified AI engine about job {job.id}")
-    #    except requests.exceptions.RequestException as e:
-    #        print(f"Failed to notify AI engine about job {job.id}: {e}")
+    # def notify_ai_engine(self,job):
+    #     ai_engine_url = "http://127.0.0.8000/api/process/"
+    #     payload = {
+    #         "job_id": job.id,
+    #         "resume_id": job.resume_id
+    #     }
+        
+    #     try: 
+    #         response = requests.post(ai_engine_url, json=payload)
+    #         response.raise_for_status()
+    #         print(f"Successfully notified AI engine about job {job.id}")
+    #     except requests.exceptions.RequestException as e:
+    #         print(f"Failed to notify AI engine about job {job.id}: {e}")
 
             
 
@@ -176,7 +189,9 @@ class JobScheduler:
                             break
                         continue
                     
-
+                    # print(f"Triggered processing for job {job.id}")
+                    # process_resume.delay(job.resume_id)
+                
                     job.processed_interval += 1
                     if job.processed_interval >= job.max_intervals:
                         job.status = 'timeout'
@@ -187,11 +202,14 @@ class JobScheduler:
                         
                     else:
                         #job.current_interval += 30
+                        
                         job.start_time = time.time()
                         heapq.heappop(self.queue)
                         heapq.heappush(self.queue, job)
                         self.update_job(job, 'processing')
                         logging.info(f"Job {job.id} status updated to processing")
+                        
+                        
                         
                     job, time_remaining = self.get_next_job()
                     if job is None:
@@ -271,7 +289,86 @@ def remove_bg(user_id):
 
     except Exception as e:
         logger.error(f"An error occurred: {str(e)}")
+        
 
+
+# @shared_task
+# def process_resume(user_id):
+#     print("Executing process_resume directly...")
+
+#     # Connect to MongoDB
+#     client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+#     db = client[settings.DATABASES['default']['NAME']]
+
+#     # Access the collection where resumes are stored
+#     resume_collection = db['candidate_resume']
+
+#     # Query the document based on the candidate ID
+#     document = resume_collection.find_one({'candidate': user_id}, sort=[('upload_timestamp', pymongo.DESCENDING)])
+
+#     if document is None:
+#         print("Resume not found for the user.")
+#         return
+
+#     # Access the filename and file ID from the document
+#     filename = document.get('filename')
+#     file_id = document.get('file')
+
+#     # Initialize GridFS and retrieve the resume file (PDF in this case)
+#     fs = gridfs.GridFS(db)
+#     resume_file = fs.get(ObjectId(file_id))
+
+#     # Read the PDF content
+#     pdf_content = resume_file.read()
+
+#     # Wrap the PDF bytes in a BytesIO object to mimic a file-like object
+#     pdf_stream = BytesIO(pdf_content)
+
+#     # Use PyPDF2 to extract text from the PDF
+#     try:
+#         pdf_reader = PyPDF2.PdfReader(pdf_stream)
+#         document_text = ""
+#         for page_num in range(len(pdf_reader.pages)):
+#             page = pdf_reader.pages[page_num]
+#             document_text += page.extract_text()
+
+#         if not document_text:
+#             print("No text found in the PDF.")
+#             return {"error": "NO_TEXT_FOUND_IN_PDF"}
+#     except Exception as e:
+#         print(f"Error processing PDF: {str(e)}")
+#         return {"error": "PDF_PROCESSING_ERROR", "details": str(e)}
+
+#     # Create a query for AI processing
+#     query_text = {
+#     "Please extract and categorize the following information from the resume:\n"
+#     "1. Latest education\n"
+#     "2. Key skills\n"
+#     "3. Achievements\n"
+#     "4. Technologies used\n"
+#     "5. Certificates\n"
+#     "6. Internship or job experience\n\n"
+#     "Organize the extracted information into these categories:\n"
+#     "- Programming Languages\n"
+#     "- Frameworks\n"
+#     "- Databases\n"
+#     "- Cloud Technologies\n"
+#     "- Experience\n"
+#     "- Certificates\n"
+#     "- Achievements\n"
+#     "If any category is not provided, use 'NULL'.\n\n"
+#     "Resume content:\n"
+#     f"{document_text}" }
+    
+#     api_key = 'sk-_m2Vt4CC1CKJLbOm3KsTz57gYrkNNj1E6LaHceSTqGT3BlbkFJW619aaSHLrwndQHzcdeXBoR5KmRPXjdH-kyN_p-QoA'
+
+#     # Call the AI engine (using OpenAI in this case)
+#     response = generate_response(document_text, query_text, api_key)
+
+#     # Print the AI engine's response to the console
+#     print(f"AI Engine Response: {response}")
+
+#     return response
 
 
 
