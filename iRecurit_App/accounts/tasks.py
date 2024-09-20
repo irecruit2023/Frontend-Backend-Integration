@@ -360,10 +360,10 @@ def remove_bg(user_id):
 #     "Resume content:\n"
 #     f"{document_text}" }
     
-#     api_key = 'sk-_m2Vt4CC1CKJLbOm3KsTz57gYrkNNj1E6LaHceSTqGT3BlbkFJW619aaSHLrwndQHzcdeXBoR5KmRPXjdH-kyN_p-QoA'
+#     
 
 #     # Call the AI engine (using OpenAI in this case)
-#     response = generate_response(document_text, query_text, api_key)
+#     
 
 #     # Print the AI engine's response to the console
 #     print(f"AI Engine Response: {response}")
