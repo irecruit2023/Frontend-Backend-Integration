@@ -809,7 +809,7 @@
   color: var(--colour-primary-p4-text);
 }
 .certificationsContentChild {
-  width: 395px;
+  width: 100%;
   height: 267px;
   position: relative;
   box-shadow: var(--i-16x4x4);
@@ -819,12 +819,14 @@
   z-index: 0;
 }
 .certifications {
-  width: 205px;
+  width: 100%;
   position: relative;
   text-transform: uppercase;
   font-weight: 500;
   display: inline-block;
   z-index: 1;
+  display: flex;
+  justify-content: space-between;
 }
 .certificationsDividerIcon {
   width: 0.8px;

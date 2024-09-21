@@ -22,6 +22,7 @@ import DeleteIcon from "../assets/icons/delete.svg"
 import WorkExpModal from "../modals/profile-work-exp-modal";
 import ObjectiveModal from "../modals/objective-modal";
 import DeleteModal from "../modals/delete-modal";
+import CertificationModal from "../modals/certification-modal";
 
 
 const ProfileCreationPage = () => {
@@ -30,6 +31,7 @@ const ProfileCreationPage = () => {
   const [isobjectiveModalOpen, setobjectiveModalOpen] = useState(false);
   const [isDeleteeModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
+  const [certification, setCertification] = useState('');
 
   const handleExpOpenModal = () => setExpModalOpen(true);
   const handleExpCloseModal = () => setExpModalOpen(false);
@@ -37,6 +39,10 @@ const ProfileCreationPage = () => {
 
   const handleObjectiveOpenModal = () => setobjectiveModalOpen(true);
   const handleObjectiveCloseModal = () => setobjectiveModalOpen(false);
+
+
+  const handleCertificationOpenModal = () => setCertification(true);
+  const handleCertificationCloseModal = () => setCertification(false);
 
   
   const handleDeleteOpenModal = (item) => 
@@ -307,7 +313,9 @@ const ProfileCreationPage = () => {
                 <div className={styles.certificationsContentParent}>
                   <div className={styles.certificationsContent}>
                     <div className={styles.certificationsContentChild} />
-                    <div className={styles.certifications}>Certifications</div>
+                    <div className={styles.certifications}>Certifications
+                    <img   style ={{cursor:'pointer'}}onClick ={handleCertificationOpenModal}className={styles.modeEditIcon} alt="" src= {editIcon}/>
+                    </div>
                     <img
                       className={styles.certificationsDividerIcon}
                       loading="lazy"
@@ -428,6 +436,7 @@ const ProfileCreationPage = () => {
           <WorkExpModal isOpen={isExpModalOpen} onClose={handleExpCloseModal} /> 
           <ObjectiveModal isOpen={isobjectiveModalOpen} onClose={handleObjectiveCloseModal} /> 
           <DeleteModal isOpen={isDeleteeModalOpen} onClose={handleDeleteCloseModal}  selectedItem={selectedItem} /> 
+          <CertificationModal isOpen={certification} onClose={handleCertificationCloseModal}  /> 
         </section>
       </main>
     </div>

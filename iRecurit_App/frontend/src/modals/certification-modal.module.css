@@ -1,0 +1,144 @@
+
+
+/* Modal overlay covering the full screen */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
+  /* Modal content container */
+  .modalContent {
+    background-color: white;
+    border-radius: 16px; /* Ensure the correct border-radius */
+ /* Use spaces instead of commas for padding values */
+    height: 837px;
+    width: 854px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border: 1px #C8C8C8;
+  }
+  
+
+  
+  /* Certification content styling */
+  .certificationsContainer{
+    /* width: 662px; */
+    height: 665px;
+    font-size: 17px;
+    padding: 48px 96px; 
+
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+  }
+
+  .upperMessage{
+    width: 662px;
+    height: 150px;
+  }
+  
+  .certificationsContent {
+    text-align: center;
+  }
+
+
+  .certificationHeading {
+    font-weight: 600;
+    font-size: 32px;
+    color:#F2665D;
+    line-height: 31px;
+    margin-bottom: 16px;
+}
+
+
+.certificationSub1Heading{
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 25.5px;
+    margin-bottom: 16px;
+
+
+}
+
+.certificationSub2Heading{
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 22.5px;
+
+    
+}
+
+
+.items{
+
+    height:71px ;
+    background-color: #FAFAFA;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    border: 1px #DCDCDC;
+    color: #303030;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #DCDCDC;
+}
+
+.lowerList {
+
+    height: 578px;
+    width: 662px;
+    margin-top: 16px;
+
+
+}
+
+.heading {
+    height: 87px;
+}
+  
+
+
+.secondary {
+    position: relative;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 61px;
+    cursor: pointer;
+  }
+  .a,
+  .secondaryButton,
+  .secondaryButtonParent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .secondaryButton {
+    border-radius: var(--br-81xl);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-primary-p1);
+    overflow: hidden;
+    justify-content: center;
+    padding: var(--padding-6xs) 49px;
+  }
+  .a,
+  .secondaryButtonParent {
+
+    justify-content: center;
+    gap: var(--gap-13xl);
+    max-width: 100%;
+    text-align: left;
+    font-size: var(--popins-ctas-secondray-medium-size);
+    color: var(--colour-primary-p1);
+    
+  }
+
+
+  
