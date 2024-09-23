@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from  './delete-confirmation.module.css';
 
-const Confirmation = () => {
+const Confirmation = ({selectedItem}) => {
     return (
         <div  className={styles.confirmationContainer}  >
             <div className ={styles.confirmationContent}>
@@ -17,7 +17,7 @@ const Confirmation = () => {
                 <div className ={styles.confirmationMessage} >
                 <div  className ={styles.confirmationTitle}>Confirmation</div>
                 <div className={styles.confirmationWrapper}>
-                <div className={styles.confirmationSummary}>Achievements card removed successfully</div>
+                <div className={styles.confirmationSummary}>{selectedItem} card removed successfully</div>
                 <p  className ={styles.undo}>
                     click to <span className ={styles.undoLink} >undo</span>
                 </p>

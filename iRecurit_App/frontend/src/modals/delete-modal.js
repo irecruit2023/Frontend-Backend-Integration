@@ -1,16 +1,27 @@
 import PrimaryButton from "./primary-button";
 import PropTypes from "prop-types";
 import styles from "./delete-modal.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Confirmation from "./delete-confirmation";
 
 const DeleteModal = ({ className = "", isOpen, onClose, selectedItem }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  // When the confirmation is shown, set a timer to automatically close the modal after 3 seconds
+  useEffect(() => {
+    if (showConfirmation) {
+      const timer = setTimeout(() => {
+        setShowConfirmation(false)
+        onClose();  // Close the modal after 3 seconds
+      }, 3000);
+      return () => clearTimeout(timer); // Clean up the timer when the component is unmounted or state changes
+    }
+  }, [showConfirmation, onClose]);
+
   if (!isOpen) return null;
 
   const handleDeleteClick = () => {
-    setShowConfirmation(true);
+    setShowConfirmation(true); // Show confirmation when delete is clicked
   };
 
   const items = [
@@ -32,7 +43,7 @@ const DeleteModal = ({ className = "", isOpen, onClose, selectedItem }) => {
         className={[styles.modalContent, className].join(" ")}
       >
         {showConfirmation ? (
-          <Confirmation />
+          <Confirmation selectedItem={selectedItem} />
         ) : (
           <div className={styles.deleteInformation}>
             <div className={styles.upperMessage}>

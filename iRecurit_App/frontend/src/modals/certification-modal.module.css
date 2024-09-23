@@ -19,7 +19,7 @@
     background-color: white;
     border-radius: 16px; /* Ensure the correct border-radius */
  /* Use spaces instead of commas for padding values */
-    height: 837px;
+    height: auto;
     width: 854px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -31,7 +31,7 @@
   /* Certification content styling */
   .certificationsContainer{
     /* width: 662px; */
-    height: 665px;
+    height: auto;
     font-size: 17px;
     padding: 48px 96px; 
 
@@ -43,11 +43,9 @@
   .upperMessage{
     width: 662px;
     height: 150px;
-  }
-  
-  .certificationsContent {
     text-align: center;
   }
+  
 
 
   .certificationHeading {
@@ -78,22 +76,24 @@
 
 
 .items{
-
-    height:71px ;
+    min-height:71px ;
+    flex-direction: column;
     background-color: #FAFAFA;
     border-radius: 8px;
     margin-bottom: 24px;
     border: 1px #DCDCDC;
     color: #303030;
     display: flex;
-    align-items: center;
+    margin-left: 24px;
+     /* align-items: center; */
     justify-content: center;
     border: 1px solid #DCDCDC;
+    height: auto;
 }
 
 .lowerList {
 
-    height: 578px;
+    height: auto;
     width: 662px;
     margin-top: 16px;
 
@@ -140,5 +140,31 @@
     
   }
 
+ 
+  .items {
+  cursor: pointer;
+  font-family: var(--popins-body-copy-body-regular);
+}
 
-  
+.itemDetails {
+  margin-top: 12px;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+.itemTitle{
+  width:80%;
+  text-decoration: underline;
+  font-family: var(--popins-body-copy-body-regular);
+  color:#303030;
+  font-size: 15px;
+  font-weight: 600;  transition: color 0.3s ease;
+}
+
+.items:hover .itemTitle {
+  color: #F2665D; /* Change the link color to orange on hover */
+}
+
+
+
+
