@@ -23,6 +23,7 @@ import WorkExpModal from "../modals/profile-work-exp-modal";
 import ObjectiveModal from "../modals/objective-modal";
 import DeleteModal from "../modals/delete-modal";
 import CertificationModal from "../modals/certification-modal";
+import CaseStudyUpload from "../modals/case-study-modal";
 
 
 const ProfileCreationPage = () => {
@@ -32,6 +33,7 @@ const ProfileCreationPage = () => {
   const [isDeleteeModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState('');
   const [certification, setCertification] = useState('');
+  const [isCaseStudyModalOpen, setisCaseModalOpen] = useState(false);
 
   const handleExpOpenModal = () => setExpModalOpen(true);
   const handleExpCloseModal = () => setExpModalOpen(false);
@@ -43,6 +45,10 @@ const ProfileCreationPage = () => {
 
   const handleCertificationOpenModal = () => setCertification(true);
   const handleCertificationCloseModal = () => setCertification(false);
+
+
+  const handleCaseStudyModal = () => setisCaseModalOpen(true);
+  const handleCaseStudyCloseModal = () => setisCaseModalOpen(false);
 
   
   const handleDeleteOpenModal = (item) => 
@@ -301,6 +307,7 @@ const ProfileCreationPage = () => {
                           </div>
                         </div>
                         <img
+                          onClick ={handleCaseStudyModal}
                           className={styles.iconarrows}
                           loading="lazy"
                           alt=""
@@ -437,6 +444,7 @@ const ProfileCreationPage = () => {
           <ObjectiveModal isOpen={isobjectiveModalOpen} onClose={handleObjectiveCloseModal} /> 
           <DeleteModal isOpen={isDeleteeModalOpen} onClose={handleDeleteCloseModal}  selectedItem={selectedItem} /> 
           <CertificationModal isOpen={certification} onClose={handleCertificationCloseModal}  /> 
+          <CaseStudyUpload isOpen={isCaseStudyModalOpen} onClose={handleCaseStudyCloseModal}  /> 
         </section>
       </main>
     </div>

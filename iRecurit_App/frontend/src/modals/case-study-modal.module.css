@@ -1,93 +1,388 @@
-/* src/CaseStudyUpload.css */
-.case-study-container {
-    display: flex;
+/* Modal overlay covering the full screen */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Ensure it appears above other content */
+}
+
+/* Modal content container */
+.modalContent {
+  background-color: white;
+  border-radius: 16px;
+  /* Ensure the correct border-radius */
+  /* Use spaces instead of commas for padding values */
+  height: auto;
+  width: 854px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  position: relative;
+  border: 1px #C8C8C8;
+  font-family: var(--popins-body-copy-body-regular);
+  
+}
+
+
+
+
+.caseStudyContainer {
+  /* width: 662px; */
+  height: auto;
+  font-size: 17px;
+  /* padding: 48px 96px; */
+  padding-top: 48px;
+  padding-left: 96px;
+  padding-right: 96px;
+  padding-bottom: 32px;
+
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+
+}
+
+
+.upperMessage {
+  width: 662px;
+  height: 150px;
+  text-align: center;
+}
+
+
+.upperMessageHeading {
+  font-weight: 600;
+  font-size: 32px;
+  color: #F2665D;
+  line-height: 31px;
+  margin-bottom: 16px;
+  height: 47px;
+
+}
+
+
+.heading {
+  height: 87px;
+}
+
+
+
+.recommendation {
+  margin-bottom: 16px;
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22.5px;
+  text-align: center;
+
+}
+
+.gettingStarted {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25.5px;
+  text-align: center;
+
+}
+
+
+.lowerList {
+  width: 662px;
+  height: auto;
+}
+
+
+.templateWrapper {
+
+  height: 137px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22.5px;
+  align-items: center;
+  margin: 32px 0px;
+
+}
+
+
+.templateInfo {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22.5px;
+  text-align: center;
+
+
+}
+
+
+
+.templateDownloadButton {
+  padding: 24px;
+  height: 71px;
+  border-radius: 8px;
+  width: 662px;
+  border: 1px solid #C8C8C8;
+  margin-top: 32px;
+  box-shadow: 0px 0px 16px 4px #0000000A;
+  background-color: #FAFAFA;
+  font-size: 15px;
+  font-weight: 600;
+  /* Semi-bold */
+  line-height: 22.5px;
+  /* Adjusted for better readability */
+  text-align: center;
+  text-decoration: underline;
+}
+
+
+
+.uploadWrapper{
+width: 662px;
+height: 301px;
+gap: 29px;
+opacity: 0px;
+
+}
+
+
+.uploadHeading{
+font-family: Poppins;
+font-size: 32px;
+font-weight: 600;
+line-height: 31px;
+text-align: center;
+
+
+width: 585.89px;
+height: 31px;
+left: 38.06px;
+gap: 0px;
+opacity: 0px;
+color: #F2665D;
+
+}
+
+
+.uploadSection
+{
+
+/* width: 662px ; */
+height: auto;
+/* top: 60px; */
+/* padding: 32px 254px 32px 254px; */
+/* gap: 4px; */
+border-radius: 8px 0px 0px 0px;
+opacity: 0px;
+background-color:  #FFECEB;
+border: 1px dashed #F4A789;
+margin-top: 28px;
+
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+
+
+}
+
+.secondary {
+  position: relative;
+  font-weight: 500;
+  display: inline-block;
+  min-width: 61px;
+  cursor: pointer;
+}
+
+.a,
+.secondaryButton,
+.secondaryButtonParent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.secondaryButton {
+  border-radius: var(--br-81xl);
+  background-color: var(--colour-tertiary-t6-all-white);
+  border: 1px solid var(--colour-primary-p1);
+  overflow: hidden;
+  justify-content: center;
+  padding: var(--padding-6xs) 49px;
+  /* margin-bottom: 48px; */
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.a,
+.secondaryButtonParent {
+  /* margin-top: 32px; */
+  justify-content: center;
+  gap: var(--gap-13xl);
+  max-width: 100%;
+  text-align: left;
+  font-size: var(--popins-ctas-secondray-medium-size);
+  color: var(--colour-primary-p1);
+  font-family: var(--popins-ctas-primary-medium);
+}
+
+.a {
+  width: 854px;
+  box-shadow: var(--i-16x4x4);
+  border-radius: var(--br-base);
+  background-color: var(--colour-tertiary-t6-all-white);
+  border: 1px solid var(--colour-tertiary-t1-text-default);
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--padding-27xl) var(--padding-xl);
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  font-size: var(--popins-ctas-primary-medium-size);
+  color: var(--colour-primary-p4-text);
+}
+
+@media screen and (max-width: 700px) {
+
+  .a,
+  .internshipworkExperienceWrapper {
+    gap: var(--gap-base);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .frameWrapper {
+    padding-top: var(--padding-xl);
+    padding-bottom: var(--padding-xl);
+    box-sizing: border-box;
+  }
+
+  .secondaryButtonParent {
+    gap: var(--gap-base);
+    flex-wrap: wrap;
+  }
+}
+
+
+
+
+.dropYourFile {
+  font-weight: 500;
+}
+.or {
+  font-size: var(--popins-body-copy-body-regular-size);
+  line-height: 15.5px;
+  font-family: var(--popins-body-copy-body-regular);
+  color: var(--colour-primary-p4-text-light);
+}
+.span {
+  color: var(--colour-primary-p4-text);
+}
+.browseFromDevice {
+  font-weight: 500;
+}
+
+.dropYourFileHereOrBrowse {
+
+  margin-top: 32px;
+}
+
+.blankLine1 {
+  font-weight: 500;
+}
+.blankLine,
+.or1 {
+  margin: 0;
+  color: var(--colour-primary-p1);
+}
+.or1 {
+  font-size: var(--popins-body-copy-body-regular-size);
+  line-height: 15.5px;
+  color: var(--colour-primary-p4-text-light);
+     align-items: center;
     justify-content: center;
+    display: flex;
+}
+/* .dropYourFileContainer,
+.secondary {
+  position: relative;
+} */
+
+
+
+
+.supportsDocxAndContainer{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 32px;
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Adjust as needed */
+}
+
+.loader {
+  display: inline-block;
+  position: relative;
+  width: 80px; /* Adjust size as needed */
+  height: 24px; /* Adjust size as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.loader div {
+  position: absolute;
+  width: 12px; /* Adjust size of each dot as needed */
+  height: 12px; /* Adjust size of each dot as needed */
+  background: black; /* Color of the dots */
+  border-radius: 50%;
+  animation: loader 1.4s infinite ease-in-out;
+}
+
+.loader div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.32s;
+}
+
+
+.loaderWrapper{
+  display: flex;
     align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.loader div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.16s;
+}
+
+.loader div:nth-child(3) {
+  left: 56px;
+}
+
+@keyframes loader {
+  0%, 80%, 100% {
+    transform: scale(0);
   }
-  
-  .case-study-content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 600px;
-    width: 100%;
-    font-family: Arial, sans-serif;
+  40% {
+    transform: scale(1);
   }
-  
-  h1 {
-    color: #ff6b6b;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .recommendation {
-    color: #333;
-    margin: 10px 0;
-    font-size: 14px;
-  }
-  
-  h2 {
-    color: #333;
-    font-size: 18px;
-    margin: 20px 0 10px;
-  }
-  
-  .template-info {
-    color: #333;
-    margin: 10px 0;
-    font-size: 14px;
-  }
-  
-  .download-button {
-    background: #f5f5f5;
-    border: 1px solid #ccc;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 10px 0;
-    font-size: 14px;
-  }
-  
-  .upload-section {
-    border: 2px dashed #ff6b6b;
-    padding: 20px;
-    border-radius: 10px;
-    background: #fff5f5;
-    margin: 20px 0;
-  }
-  
-  .browse-link {
-    color: #ff6b6b;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  .upload-button {
-    background: none;
-    border: 2px solid #ff6b6b;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #ff6b6b;
-    margin: 10px 0;
-  }
-  
-  .support-info {
-    color: #333;
-    font-size: 12px;
-    margin: 10px 0;
-  }
-  
-  .close-button {
-    background: none;
-    border: 2px solid #ff6b6b;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #ff6b6b;
-    margin: 10px 0;
-  }
+}
+
+
+

@@ -205,15 +205,27 @@
   .modalContent {
     background-color: white;
     border-radius: 16px;
-    padding-top: 48px;
-    padding-bottom: 48px;
-    padding-left: 96px;
-    padding-right: 96px;
     width: 854px;
     height: auto;
     overflow-y: auto;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border: 1px #C8C8C8;
+    background-color: white;
+    border-radius: 16px;
+    /* Ensure the correct border-radius */
+    /* Use spaces instead of commas for padding values */
+    height: auto;
+    width: 854px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border: 1px #C8C8C8;
+    font-family: var(--popins-body-copy-body-regular);
   }
   
+  .objectiveContainer{
+      /* width: 662px; */
+  height: auto;
+  font-size: 17px;
+  padding: 48px 96px;
+  }
   

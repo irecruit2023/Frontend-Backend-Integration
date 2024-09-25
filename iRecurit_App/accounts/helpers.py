@@ -16,7 +16,7 @@ import six
 # from langchain.prompts import PromptTemplate
 # from langchain.chains import RetrievalQA
 # from langchain.text_splitter import CharacterTextSplitter
-import openai
+# import openai
 
 # this function is used to generate the tokens for authorization
 

@@ -26,6 +26,7 @@ const ObjectiveModal = ({ className = "", isOpen, onClose }) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={[styles.modalContent, className].join(" ")}>
+      <div className={styles.objectiveContainer}>
         <div className={styles.internshipworkExperienceWrapper}>
           <div className={styles.internshipworkExperience}>
             Objective
@@ -63,6 +64,7 @@ const ObjectiveModal = ({ className = "", isOpen, onClose }) => {
             onClick={handleSave} // Handle saving the objective
           />
         </footer>
+      </div>
       </div>
     </div>
   );
