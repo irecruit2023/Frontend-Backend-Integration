@@ -24,6 +24,7 @@ import ObjectiveModal from "../modals/objective-modal";
 import DeleteModal from "../modals/delete-modal";
 import CertificationModal from "../modals/certification-modal";
 import CaseStudyUpload from "../modals/case-study-modal";
+import Achievement from "../modals/achievement-modal";
 
 
 const ProfileCreationPage = () => {
@@ -31,9 +32,10 @@ const ProfileCreationPage = () => {
   const [isExpModalOpen, setExpModalOpen] = useState(false);
   const [isobjectiveModalOpen, setobjectiveModalOpen] = useState(false);
   const [isDeleteeModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState('');
   const [certification, setCertification] = useState('');
   const [isCaseStudyModalOpen, setisCaseModalOpen] = useState(false);
+  const [isAchievementModalOpen, setisAchievementModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('');
 
   const handleExpOpenModal = () => setExpModalOpen(true);
   const handleExpCloseModal = () => setExpModalOpen(false);
@@ -49,6 +51,9 @@ const ProfileCreationPage = () => {
 
   const handleCaseStudyModal = () => setisCaseModalOpen(true);
   const handleCaseStudyCloseModal = () => setisCaseModalOpen(false);
+
+  const handleAchievementModal = () => setisAchievementModalOpen(true);
+  const handleAchievementCloseModal = () => setisAchievementModalOpen(false);
 
   
   const handleDeleteOpenModal = (item) => 
@@ -361,7 +366,9 @@ const ProfileCreationPage = () => {
                   </div>
                   <div className={styles.rectangleContainer}>
                     <div className={styles.rectangleDiv} />
-                    <div className={styles.achievemnets}>Achievemnets</div>
+                    <div className={styles.achievemnets}>Achievemnets
+                    <img   style ={{cursor:'pointer'}}onClick ={handleAchievementModal}className={styles.modeEditIcon} alt="" src= {editIcon}/>
+                    </div>
                     <div className={styles.achievementItem}>
                       <div className={styles.experienceDetails}>
                         <div className={styles.achievementIcon} />
@@ -445,6 +452,7 @@ const ProfileCreationPage = () => {
           <DeleteModal isOpen={isDeleteeModalOpen} onClose={handleDeleteCloseModal}  selectedItem={selectedItem} /> 
           <CertificationModal isOpen={certification} onClose={handleCertificationCloseModal}  /> 
           <CaseStudyUpload isOpen={isCaseStudyModalOpen} onClose={handleCaseStudyCloseModal}  /> 
+          <Achievement isOpen={isAchievementModalOpen} onClose={handleAchievementCloseModal}  /> 
         </section>
       </main>
     </div>

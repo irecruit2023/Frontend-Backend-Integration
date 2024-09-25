@@ -19,6 +19,7 @@ const WorkExpModal = ({ className = "", isOpen, onClose }) => {
   return (
     <div className={styles.modalOverlay}>
       <div className={[styles.modalContent, className].join(" ")}>
+      <div className={styles.objectiveContainer}>
         <div className={styles.internshipworkExperienceWrapper}>
           <div className={styles.internshipworkExperience}>
             Internship/Work Experience
@@ -57,6 +58,7 @@ const WorkExpModal = ({ className = "", isOpen, onClose }) => {
             primaryButtonHeight="unset"
           />
         </footer>
+      </div>
       </div>
     </div>
   );
