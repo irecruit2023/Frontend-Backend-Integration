@@ -65,18 +65,23 @@
 
 
 .certificationSub1Heading{
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 22.5px;
-    margin-bottom: 16px;
+  font-family: Poppins;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25.5px;
+  text-align: center;
+  
+    margin-bottom: 15px;
 
 
 }
 
 .certificationSub2Heading{
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 25.5px;
+  font-family: Poppins;
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 34.5px;
+  text-align: center;
    
 }
 

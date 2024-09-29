@@ -72,7 +72,7 @@ const TopNavBar = ({ className = "" }) => {
                     alt=""
                   />
                   <div className={styles.hiVidhiWrapper}>
-                    <a className={styles.hiVidhi}>Hi, {JSON.parse(localStorage.loginInformation).data.name}</a>
+                  <a className={styles.hiVidhi}>Hi, {localStorage?.loginInformation ? JSON.parse(localStorage.loginInformation)?.data?.name || '' : ''}</a>
                   </div>
                 </div>
                 <div className={styles.overflowMenuVerticalWrapper}>

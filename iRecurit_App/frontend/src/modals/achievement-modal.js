@@ -58,7 +58,7 @@ const Achievement = ({ className = "", isOpen, onClose }) => {
                             <div className={styles.upperMessageHeading}>Time to brag a little</div>
                             <div className={styles.heading}>
                                 <div className={styles.recommendation}>
-                                    <div>Scratching your head on what to add?</div> 
+                                    <div>Scratching your head on what to add?</div>
                                     No worries! Your achievements, your story! Few suggestions:
                                 </div>
                                 <div className={styles.gettingStarted}>Few suggestions</div>
@@ -66,14 +66,20 @@ const Achievement = ({ className = "", isOpen, onClose }) => {
                         </div>
 
                         <div className={styles.carousel}>
-                            <div   className={styles.carouselContent}>
-                                <div   className={styles.carouselItem} >
+                            <div className={styles.carouselContent}>
+                                <div className={styles.carouselItem} >
                                     {items[currentIndex]}
                                 </div>
                             </div>
                             <div className="arrows">
-                                <button className="arrow" onClick={prevSlide}>&lt;</button>
-                                <button className="arrow" onClick={nextSlide}>&gt;</button>
+                                <svg style ={{cursor:'pointer'}} width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path onClick={prevSlide} d="M8.75 14L17.5 5.25L18.725 6.475L11.2 14L18.725 21.525L17.5 22.75L8.75 14Z" fill="#0A324C" />
+                                </svg>
+
+                                <svg style ={{cursor:'pointer'}} onClick={nextSlide} width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.25 14L10.5 5.25L9.275 6.475L16.8 14L9.275 21.525L10.5 22.75L19.25 14Z" fill="#0A324C" />
+                                </svg>
+
                             </div>
                         </div>
 
