@@ -2,11 +2,11 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import styles from "./top-nav-bar-default.module.css";
-import { ReactComponent as  IrecruitLogo } from "../assets/icons/iRecurit-logo.svg";
-import { ReactComponent as  Search } from "../assets/icons/iconsearch.svg";
-import { ReactComponent as  More } from "../assets/icons/vector-21.svg";
+import { ReactComponent as IrecruitLogo } from "../assets/icons/iRecurit-logo.svg";
+import { ReactComponent as Search } from "../assets/icons/iconsearch.svg";
+import { ReactComponent as More } from "../assets/icons/vector-21.svg";
 
-const TopNavBarDefault= ({ className = "" }) => {
+const TopNavBarDefault = ({ className = "" }) => {
   const navigate = useNavigate();
 
   const onLoginSignClick = useCallback((e) => {
@@ -25,7 +25,7 @@ const TopNavBarDefault= ({ className = "" }) => {
         <div className={styles.frameParent}>
           <div className={styles.irecruitLogoSmallParent}>
             <div className={styles.irecruitLogoSmall}>
-              <IrecruitLogo/>
+              <IrecruitLogo />
             </div>
             <nav className={styles.blogLinks}>
               <a className={styles.about}>About</a>
@@ -45,15 +45,17 @@ const TopNavBarDefault= ({ className = "" }) => {
                 </div>
               </div>
               <div className={styles.loginSignUpWrapper}>
-                <a className={styles.loginSign} onClick={onLoginSignClick}>
-                  Login | Sign up
+                <a className={styles.loginSign}>
+                  <span onClick={() => navigate('/login')}>Login</span>
+                  |
+                  <span onClick={() => navigate('/signup')}>Sign up</span>
                 </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <More className={styles.topNavBarItem} alt=""  />
+      <More className={styles.topNavBarItem} alt="" />
     </header>
   );
 };

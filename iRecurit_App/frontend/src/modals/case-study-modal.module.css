@@ -148,7 +148,7 @@
 width: 662px;
 height: 301px;
 gap: 29px;
-opacity: 0px;
+/* opacity: 0px; */
 
 }
 
@@ -165,7 +165,7 @@ width: 585.89px;
 height: 31px;
 left: 38.06px;
 gap: 0px;
-opacity: 0px;
+/* opacity: 0px; */
 color: #F2665D;
 
 }
@@ -180,7 +180,7 @@ height: auto;
 /* padding: 32px 254px 32px 254px; */
 /* gap: 4px; */
 border-radius: 8px 0px 0px 0px;
-opacity: 0px;
+/* opacity: 0px; */
 background-color:  #FFECEB;
 border: 1px dashed #F4A789;
 margin-top: 28px;

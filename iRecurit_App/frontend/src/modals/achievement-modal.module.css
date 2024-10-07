@@ -329,7 +329,7 @@
   height: Hug (192px)px;
   gap: 24px;
   border-radius: 8px 0px 0px 0px;
-  opacity: 0px;
+  /* opacity: 0px; */
 
   display: flex;
   flex-direction: column;
@@ -346,7 +346,7 @@ padding: 24px;
 gap: 4px;
 border-radius: 8px;
 border: 1px solid #DAE4F0;
-opacity: 0px;
+/* opacity: 0px; */
 background: #EBF4FF;
 color: #66B0F0;
 }

@@ -1,15 +1,17 @@
 # Node.js and React
 /frontend/node_modules/
 /frontend/build/
+iRecurit_App/staticfiles/
+
 
 # Django
-/backend/.venv/
-/backend/.env/
-/backend/env/
-/backend/venv/
-/backend/db.sqlite3  # If you are using SQLite for local development
-/backend/staticfiles/
-backend/media/
+/iRecurit_App/.venv/
+/iRecurit_App/.env/
+/iRecurit_App/env/
+/iRecurit_App/venv/
+/iRecurit_App/db.sqlite3  # If you are using SQLite for local development
+/iRecurit_App/staticfiles/
+iRecurit_App/media/
 
 
 # Python specific
