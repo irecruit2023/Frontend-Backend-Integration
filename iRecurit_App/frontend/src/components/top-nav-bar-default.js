@@ -47,7 +47,7 @@ const TopNavBarDefault = ({ className = "" }) => {
               <div className={styles.loginSignUpWrapper}>
                 <a className={styles.loginSign}>
                   <span onClick={() => navigate('/login')}>Login</span>
-                  |
+                  <span style={{ margin: '0 10px' }}>|</span>
                   <span onClick={() => navigate('/signup')}>Sign up</span>
                 </a>
               </div>
