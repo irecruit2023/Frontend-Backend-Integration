@@ -1,4 +1,5 @@
 import uuid
+import re
 from rest_framework import serializers
 from .models import *
 import gridfs
@@ -61,6 +62,18 @@ class UserSerializer(serializers.Serializer):
         # Validate password requirements (e.g., minimum length)
         if len(password) < 8:
             raise serializers.ValidationError('PASSWORD_MUST_BE_OF_8_CHARACTERS')
+        
+        if len(password) > 16:
+            raise serializers.ValidationError('PASSWORD_MUST_NOT_EXCEED_16_CHARACTERS')
+        
+        if not re.search(r'\d', password):
+            raise serializers.ValidationError('PASSWORD_MUST_CONTAIN_AT_LEAST_ONE_NUMBER')
+        
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+            raise serializers.ValidationError('PASSWORD_MUST_CONTAIN_AT_LEAST_ONE_SPECIAL_CHARACTER')
+
+        if not re.search(r'[A-Z]', password):
+            raise serializers.ValidationError('PASSWORD_MUST_CONTAIN_AT_LEAST_ONE_UPPERCASE_LETTER')
 
         return data
     
