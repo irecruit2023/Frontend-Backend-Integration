@@ -9,6 +9,8 @@ import SignUp from "./pages/signUp";
 import SignUpMessage from "./pages/signUpMessage";
 import Main from "./pages/main";
 import Profile from "./pages/profile-creation-page";
+import EmailActivation from "./pages/activation";
+import EmailExpiredMessage from "./pages/email-expired-message";
 
 function App() {
   const action = useNavigationType();
@@ -31,6 +33,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/main" element={<Main/>} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/activate" element={<EmailActivation/>} />
+        <Route path="/expired" element={<EmailExpiredMessage/>} />
       </Routes>
       <ToastContainer />
     </>
