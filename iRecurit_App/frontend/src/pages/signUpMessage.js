@@ -1,4 +1,5 @@
 import styles from "./signUpMessage.module.css";
+import { useNavigate } from 'react-router-dom';
 import { ReactComponent as  Loading } from "../assets/icons/loading.svg";
 import { ReactComponent as  Icon } from "../assets/icons/symbol1.svg";
 import { ReactComponent as  IconI } from "../assets/icons/vector.svg";
@@ -11,6 +12,15 @@ import { ReactComponent as  IconI2 } from "../assets/icons/vector-61.svg";
 import { ReactComponent as  IcontT } from "../assets/icons/vector-71.svg";
 
 const signUpMessage = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate('/login'); // Replace with your login page route
+    }, 240000); // 240000 ms = 240 sec
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, [navigate]);
+
   const openGmail = () => {
     window.open('https://mail.google.com', '_blank');
   };
