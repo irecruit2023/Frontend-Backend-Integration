@@ -135,23 +135,23 @@ def verify_email(request, uidb64, token):
             # Check if the token has expired (5 minutes)
             if (current_time - registration_time).total_seconds() > 19950:
                 logger.info(f"Token expired. Difference in seconds: {(current_time - registration_time).total_seconds()}")
-                return redirect('https://irecruit-u.com/register?error=TOKEN_EXPIRED')
+                return redirect('https://irecruit-u.com/expired')
 
             # Email verification logic
             if not user.is_email_verified:
                 user.is_email_verified = True
                 user.save()
                 logger.info("Email verified successfully.")
-                return redirect('https://irecruit-u.com/login')
+                return redirect('https://irecruit-u.com/activate')
             else:
                 logger.info("Email already verified.")
-                return redirect('https://irecruit-u.com/login')
+                return redirect('https://irecruit-u.com/activate')
         else:
             logger.info("Token validation failed.")
-            return redirect('https://irecruit-u.com/register?error=INVALID_TOKEN')
+            return redirect('https://irecruit-u.com/expired')
     else:
-        return redirect('https://irecruit-u.com/register?error=INVALID_TOKEN')
-
+        return redirect('https://irecruit-u.com/expired')
+    
 @api_view(['POST'])
 @csrf_exempt
 def login_view(request):
