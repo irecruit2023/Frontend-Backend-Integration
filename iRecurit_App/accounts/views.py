@@ -152,6 +152,63 @@ def verify_email(request, uidb64, token):
     else:
         return redirect('https://irecruit-u.com/expired')
     
+    
+@api_view(['GET'])
+def resend_verification_email(request):
+    try:
+        #getting the email from frontend
+        email = request.GET.get('email')
+        
+        if not email:
+            response = {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": 'EMAIL_REQUIRED'
+        }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        
+        #getting candidate 
+        user = User.objects.get(candidate_email=email)
+        
+        if user.is_email_verified:
+            response = {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": 'EMAIL_ALREADY_VERIFIED'
+        }
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+        user.registration_time = timezone.now()
+        user.save()
+
+        # Resend verification email
+        send_confirmation_email(user, request)
+        
+        response = {
+            "status_code": status.HTTP_200_OK,
+            "success": True,
+            "message": 'EMAIL_SENT_SUCCESSFULLY'
+        }
+        
+        return Response(response, status=status.HTTP_200_OK)
+    
+    except User.DoesNotExist:
+        response = {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": 'USER_NOT_FOUND'
+        }
+        return Response(response, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        response = {
+            "status_code": status.HTTP_400_BAD_REQUEST,
+            "success": False,
+            "message": str(e)
+        }
+        return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
 @api_view(['POST'])
 @csrf_exempt
 def login_view(request):
