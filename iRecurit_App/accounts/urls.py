@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/signup/', signup_view),
     path('api/verify-email/<uidb64>/<token>/', verify_email, name='verify_email'),
     path('api/resend_verification_email/', resend_verification_email, name='resend_verification_email'),
+    path('api/Check_Confirmation/', Check_Confirmation.as_view(), name = 'Check_Confirmation'),
     # path('api/test/', ExampleAPIView.as_view()),
     path('api/verify/', VerifyUser.as_view()),
     path('api/refresh_token/', refresh_token_view, name='refresh-token'),

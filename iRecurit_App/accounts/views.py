@@ -202,7 +202,7 @@ def resend_verification_email(request):
 
     except Exception as e:
         response = {
-            "status_code": status.HTTP_400_BAD_REQUEST,
+            "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR,
             "success": False,
             "message": str(e)
         }
@@ -383,6 +383,57 @@ class UploadResume(APIView):
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
             #return HttpResponse(error_messages, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
         
+        
+class Check_Confirmation(APIView):
+    def get(self, request):
+        try: 
+            email = request.GET.get('email')
+            
+            if not email:
+                response={
+                    "status_code": status.HTTP_400_BAD_REQUEST,
+                    "success": False,
+                    "message": "EMAIL_REQUIRED"
+                }
+                
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            
+            user = User.objects.get(candidate_email = email)
+            
+            if user.is_email_verified:
+                response = {
+                    "status_code": status.HTTP_200_OK,
+                    "success": True,
+                    "data": user.candidate_email,
+                    "message": "EMAIL_VERIFIED"
+                }
+                
+                return Response(response, status=status.HTTP_200_OK)
+            
+            else:
+                response={
+                    "status_code": status.HTTP_400_BAD_REQUEST,
+                    "success": False,
+                    "message": "EMAIL_NOT_VERIFIED"
+                }
+                
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            
+        except User.DoesNotExist:
+            response={
+                    "status_code": status.HTTP_400_BAD_REQUEST,
+                    "success": False,
+                    "message": "USER_NOT_FOUND"
+            }
+            return Response(response, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            response={
+                    "status_code": status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    "success": False,
+                    "message": str(e)
+            }
+            return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 class Generate_Profile(APIView):
     authentication_classes = [JWTAuthentication]
