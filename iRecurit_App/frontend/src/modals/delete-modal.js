@@ -4,7 +4,7 @@ import styles from "./delete-modal.module.css";
 import { useState, useEffect } from "react";
 import Confirmation from "./delete-confirmation";
 
-const DeleteModal = ({ className = "", isOpen, onClose, selectedItem }) => {
+const DeleteModal = ({ className = "", isOpen, onClose, selectedItem, onDelete }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   // When the confirmation is shown, set a timer to automatically close the modal after 3 seconds
@@ -21,6 +21,7 @@ const DeleteModal = ({ className = "", isOpen, onClose, selectedItem }) => {
   if (!isOpen) return null;
 
   const handleDeleteClick = () => {
+    onDelete()
     setShowConfirmation(true); // Show confirmation when delete is clicked
   };
 
@@ -73,7 +74,7 @@ const DeleteModal = ({ className = "", isOpen, onClose, selectedItem }) => {
               <div className={styles.secondaryButton} onClick={onClose}>
                 <div className={styles.secondary}>Cancel</div>
               </div>
-              <div onClick={handleDeleteClick}>
+              <div  style ={{cursor:'pointer'}}onClick={handleDeleteClick}>
                 <PrimaryButton
                   propPadding="7.5px 57px"
                   propAlignSelf="unset"

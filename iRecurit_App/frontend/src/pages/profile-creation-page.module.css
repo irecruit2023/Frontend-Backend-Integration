@@ -1004,15 +1004,16 @@
   flex-direction: column;
   align-items: flex-start;
   min-width: 293px;
+  max-width: 381px;
 }
 .caseStudyContainerParent,
 .certificationsContentParent,
 .skillsAndButton,
 .skillsExpertise {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   gap: var(--gap-5xl);
-  max-width: 100%;
+  /* max-width: 100%; */
 }
 .certificationsContentParent {
   align-self: stretch;

@@ -29,10 +29,10 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signUp" element={<SignUp/>} />
-        <Route path="/signUpMessage" element={<SignUpMessage/>} />
         <Route path="/home" element={<Home />} />
         <Route path="/main" element={<Main/>} />
         <Route path="/profile" element={<Profile/>} />
+        <Route path="/signUpMessage" element={<SignUpMessage/>} />
         <Route path="/activate" element={<EmailActivation/>} />
         <Route path="/expired" element={<EmailExpiredMessage/>} />
       </Routes>
