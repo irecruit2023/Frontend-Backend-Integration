@@ -263,6 +263,66 @@ export const skillAnalysisData = async () => {
 
 
 
+export const checkEmailConfirmation = async (email) => {
+  try {
+    // Make the API request for email confirmation
+    const response = await fetch(`/api/Check_Confirmation/?email=${email}`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Check if the response is OK (status 200-299)
+    if (!response.ok) {
+      const errorData = await response.json(); // Extract the error details
+      throw new Error(`Failed to fetch email confirmation: ${errorData.message}`);
+    }
+
+    // Parse and return the response data
+    const data = await response.json();
+    console.log("Email Confirmation Data:", data);  // Log the data for verification
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching email confirmation:", error);
+    return null;  // Return null in case of an error
+  }
+};
+
+
+
+
+export const resendVerificationEmail= async (email) => {
+  try {
+    // Make the API request for email confirmation
+    const response = await fetch(`/api/resend_verification_email/?email=${email}`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    // Check if the response is OK (status 200-299)
+    if (!response.ok) {
+      const errorData = await response.json(); // Extract the error details
+      throw new Error(`Failed to fetch email confirmation: ${errorData.message}`);
+    }
+
+    // Parse and return the response data
+    const data = await response.json();
+    console.log("Email Confirmation Data:", data);  // Log the data for verification
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching email confirmation:", error);
+    return null;  // Return null in case of an error
+  }
+};
+
+
+
+
 
 
 
