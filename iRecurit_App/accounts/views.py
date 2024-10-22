@@ -2,7 +2,8 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.shortcuts import render
 from .models import *
-import random
+import random, io
+from PyPDF2 import PdfReader
 from django.utils.timezone import make_aware
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
@@ -28,13 +29,23 @@ from .tasks import JobScheduler, start_job_scheduler
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 import logging
-import os
+import os, json
 from django.shortcuts import redirect
 from datetime import datetime, timedelta
 from datetime import timedelta, datetime
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
+from collections import defaultdict
+from bson import ObjectId
+from gridfs import GridFS
+import PyPDF2
+import re,io
+import os
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+import base64
 
 
 logging.basicConfig(
@@ -337,25 +348,25 @@ scheduler = JobScheduler()
 class UploadResume(APIView):
     parser_classes = [MultiPartParser, FormParser]
     authentication_classes = [JWTAuthentication] 
-    #permission_classes  = [IsAuthenticated]
-    
+    # permission_classes  = [IsAuthenticated]  # Uncomment if you want to require authentication
+
     def post(self, request, *args, **kwargs):
         user = request.user
         user_id = str(user.candidate_id)
-        
+
         existing_resume = Resume.objects.filter(candidate=user_id).first()
-        
+
         if existing_resume:
             serializer = ResumeSerializer(existing_resume, data=request.data, context={'user_id': user_id})
         else:
             serializer = ResumeSerializer(data=request.data, context={'user_id': user_id})
-            
+
         if serializer.is_valid():
             resume = serializer.save()
-            
+
             # Celery task
             # process_resume.delay(str(resume.id))  
-            
+
             response = {
                 "status_code": status.HTTP_200_OK,
                 "success": True,
@@ -364,24 +375,21 @@ class UploadResume(APIView):
             }
             return Response(response, status=status.HTTP_200_OK)
         else:
-        # Custom error handling
+            # Custom error handling
             error_messages = []
             for field, errors in serializer.errors.items():
                 error_messages.extend(errors)
-        # Join all error messages into a single string
+            # Join all error messages into a single string
             error_message = ' '.join(error_messages)
-        
-        
-        
+
             response = {
                 "status_code": status.HTTP_400_BAD_REQUEST,
                 "success": False,
                 "data": None,
                 "message": error_message
             }
-        
+
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
-            #return HttpResponse(error_messages, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
         
         
 class Check_Confirmation(APIView):
@@ -725,3 +733,292 @@ class Chart_Data_API(APIView):
         }
         
         return Response(data)
+    
+load_dotenv()
+
+# Get the OpenAI API key from environment variables
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    raise ValueError("OpenAI API key not found. Please set it in your .env file.")
+
+# Initialize the LLM model using Langchain
+llm = ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key)
+
+class Collate(APIView):
+    authentication_classes = [JWTAuthentication]
+
+
+
+    # Function to extract text from a PDF
+    def extract_text_from_pdf(self, pdf_binary):
+        try:
+            reader = PdfReader(io.BytesIO(pdf_binary))  # Using BytesIO to handle binary content
+            text = ''
+            for page in reader.pages:
+                text += page.extract_text() or ""  # Safeguard against None
+            return text.strip() if text.strip() else None  # Return None if text is empty
+        except Exception as e:
+            logging.error(f"Error reading PDF: {e}")
+            return None
+
+    # Function to extract the experience section from the resume text
+    def extract_experience_section(self, text):
+        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE)\b', text, re.IGNORECASE)
+
+        if not match:
+            return None  # Return None if the "experience" section is not found
+
+        start = match.start()
+        experience_section = text[start:]
+
+        # Stop extraction at the next major section
+        section_end = re.search(r'\b(CERTIFICATES|CERTIFICATIONS|TECHNICAL SKILLS|ACHIEVEMENTS|EDUCATION)\b', experience_section, re.IGNORECASE)
+        if section_end:
+            experience_section = experience_section[:section_end.start()]
+
+        return experience_section.strip()
+
+    # Function to extract skills from the experience section using the LLM
+    def extract_experience_skills(self, experience_text):
+        if not experience_text:
+            return {"error": "No experience section found in the resume."}
+
+        try:
+            # Define the prompt using Langchain's prompt template
+            prompt = ChatPromptTemplate.from_template(
+                '''
+                Extract the following information from the experience section in JSON format with consistent structure, regardless of the content. Ensure the following keys are always present:
+
+                - "total_years_of_experience": Overall experience that a candidate is having in their career.
+                - "projects": A list of projects. Each project should have:
+                    - "project_name": Name of the project.
+                    - "JobRole": Role in the project.
+                    - "framework": The framework(s) used (e.g., React, Django). Default to "N/A" if not applicable.
+                    - "programming_language": The programming language(s) used (e.g., Python, C++). Default to "N/A" if not applicable.
+                    - "tools": The tools used (e.g., Git, Docker). Default to "N/A" if not applicable.
+                    - "database": The database used, if any. Default to "N/A" if not applicable.
+                    - "cloud_technology": Cloud technology used, if any. Default to "N/A" if not applicable.
+                    - "time": Time spent on the project in months. (only numbers in months)
+
+                Ensure the JSON structure is maintained even if some fields are missing.
+
+                Here is the experience section:
+                {experience_text}
+                '''
+            )
+
+            # Format the prompt with the provided experience text
+            formatted_prompt = prompt.format(experience_text=experience_text)
+
+            # Call the LLM using the new method (invoke)
+            response = llm.invoke(formatted_prompt)  # Use 'invoke' instead of __call__
+
+            # Get the content from the response
+            return response.content  # Extract the actual message content
+
+        except Exception as e:
+            logging.error(f"Error during LLM call: {e}")
+            return {"error": f"Error during LLM call: {e}"}
+
+    def valid_value(self, value):
+            return value and value != "N/A" and value != "Not specified"
+        
+    # Function to collate experience data
+    def collate_experience_data(self, user_id):
+            final_json = {
+                "JobRoles": [],
+                "Frameworks": defaultdict(int),
+                "ProgrammingLanguages": defaultdict(int),
+                "Tools": defaultdict(int),
+                "CloudTechnologies": defaultdict(int),
+                # "TimeSpent": [],
+                "TotalYearsOfExperience": 0
+            }
+
+            try:
+                # Retrieve the resume, user from MongoDB using user_id
+                resume = Resume.objects.get(candidate=user_id)
+                user = User.objects.get(candidate_id=user_id)
+
+                # Connect to MongoDB and GridFS to read the file
+                client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+                db = client[settings.DATABASES['default']['NAME']]
+                fs = gridfs.GridFS(db)
+
+                try:
+                    # Retrieve the binary data from GridFS
+                    pdf_binary = fs.get(ObjectId(resume.file)).read()  # Convert string ID to ObjectId
+                except Exception as e:
+                    logging.error(f"Error retrieving PDF from GridFS: {e}")
+                    return {"error": "Failed to retrieve the resume file."}
+
+                # Extract text from the PDF
+                extracted_text = self.extract_text_from_pdf(pdf_binary)
+
+                if not extracted_text:
+                    return {"error": "Failed to extract text from the PDF."}
+
+                # Extract the experience section from the resume
+                experience_section = self.extract_experience_section(extracted_text)
+
+                # Extract the skills as JSON using the LLM
+                skills_json = self.extract_experience_skills(experience_section)
+
+                # Process the LLM response
+                response_content = skills_json  # Assume this is the response from your LLM extraction method
+
+                # Log the LLM response for debugging
+                logging.info(f"LLM Response Content: {response_content}")
+
+                # Attempt to parse the JSON content
+                try:
+                    if response_content.startswith("```json"):
+                        response_content = response_content[8:].strip("```").strip()  # Remove the code block markers
+
+                    # Attempt to load the JSON
+                    data = json.loads(response_content)
+                except json.JSONDecodeError:
+                    logging.error("Error: Unable to parse skills JSON from the LLM output.")
+                    return {"error": "Invalid JSON format in the skills data."}
+
+                # Check if data is valid
+                if not isinstance(data, dict):
+                    return {"error": "Invalid skills data."}
+
+                # Collate data and sum times for each skill
+                total_time_spent_months = 0
+                for entry in data.get("projects", []):
+                    time_spent = entry.get("time", 0)
+                    total_time_spent_months += time_spent
+
+                    # If job roles are included in the entry, uncomment the following lines:
+                    if self.valid_value(entry.get("JobRole")) and self.valid_value(entry.get("project_name")):
+                        project_name = entry.get("project_name")
+                        job_role = entry.get("JobRole")
+                        final_json["JobRoles"].append(f"{project_name} - {job_role} - {time_spent} months")
+                        
+                    # Process Frameworks
+                    if self.valid_value(entry.get("framework")):
+                        framework = [lang.strip() for lang in entry["framework"].split(",")]
+                        for language in framework:
+                            final_json["Frameworks"][language] += time_spent
+                            
+                            
+                    # Process programming languages
+                    if self.valid_value(entry.get("programming_language")):
+                        programming_languages = [lang.strip() for lang in entry["programming_language"].split(",")]
+                        for language in programming_languages:
+                            final_json["ProgrammingLanguages"][language] += time_spent
+
+                    # Process tools
+                    if self.valid_value(entry.get("tools")):
+                        tools = [tool.strip() for tool in entry["tools"].split(",")]
+                        for tool in tools:
+                            final_json["Tools"][tool] += time_spent
+
+                    # Process cloud technologies
+                    if self.valid_value(entry.get("cloud_technology")):
+                        cloud_techs = [cloud.strip() for cloud in entry["cloud_technology"].split(",")]
+                        for cloud in cloud_techs:
+                            final_json["CloudTechnologies"][cloud] += time_spent
+
+                    # # Append the project name and time spent for output
+                    # if self.valid_value(entry.get("project_name")):
+                    #     final_json["TimeSpent"].append(f"{entry['project_name']} for {entry['time']} months")
+
+                # Convert defaultdict to dict for final output
+                final_json["Frameworks"] = dict(final_json["Frameworks"])
+                final_json["ProgrammingLanguages"] = dict(final_json["ProgrammingLanguages"])
+                final_json["Tools"] = dict(final_json["Tools"])
+                final_json["CloudTechnologies"] = dict(final_json["CloudTechnologies"])
+                final_json["TotalYearsOfExperience"] = total_time_spent_months // 12  # Convert to years
+
+               # Check if a CandidateSkills entry already exists
+                candidate_skills = CandidateSkills.objects(resume=resume).first()
+
+                if candidate_skills:
+                    # If the entry exists, update it
+                    candidate_skills.job_role = final_json["JobRoles"]
+                    candidate_skills.framework = final_json["Frameworks"]
+                    candidate_skills.programming_languages = final_json["ProgrammingLanguages"]
+                    candidate_skills.tools = final_json["Tools"]
+                    candidate_skills.cloud_technologies = final_json["CloudTechnologies"]
+                    candidate_skills.total_years_of_experience = float(final_json["TotalYearsOfExperience"])
+                    candidate_skills.save()
+                else:
+                    # If no entry exists, create a new one
+                    candidate_skills = CandidateSkills(
+                        candidate_id=user,
+                        resume=resume,
+                        job_role=final_json["JobRoles"],
+                        framework=final_json["Frameworks"],
+                        programming_languages=final_json["ProgrammingLanguages"],
+                        tools=final_json["Tools"],
+                        cloud_technologies=final_json["CloudTechnologies"],
+                        total_years_of_experience=float(final_json["TotalYearsOfExperience"]),
+                    )
+                    candidate_skills.save()
+
+                    
+                return final_json
+
+            except Resume.DoesNotExist:
+                return Response({"error": "Resume not found."}, status=status.HTTP_404_NOT_FOUND)
+            except Exception as e:
+                logging.error(f"Error in collate_experience_data: {e}", exc_info=True)
+                return {"error": f"Internal Server Error: {e}"}
+
+    def post(self, request, user_id):
+        # Process the experience for the given user_id
+        skills_json = self.collate_experience_data(user_id)
+
+        # Return a JSON response
+        return Response({
+            'status': status.HTTP_201_CREATED,
+            'success': True,
+            'data': skills_json,
+            'message': 'created & saved the skill json'
+        }, status=status.HTTP_201_CREATED)
+    
+    
+    
+def get_top_skills(user_id):
+    # Fetch the candidate profile data from MongoDB
+    candidate_profile = CandidateSkills.objects(candidate_id=user_id).first()
+    
+    if not candidate_profile:
+        return None  # or raise an error if needed
+
+    # Combine all the skills from different categories into one dictionary
+    skills = defaultdict(int)
+    skills.update(candidate_profile.cloud_technologies)
+    skills.update(candidate_profile.programming_languages)
+    skills.update(candidate_profile.framework)
+    skills.update(candidate_profile.tools)
+    
+
+    # Sort the skills by their values in descending order and pick the top 5
+    sorted_skills = sorted(skills.items(), key=lambda x: x[1], reverse=True)[:5]
+
+    # Return the top 5 skills
+    top_skills = [skill for skill, value in sorted_skills]
+    return top_skills
+
+@api_view(['GET'])
+def top_skills_view(request, user_id):
+    # Call the function to get the top 5 skills for the given candidate
+    top_skills = get_top_skills(user_id)
+    
+    if top_skills:
+        return Response({
+            'status': status.HTTP_201_CREATED,
+            'success': True,
+            'data': top_skills,
+            'message': 'created top skill json'
+        }, status=status.HTTP_201_CREATED)
+    else:
+        return Response({
+            'status': status.HTTP_404_NOT_FOUND,
+            'success': False,
+            'message': 'candidate not found'
+        }, status=status.HTTP_404_NOT_FOUND)

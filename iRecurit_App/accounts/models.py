@@ -1,6 +1,6 @@
 import uuid
 from django.contrib.auth.models import AbstractUser
-from mongoengine import Document, StringField, EmailField, ReferenceField, UUIDField, BooleanField, DateTimeField, ReferenceField, FileField, IntField, BinaryField
+from mongoengine import Document, StringField, EmailField, ReferenceField, UUIDField, BooleanField, DateTimeField, ReferenceField, FileField, IntField, BinaryField, ListField, DictField,FloatField
 from django.db import models 
 import connection
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -66,3 +66,17 @@ class ProfilePicture(Document):
     picture_name = StringField()
     
     meta = {'collection': 'candidate_picture'}
+    
+class CandidateSkills(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    resume = ReferenceField(Resume)
+    candidate_id = ReferenceField(User)
+    job_role = ListField(StringField())
+    framework = DictField()
+    programming_languages = DictField()
+    tools = DictField()
+    cloud_technologies = DictField()
+    # time_spent = DictField()
+    total_years_of_experience = FloatField()
+    
+    meta = {'collection': 'candidate_skills'}

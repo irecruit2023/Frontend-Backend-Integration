@@ -18,6 +18,7 @@ from email.mime.text import MIMEText
 import smtplib, time, pymongo, asyncio, threading, uuid, heapq, requests, gridfs, logging
 from rest_framework import status
 from bson import ObjectId
+import json
 
 #from datetime import datetime
 
@@ -177,6 +178,9 @@ class JobScheduler:
                 job = self.queue[0]    ## getting first job of the queue 
                 time_remaining = job.get_time_remaining()  
                 
+                # print(f"Triggered processing for job {job.id}")
+                # collate_skills.delay(job.resume_id)
+                
                 while time_remaining <= 0:
                     jobs_data = collection.find_one({'_id':job.id})
                     #if job.id in jobs_data and jobs_data[job.id]['status'] == 'completed':
@@ -189,8 +193,7 @@ class JobScheduler:
                             break
                         continue
                     
-                    # print(f"Triggered processing for job {job.id}")
-                    # process_resume.delay(job.resume_id)
+                    
                 
                     job.processed_interval += 1
                     if job.processed_interval >= job.max_intervals:
@@ -291,139 +294,3 @@ def remove_bg(user_id):
         logger.error(f"An error occurred: {str(e)}")
         
 
-
-# @shared_task
-# def process_resume(user_id):
-#     print("Executing process_resume directly...")
-
-#     # Connect to MongoDB
-#     client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
-#     db = client[settings.DATABASES['default']['NAME']]
-
-#     # Access the collection where resumes are stored
-#     resume_collection = db['candidate_resume']
-
-#     # Query the document based on the candidate ID
-#     document = resume_collection.find_one({'candidate': user_id}, sort=[('upload_timestamp', pymongo.DESCENDING)])
-
-#     if document is None:
-#         print("Resume not found for the user.")
-#         return
-
-#     # Access the filename and file ID from the document
-#     filename = document.get('filename')
-#     file_id = document.get('file')
-
-#     # Initialize GridFS and retrieve the resume file (PDF in this case)
-#     fs = gridfs.GridFS(db)
-#     resume_file = fs.get(ObjectId(file_id))
-
-#     # Read the PDF content
-#     pdf_content = resume_file.read()
-
-#     # Wrap the PDF bytes in a BytesIO object to mimic a file-like object
-#     pdf_stream = BytesIO(pdf_content)
-
-#     # Use PyPDF2 to extract text from the PDF
-#     try:
-#         pdf_reader = PyPDF2.PdfReader(pdf_stream)
-#         document_text = ""
-#         for page_num in range(len(pdf_reader.pages)):
-#             page = pdf_reader.pages[page_num]
-#             document_text += page.extract_text()
-
-#         if not document_text:
-#             print("No text found in the PDF.")
-#             return {"error": "NO_TEXT_FOUND_IN_PDF"}
-#     except Exception as e:
-#         print(f"Error processing PDF: {str(e)}")
-#         return {"error": "PDF_PROCESSING_ERROR", "details": str(e)}
-
-#     # Create a query for AI processing
-#     query_text = {
-#     "Please extract and categorize the following information from the resume:\n"
-#     "1. Latest education\n"
-#     "2. Key skills\n"
-#     "3. Achievements\n"
-#     "4. Technologies used\n"
-#     "5. Certificates\n"
-#     "6. Internship or job experience\n\n"
-#     "Organize the extracted information into these categories:\n"
-#     "- Programming Languages\n"
-#     "- Frameworks\n"
-#     "- Databases\n"
-#     "- Cloud Technologies\n"
-#     "- Experience\n"
-#     "- Certificates\n"
-#     "- Achievements\n"
-#     "If any category is not provided, use 'NULL'.\n\n"
-#     "Resume content:\n"
-#     f"{document_text}" }
-    
-
-
-#     # Call the AI engine (using OpenAI in this case)
-#     
-
-#     # Print the AI engine's response to the console
-#     print(f"AI Engine Response: {response}")
-
-#     return response
-
-
-
-def profile_creation(data, user_id):
-    data_dict = json.loads(data)
-    try:
-        personal_profile = data_dict.get("personal_profile", {})
-        candidate_profile = CandidateProfile.objects.create(
-            user=user_id,
-            email=personal_profile.get("email", ""),
-            phone_number=personal_profile.get("phone_number", ""),
-            country=personal_profile.get("country", ""),
-            state=personal_profile.get("state", ""),
-            city=personal_profile.get("city", ""),
-            pincode=personal_profile.get("pincode", ""),
-            languages_spoken=personal_profile.get("languages_spoken", ""),
-            hobbies=personal_profile.get("hobbies", "")
-        )
-        education_profiles = [data_dict[key] for key in data_dict if key.startswith("Education")]
-        for education_profile in education_profiles:
-            Education.objects.create(
-                user=user_id,
-                degree=education_profile.get('degree', ""),
-                institution=education_profile.get('institution', ""),
-                graduation_from=education_profile.get('graduation_from', ""),
-                graduation_till=education_profile.get('graduation_till', ""),
-                cgpa=education_profile.get('cgpa', "")
-            )
-        skill_profiles = [data_dict[key] for key in data_dict if key.startswith("skill")]
-        for skill_profile in skill_profiles:
-            CandidateSkill.objects.create(
-                user=user_id,
-                skill=skill_profile.get("skill", ""),
-                mastery_level=skill_profile.get("mastery_level", 0)
-            )
-        reference_profiles = [data_dict[key] for key in data_dict if key.startswith("reference")]
-        for reference_profile in reference_profiles:
-            Reference.objects.create(
-                user=user_id,
-                reference_name=reference_profile.get("reference_name", ""),
-                reference_contact=reference_profile.get("reference_contact", 0)
-            )
-        work_profiles = [data_dict[key] for key in data_dict if key.startswith("work_exp")]
-        for work_profile in work_profiles:
-            WorkExperience.objects.create(
-                user=user_id,
-                role=work_profile.get("role", ""),
-                description=work_profile.get("description", ""),
-                company_name=work_profile.get("company_name", ""),
-                work_mode=work_profile.get("work_mode", ""),
-                current_ctc=work_profile.get("current_ctc", 0)
-            )
-
-        instance = CustomUser.objects.filter(id=user_id).update(is_profile_created=True)
-        return True
-    except Exception as e:
-        print(e)
-        return False

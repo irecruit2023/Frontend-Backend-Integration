@@ -11,6 +11,7 @@ import pymongo
 from bson import Binary
 from mongoengine.errors import NotUniqueError
 from rest_framework import status
+from bson.objectid import ObjectId
 #from .helpers import generate_confirmation_token
 
 # serializers.py
@@ -106,27 +107,28 @@ class ResumeSerializer(serializers.Serializer):
     def create(self, validated_data):
         user_id = self.context['user_id']
         candidate = User.objects.get(candidate_id=user_id)
-        
+
         file_data = validated_data.pop('file')  # Remove 'file' from validated_data
 
         if not file_data.content_type.startswith('application/pdf'):
             raise serializers.ValidationError({
                 'Status_code': status.HTTP_400_BAD_REQUEST,
                 'Success': False,
-                'data':None,
+                'data': None,
                 'message': 'PDF_FILES_ONLY'
-                })
-        
+            })
+
         # Generate filename
         filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
 
         # Connect to MongoDB and GridFS
-        client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+        client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
         db = client[settings.DATABASES['default']['NAME']]
         fs = gridfs.GridFS(db)
 
-        # Read file content and save to GridFS
-        file_id = fs.put(file_data.read(), filename=filename, content_type=file_data.content_type)
+        # Read file content and save to GridFS as bytes
+        file_data_bytes = file_data.read()  # This should return bytes
+        file_id = fs.put(file_data_bytes, filename=filename, content_type=file_data.content_type)
 
         # Create the Resume object with the user and file data
         resume = Resume(
@@ -142,28 +144,33 @@ class ResumeSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         user_id = self.context['user_id']
         candidate = User.objects.get(candidate_id=user_id)
-        
+
         file_data = validated_data.pop('file')
 
         if not file_data.content_type.startswith('application/pdf'):
             raise serializers.ValidationError({
                 'Status_code': status.HTTP_400_BAD_REQUEST,
                 'Success': False,
-                'data':None,
+                'data': None,
                 'message': 'PDF_FILES_ONLY'
-                })
-        
+            })
+
         filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
 
-        client = pymongo.MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+        client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
         db = client[settings.DATABASES['default']['NAME']]
         fs = gridfs.GridFS(db)
 
         # Delete the old file from GridFS
-        fs.delete(id(instance.file))
+        try:
+            # Ensure we convert the string ID to ObjectId for deletion
+            fs.delete(ObjectId(instance.file))  # Convert string ID to ObjectId
+        except gridfs.NoFile:
+            pass  # Handle the case where the file does not exist
 
         # Save the new file to GridFS
-        file_id = fs.put(file_data.read(), filename=filename, content_type=file_data.content_type)
+        file_data_bytes = file_data.read()  # Ensure we get bytes here
+        file_id = fs.put(file_data_bytes, filename=filename, content_type=file_data.content_type)
 
         # Update the instance with the new file details
         instance.file = str(file_id)

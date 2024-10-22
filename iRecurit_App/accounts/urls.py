@@ -15,7 +15,8 @@ urlpatterns = [
     path('api/verify/', VerifyUser.as_view()),
     path('api/refresh_token/', refresh_token_view, name='refresh-token'),
     path('api/upload_resume/', UploadResume.as_view()),
-    path('api/generate_profile/', Generate_Profile.as_view(), name='Generate_Profile'),
+    path('api/generate_profile/<str:user_id>/', Collate.as_view(), name='Generate_Profile'),
+    path('api/top_skills/<str:user_id>/', top_skills_view, name='top_skills'),
     path('api/get_resume/<str:user_id>/', GetResume.as_view(), name='get_resume'),
     path('api/jobstatus/', UpdateJobStatus.as_view(), name='update_job_status'),
     path('api/upload_profile_picture/', Upload_profile_picture.as_view(), name='Upload_profile_picture'),
@@ -25,4 +26,5 @@ urlpatterns = [
     path('index/', views.index_html, name='index_html'),
     re_path(r'^$', index_view, name='index'),  # Root URL
     re_path(r'^.*$', index_view, name='catch-all'),  # Catch-all for any other path
+    
 ]
