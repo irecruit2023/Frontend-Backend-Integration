@@ -1,7 +1,7 @@
 // import FrameComponent3 from "../components/frame-component3";
 // import PrimaryButton from "../components/primary-button1";
 import styles from "./profile-creation-page.module.css";
-import { useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 import cIcon from '../assets/images/c@2x.png';
 import javascriptIcon from '../assets/images/javascript@2x.png';
@@ -25,7 +25,7 @@ import DeleteModal from "../modals/delete-modal";
 import CertificationModal from "../modals/certification-modal";
 import CaseStudyUpload from "../modals/case-study-modal";
 import Achievement from "../modals/achievement-modal";
-
+import { getTopSkills } from "../utils/util";
 
 const ProfileCreationPage = () => {
 
@@ -38,6 +38,7 @@ const ProfileCreationPage = () => {
   const [selectedItem, setSelectedItem] = useState('');
   const [isAchievementCardVisible, setAchievementCardVisible] = useState(true); // To show/hide achievement card
   const [isCertificationCardVisible, setCertificationCardVisible] = useState(true); // To show/hide certification card
+  const [skills, setSkills] = useState([]);
 
   // Function to handle the deletion of the achievement card
   const handleDeleteAchievement = () => {
@@ -88,6 +89,25 @@ const ProfileCreationPage = () => {
       });
     }
   };
+
+  useEffect(() => {
+    // Fetch top 5 skills from the API
+    console.log("calles")
+    const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
+    const fetchTopSkills = async () => {
+      try {
+        const response = await getTopSkills(userId); // Assume getTop5Skills() is defined elsewhere
+        if (response && response.success && response.data) {
+          setSkills(response.data); // Update state with the skills array
+        }
+      } catch (error) {
+        console.error('Failed to fetch skills:', error);
+      }
+    };
+
+    fetchTopSkills();
+  }, []);
+
 
   return (
     <div className={styles.profileCreationPage}>
@@ -238,16 +258,11 @@ const ProfileCreationPage = () => {
                         className={styles.webDevelopmentObjectOrienteContainer}
                       >
                         <ul className={styles.webDevelopmentObjectOriente}>
-                          <li className={styles.webDevelopment}>
-                            Web Development
-                          </li>
-                          <li className={styles.webDevelopment}>
-                            Object-Oriented Programming (OOP)
-                          </li>
-                          <li className={styles.webDevelopment}>
-                            Database Management
-                          </li>
-                          <li>{`Algorithms & Data Structures`}</li>
+                          {skills.map((skill, index) => (
+                            <li key={index} className={styles.webDevelopment}>
+                              {skill}
+                            </li>
+                          ))}
                         </ul>
                       </div>
                     </div>

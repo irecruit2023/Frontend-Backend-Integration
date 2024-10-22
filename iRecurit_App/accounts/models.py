@@ -76,6 +76,7 @@ class CandidateSkills(Document):
     programming_languages = DictField()
     tools = DictField()
     cloud_technologies = DictField()
+    domain =DictField()
     # time_spent = DictField()
     total_years_of_experience = FloatField()
     
