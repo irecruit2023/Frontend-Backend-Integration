@@ -240,7 +240,7 @@ def login_view(request):
                     'access_token': access_token,
                     'refresh_token': refresh_token,
                     'user_id': user.id,
-                    'email':user.candidate_email,
+                    'candidate_email':user.candidate_email,
                     'name':user.candidate_first_name + " " + user.candidate_last_name
                 },
                 "message": "USER_REGISTERED & LOGGED_IN_SUCCESSFULLY"

@@ -23,34 +23,6 @@ const SignUpMessage = () => {
     window.open('https://mail.google.com', '_blank');
   };
 
-  // Function to check email confirmation from the backend
-//   const checkEmailConfirmation = async (email) => {
-//     try {
-//         // Make the request with the email dynamically passed
-//         const response = await fetch(`http://localhost:8000/api/Check_Confirmation/?email=${email}`);
-
-//         // If the response is not OK (i.e., status code not 2xx), throw an error
-//         if (!response.ok) {
-//             const errorData = await response.json();  // Extract the error details
-//             throw new Error(JSON.stringify(errorData)); // Throw an error with the error details
-//         }
-
-//         // If the response is OK, parse the JSON body
-//         const data = await response.json();
-//         console.log("Success:", data);
-
-//     } catch (error) {
-//         // Handle both HTTP errors and network issues
-//         try {
-//             const errorObject = JSON.parse(error.message);  // Parse the error object from the error message
-//             console.error("Error:", errorObject.message);
-//             console.log("Full error data:", errorObject);
-//         } catch (parseError) {
-//             // Handle any parsing errors or network issues
-//             console.error("Failed to parse error message:", error.message);
-//         }
-//     }
-// };
 
 
 
@@ -58,7 +30,7 @@ const SignUpMessage = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setElapsedTime((prevTime) => prevTime + 5); // Increase time by 5 seconds
-      checkEmailConfirmation(JSON.parse(localStorage.getItem('loginInformation'))?.data?.email);
+      checkEmailConfirmation(JSON.parse(localStorage.getItem('loginInformation'))?.data?.candidate_email);
     }, 5000); // Poll every 5 seconds
 
     return () => clearInterval(intervalId); // Cleanup the interval on component unmount
@@ -82,8 +54,8 @@ const SignUpMessage = () => {
     <div className={styles.b}>
       <Loading className={styles.loadingIcon} alt="" />
       <div className={styles.mainContent}>
-        <div className={styles.irecruitLogoBigWrapper}>
-          <div className={styles.irecruitLogoBig}>
+      <div className={styles.irecruitLogoBigWrapper} onClick={() => navigate("/")}>
+        <div className={styles.irecruitLogoBig}>
             <Icon className={styles.symbolIcon} loading="lazy" alt="" />
             <div className={styles.logo}>
               <div className={styles.i}>
@@ -115,7 +87,7 @@ const SignUpMessage = () => {
                 <p className={styles.pleaseGoTo}>Please go to your Gmail account and confirm your account</p>
               </div>
               <div className={styles.description6}>
-                {JSON.parse(localStorage.getItem('loginInformation'))?.data?.email}
+                {JSON.parse(localStorage.getItem('loginInformation'))?.data?.candidate_email }
               </div>
             </div>
             <div className={styles.textLink} onClick={openGmail}>

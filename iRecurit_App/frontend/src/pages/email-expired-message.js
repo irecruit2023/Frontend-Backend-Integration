@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { useNavigate } from 'react-router-dom';
 import styles from "./email-expired.module.css";
 import { ReactComponent as Icon } from "../assets/icons/iRecurit-complete-logo.svg";
@@ -7,14 +7,25 @@ import { resendVerificationEmail } from "../utils/util";
 const EmailExpiredMessage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [resendDisabled, setResendDisabled] = useState(false); // Disable resend
+  const [countdown, setCountdown] = useState(0); // Countdown timer
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0) {
+      setResendDisabled(false); // Re-enable the button when countdown ends
+    }
+  }, [countdown]);
 
   const resendEmail = async () => {
     setLoading(true);
     setMessage(null);
 
     try {
-      const email = JSON.parse(localStorage.getItem('loginInformation'))?.data?.email;
+      const email = JSON.parse(localStorage.getItem('loginInformation'))?.data?.candidate_email;
 
       if (!email) {
         setMessage({ text: "Email not found. Please sign up again.", type: "error" });
@@ -25,13 +36,14 @@ const EmailExpiredMessage = () => {
       const data = await resendVerificationEmail(email);
 
       if (data.success) {
-        navigate('/signupMessage');
-        setMessage({ text: "Activation email has been resent successfully.", type: "success" });
+        setMessage({ text: "Activation email has been resent successfully. Please check your inbox.", type: "success" });
+        setResendDisabled(true); // Disable resend after success
+        setCountdown(30);        // Set 30 seconds countdown
       } else {
         setMessage({ text: data.message || "Failed to resend the activation email.", type: "error" });
       }
     } catch (error) {
-      setMessage({ text: "An error occurred while sending the email. Please try again.", type: "error" });
+      setMessage({ text: "An error occurred while sending the email. Please try again later.", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -63,7 +75,7 @@ const EmailExpiredMessage = () => {
   return (
     <div className={styles.expiredContainer}>
       <div className={styles.messageWrapper}>
-        <div className={styles.logoContainer}>
+        <div className={styles.logoContainer}onClick={() => navigate("/")} >
           <Icon loading="lazy" alt="iRecruit Logo" />
         </div>
 
@@ -73,15 +85,15 @@ const EmailExpiredMessage = () => {
             It looks like the activation link has expired. You can request a new link by clicking below.
           </p>
 
-
-          <button className={styles.actionButton} onClick={resendEmail} disabled={loading}
-
+          <button 
+            className={styles.actionButton} 
+            onClick={resendEmail} 
+            disabled={loading || resendDisabled} // Disable based on loading or countdown
             style={{
-              cursor: loading ? 'not-allowed' : 'pointer', // Change cursor style
+              cursor: loading || resendDisabled ? 'not-allowed' : 'pointer',
             }}
-
           >
-            {loading ? 'Sending...' : 'Resend Activation Email'}
+            {loading ? 'Sending...' : (resendDisabled ? `Resend available in ${countdown}s` : 'Resend Activation Email')}
           </button>
 
           {message && (
@@ -89,7 +101,6 @@ const EmailExpiredMessage = () => {
               {message.text}
             </div>
           )}
-
         </div>
       </div>
 
