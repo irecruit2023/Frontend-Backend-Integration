@@ -23,14 +23,17 @@ const SignUpMessage = () => {
     window.open('https://mail.google.com', '_blank');
   };
 
-
-
-
   // Poll every 5 seconds to check the confirmation status
   useEffect(() => {
     const intervalId = setInterval(() => {
       setElapsedTime((prevTime) => prevTime + 5); // Increase time by 5 seconds
-      checkEmailConfirmation(JSON.parse(localStorage.getItem('loginInformation'))?.data?.candidate_email);
+      const email = JSON.parse(localStorage.getItem('loginInformation'))?.data?.candidate_email;
+      if (email) {
+        checkEmailConfirmation(email).then((data) => {
+          console.log("status checkEmailConfirmation", data)
+          setConfirmationStatus(data?.success ? 'confirmed' : 'not confirmed'); // Update confirmation status
+        });
+      }
     }, 5000); // Poll every 5 seconds
 
     return () => clearInterval(intervalId); // Cleanup the interval on component unmount
@@ -46,7 +49,7 @@ const SignUpMessage = () => {
   // Navigate to expired page after 5 minutes if not confirmed
   useEffect(() => {
     if (elapsedTime >= 300 && confirmationStatus !== 'confirmed') { // 5 minutes (300 seconds)
-      navigate('/login'); // Navigate to expired if not confirmed
+      navigate('/expired'); // Navigate to expired page if not confirmed
     }
   }, [elapsedTime, confirmationStatus, navigate]);
 
@@ -54,8 +57,8 @@ const SignUpMessage = () => {
     <div className={styles.b}>
       <Loading className={styles.loadingIcon} alt="" />
       <div className={styles.mainContent}>
-      <div className={styles.irecruitLogoBigWrapper} onClick={() => navigate("/")}>
-        <div className={styles.irecruitLogoBig}>
+        <div className={styles.irecruitLogoBigWrapper} onClick={() => navigate("/")}>
+          <div className={styles.irecruitLogoBig}>
             <Icon className={styles.symbolIcon} loading="lazy" alt="" />
             <div className={styles.logo}>
               <div className={styles.i}>

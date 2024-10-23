@@ -20,7 +20,8 @@ const UploadResume = ({ className = "" }) => {
     setShowResumeAnalysis(true);
     setShowResumeAnalysis2(false);
     try {
-      const response = await generateProfile();
+      const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
+      const response = await generateProfile(userId);
       console.log("rese",response)
       if (response.success) {
         notifySuccess(response.success)

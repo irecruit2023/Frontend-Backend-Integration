@@ -90,11 +90,11 @@ export const uploadResume = async (file) => {
 
 
 
-export const generateProfile = async () => {
+export const generateProfile = async (user_id) => {
   const token = JSON.parse(localStorage.getItem('loginInformation')).data.access_token;
 
   try {
-    const response = await fetch('/api/generate_profile/', {
+    const response = await fetch(`/api/generate_profile/${user_id}/`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header

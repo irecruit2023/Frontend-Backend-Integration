@@ -7,18 +7,19 @@ import { resendVerificationEmail } from "../utils/util";
 const EmailExpiredMessage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-  const [resendDisabled, setResendDisabled] = useState(false); // Disable resend
-  const [countdown, setCountdown] = useState(0); // Countdown timer
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [resendAttempts, setResendAttempts] = useState(0); // Track resend attempts
   const navigate = useNavigate();
 
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
-    } else if (countdown === 0) {
+    } else if (countdown === 0 && resendAttempts < 3) {
       setResendDisabled(false); // Re-enable the button when countdown ends
     }
-  }, [countdown]);
+  }, [countdown, resendAttempts]);
 
   const resendEmail = async () => {
     setLoading(true);
@@ -37,8 +38,15 @@ const EmailExpiredMessage = () => {
 
       if (data.success) {
         setMessage({ text: "Activation email has been resent successfully. Please check your inbox.", type: "success" });
-        setResendDisabled(true); // Disable resend after success
-        setCountdown(30);        // Set 30 seconds countdown
+
+        // Increment resendAttempts and disable the button
+        const newResendAttempts = resendAttempts + 1;
+        setResendAttempts(newResendAttempts);
+        setResendDisabled(true); 
+        
+        // Increase countdown with each resend attempt
+        const newCountdown = 30 * newResendAttempts; // 30s, 60s, 90s based on attempts
+        setCountdown(newCountdown);
       } else {
         setMessage({ text: data.message || "Failed to resend the activation email.", type: "error" });
       }
@@ -75,7 +83,7 @@ const EmailExpiredMessage = () => {
   return (
     <div className={styles.expiredContainer}>
       <div className={styles.messageWrapper}>
-        <div className={styles.logoContainer}onClick={() => navigate("/")} >
+        <div className={styles.logoContainer} onClick={() => navigate("/")}>
           <Icon loading="lazy" alt="iRecruit Logo" />
         </div>
 
@@ -88,17 +96,21 @@ const EmailExpiredMessage = () => {
           <button 
             className={styles.actionButton} 
             onClick={resendEmail} 
-            disabled={loading || resendDisabled} // Disable based on loading or countdown
+            disabled={loading || resendDisabled || resendAttempts >= 3} // Disable after 3 attempts
             style={{
-              cursor: loading || resendDisabled ? 'not-allowed' : 'pointer',
+              cursor: loading || resendDisabled || resendAttempts >= 3 ? 'not-allowed' : 'pointer',
             }}
           >
-            {loading ? 'Sending...' : (resendDisabled ? `Resend available in ${countdown}s` : 'Resend Activation Email')}
+            {loading ? 'Sending...' : (resendDisabled ? `Resend available in ${countdown}s` : resendAttempts >= 3 ? 'Resend Limit Reached' : 'Resend Activation Email')}
           </button>
 
           {message && (
             <div style={message.type === "error" ? errorMessageStyles : successMessageStyles}>
-              {message.text}
+              {resendAttempts >= 3 ? (
+                <>
+                  {message.text} <button onClick={() => navigate("/signup")} style={{ marginLeft: '5px', cursor: 'pointer', color: '#007bff' }}>Sign Up Again</button>
+                </>
+              ) : message.text}
             </div>
           )}
         </div>
