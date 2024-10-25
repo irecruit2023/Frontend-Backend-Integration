@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { useNavigate } from 'react-router-dom';
 import styles from "./email-expired.module.css";
 import { ReactComponent as Icon } from "../assets/icons/iRecurit-complete-logo.svg";
@@ -7,14 +7,26 @@ import { resendVerificationEmail } from "../utils/util";
 const EmailExpiredMessage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const [resendAttempts, setResendAttempts] = useState(0); // Track resend attempts
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && resendAttempts < 3) {
+      setResendDisabled(false); // Re-enable the button when countdown ends
+    }
+  }, [countdown, resendAttempts]);
 
   const resendEmail = async () => {
     setLoading(true);
     setMessage(null);
 
     try {
-      const email = JSON.parse(localStorage.getItem('loginInformation'))?.data?.email;
+      const email = JSON.parse(localStorage.getItem('loginInformation'))?.data?.candidate_email;
 
       if (!email) {
         setMessage({ text: "Email not found. Please sign up again.", type: "error" });
@@ -25,13 +37,21 @@ const EmailExpiredMessage = () => {
       const data = await resendVerificationEmail(email);
 
       if (data.success) {
-        navigate('/signupMessage');
-        setMessage({ text: "Activation email has been resent successfully.", type: "success" });
+        setMessage({ text: "Activation email has been resent successfully. Please check your inbox.", type: "success" });
+
+        // Increment resendAttempts and disable the button
+        const newResendAttempts = resendAttempts + 1;
+        setResendAttempts(newResendAttempts);
+        setResendDisabled(true); 
+        
+        // Increase countdown with each resend attempt
+        const newCountdown = 30 * newResendAttempts; // 30s, 60s, 90s based on attempts
+        setCountdown(newCountdown);
       } else {
         setMessage({ text: data.message || "Failed to resend the activation email.", type: "error" });
       }
     } catch (error) {
-      setMessage({ text: "An error occurred while sending the email. Please try again.", type: "error" });
+      setMessage({ text: "An error occurred while sending the email. Please try again later.", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -63,7 +83,7 @@ const EmailExpiredMessage = () => {
   return (
     <div className={styles.expiredContainer}>
       <div className={styles.messageWrapper}>
-        <div className={styles.logoContainer}>
+        <div className={styles.logoContainer} onClick={() => navigate("/")}>
           <Icon loading="lazy" alt="iRecruit Logo" />
         </div>
 
@@ -73,23 +93,26 @@ const EmailExpiredMessage = () => {
             It looks like the activation link has expired. You can request a new link by clicking below.
           </p>
 
-
-          <button className={styles.actionButton} onClick={resendEmail} disabled={loading}
-
+          <button 
+            className={styles.actionButton} 
+            onClick={resendEmail} 
+            disabled={loading || resendDisabled || resendAttempts >= 3} // Disable after 3 attempts
             style={{
-              cursor: loading ? 'not-allowed' : 'pointer', // Change cursor style
+              cursor: loading || resendDisabled || resendAttempts >= 3 ? 'not-allowed' : 'pointer',
             }}
-
           >
-            {loading ? 'Sending...' : 'Resend Activation Email'}
+            {loading ? 'Sending...' : (resendDisabled ? `Resend available in ${countdown}s` : resendAttempts >= 3 ? 'Resend Limit Reached' : 'Resend Activation Email')}
           </button>
 
           {message && (
             <div style={message.type === "error" ? errorMessageStyles : successMessageStyles}>
-              {message.text}
+              {resendAttempts >= 3 ? (
+                <>
+                  {message.text} <button onClick={() => navigate("/signup")} style={{ marginLeft: '5px', cursor: 'pointer', color: '#007bff' }}>Sign Up Again</button>
+                </>
+              ) : message.text}
             </div>
           )}
-
         </div>
       </div>
 
