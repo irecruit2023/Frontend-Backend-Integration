@@ -17,6 +17,7 @@ urlpatterns = [
     path('api/upload_resume/', UploadResume.as_view()),
     path('api/generate_profile/<str:user_id>/', Collate.as_view(), name='Generate_Profile'),
     path('api/top_skills/<str:user_id>/', top_skills_view, name='top_skills'),
+    path('api/domain/<str:user_id>/', CandidateDomain.as_view(), name='candidate_domain'),
     path('api/get_resume/<str:user_id>/', GetResume.as_view(), name='get_resume'),
     path('api/jobstatus/', UpdateJobStatus.as_view(), name='update_job_status'),
     path('api/upload_profile_picture/', Upload_profile_picture.as_view(), name='Upload_profile_picture'),

@@ -790,6 +790,7 @@ class Collate(APIView):
                 Extract the following information from the experience section in JSON format with consistent structure, regardless of the content. Ensure the following keys are always present:
 
                 - "total_years_of_experience": Overall experience that a candidate is having in their career.
+                - "domain": Give the domain of the candidate as per the overall skills of the candidate.
                 - "projects": A list of projects. Each project should have:
                     - "project_name": Name of the project.
                     - "JobRole": Role in the project.
@@ -797,7 +798,7 @@ class Collate(APIView):
                     - "programming_language": The programming language(s) used (e.g., Python, C++). Default to "N/A" if not applicable.
                     - "tools": The tools used (e.g., Git, Docker). Default to "N/A" if not applicable.
                     - "database": The database used, if any. Default to "N/A" if not applicable.
-                    - "cloud_technology": Cloud technology used, if any. Default to "N/A" if not applicable.
+                    - "cloud_technology": Cloud technology used in the projects like AWS, GCP, if any. Default to "N/A" if not applicable.
                     - "time": Time spent on the project in months. (only numbers in months)
 
                 Ensure the JSON structure is maintained even if some fields are missing.
@@ -832,7 +833,8 @@ class Collate(APIView):
                 "Tools": defaultdict(int),
                 "CloudTechnologies": defaultdict(int),
                 # "TimeSpent": [],
-                "TotalYearsOfExperience": 0
+                "TotalYearsOfExperience": 0,
+                "Domain": None
             }
 
             try:
@@ -921,6 +923,8 @@ class Collate(APIView):
                         cloud_techs = [cloud.strip() for cloud in entry["cloud_technology"].split(",")]
                         for cloud in cloud_techs:
                             final_json["CloudTechnologies"][cloud] += time_spent
+                            
+                    
 
                     # # Append the project name and time spent for output
                     # if self.valid_value(entry.get("project_name")):
@@ -932,6 +936,9 @@ class Collate(APIView):
                 final_json["Tools"] = dict(final_json["Tools"])
                 final_json["CloudTechnologies"] = dict(final_json["CloudTechnologies"])
                 final_json["TotalYearsOfExperience"] = total_time_spent_months // 12  # Convert to years
+                
+                if "domain" in data:
+                    final_json["Domain"]= data["domain"]
 
                # Check if a CandidateSkills entry already exists
                 candidate_skills = CandidateSkills.objects(resume=resume).first()
@@ -944,6 +951,7 @@ class Collate(APIView):
                     candidate_skills.tools = final_json["Tools"]
                     candidate_skills.cloud_technologies = final_json["CloudTechnologies"]
                     candidate_skills.total_years_of_experience = float(final_json["TotalYearsOfExperience"])
+                    candidate_skills.domain = final_json["Domain"]
                     candidate_skills.save()
                 else:
                     # If no entry exists, create a new one
@@ -956,6 +964,7 @@ class Collate(APIView):
                         tools=final_json["Tools"],
                         cloud_technologies=final_json["CloudTechnologies"],
                         total_years_of_experience=float(final_json["TotalYearsOfExperience"]),
+                        domain = final_json["Domain"]
                     )
                     candidate_skills.save()
 
@@ -991,8 +1000,8 @@ def get_top_skills(user_id):
 
     # Combine all the skills from different categories into one dictionary
     skills = defaultdict(int)
-    skills.update(candidate_profile.cloud_technologies)
     skills.update(candidate_profile.programming_languages)
+    skills.update(candidate_profile.cloud_technologies)
     skills.update(candidate_profile.framework)
     skills.update(candidate_profile.tools)
     
@@ -1022,3 +1031,29 @@ def top_skills_view(request, user_id):
             'success': False,
             'message': 'candidate not found'
         }, status=status.HTTP_404_NOT_FOUND)
+        
+
+class CandidateDomain(APIView):
+    def get(self, request, user_id=None):
+        try:
+            candidate_skill = CandidateSkills.objects(candidate_id = user_id).first()
+            
+            if candidate_skill.domain:
+                return Response({
+                    'status': status.HTTP_200_OK,
+                    'success': True,
+                    'data': candidate_skill.domain,
+                    'message': 'Got the candidate domain'
+                }, status=status.HTTP_200_OK) 
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Domain not available for this candidate."
+                }, status=status.HTTP_404_NOT_FOUND)
+        except CandidateSkills.DoesNotExist:
+            return Response({"error": "Candidate skills data not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+    

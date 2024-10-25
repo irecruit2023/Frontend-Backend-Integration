@@ -78,5 +78,6 @@ class CandidateSkills(Document):
     cloud_technologies = DictField()
     # time_spent = DictField()
     total_years_of_experience = FloatField()
+    domain = StringField()
     
     meta = {'collection': 'candidate_skills'}
