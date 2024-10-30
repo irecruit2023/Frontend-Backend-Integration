@@ -820,7 +820,105 @@ class Collate(APIView):
         except Exception as e:
             logging.error(f"Error during LLM call: {e}")
             return {"error": f"Error during LLM call: {e}"}
+        
+        
+    def extract_job_details(self, experience_text):
+        try:
+            # Define the prompt for extracting job details
+            prompt = ChatPromptTemplate.from_template(
+                '''
+            Parse the given text to extract all job details without taking the project into consideraion of the candidate  and return a JSON object containing 
+                the following fields:
 
+                        - Comapany Name
+                        - Position
+                        - date/time(get the months in name not in number)
+                        - location
+
+                {experience_text}
+                '''
+        )
+
+            # Format the prompt with the provided experience text
+            formatted_prompt = prompt.format(experience_text=experience_text)
+
+            # Call the LLM for job details
+            response = llm.invoke(formatted_prompt)
+
+            # Extract the JSON content from the response
+            return response.content
+
+        except Exception as e:
+            logging.error(f"Error during LLM call for job details: {e}")
+            return {"error": f"Error during LLM call: {e}"}
+        
+    def save_job_details_to_db(self, user_id, job_details):
+        try:
+        # Parse job_details if it's a JSON string
+            if isinstance(job_details, str):
+                logging.info("Converting job_details from JSON string to dictionary.")
+                job_details = json.loads(job_details)
+
+            # Initialize the job_details_list for consistent processing
+            job_details_list = []
+
+            # Handle different possible structures of job_details
+            if isinstance(job_details, dict):
+                if "job_details" in job_details:
+                    job_details_list = job_details.get("job_details", [])
+                else:
+                    job_details_list = [job_details]  # Single job entry
+            elif isinstance(job_details, list):
+                job_details_list = job_details
+            else:
+                logging.error("Invalid JSON format in job details.")
+                return {"error": "Invalid JSON format in job details."}
+
+            # Fetch the resume document
+            resume = Resume.objects.get(candidate=user_id)
+
+            # Retrieve or create the CandidateWorkExperience entry
+            candidate_job = CandidateWorkExperience.objects(resume=resume).first()
+
+            # Extract fields to be saved, ensuring they are non-empty
+            companies = [job.get("Company Name") for job in job_details_list if job.get("Company Name")]
+            positions = [job.get("Position") for job in job_details_list if job.get("Position")]
+            dates = [job.get("date/time") for job in job_details_list if job.get("date/time")]
+            locations = [job.get("location") for job in job_details_list if job.get("location")]
+
+            # Log the extracted lists for verification
+            logging.info(f"Companies: {companies}, Positions: {positions}, Dates: {dates}, Locations: {locations}")
+
+            if candidate_job:
+                # Update the existing document with the new lists
+                candidate_job.company_name = companies
+                candidate_job.position = positions
+                candidate_job.date_time = dates
+                candidate_job.location = locations
+                candidate_job.save()
+                logging.info("Existing job entry updated in DB.")
+            else:
+                # Create a new document if none exists
+                candidate_job = CandidateWorkExperience(
+                    resume=resume,
+                    candidate_id=user_id,
+                    company_name=companies,
+                    position=positions,
+                    date_time=dates,
+                    location=locations
+                )
+                candidate_job.save()
+                logging.info("New job entry created in DB.")
+
+        except json.JSONDecodeError as e:
+            logging.error(f"Failed to parse job_details JSON: {e}")
+            return {"error": f"JSON parsing error: {e}"}
+        except Exception as e:
+            logging.error(f"Error saving job details to DB: {e}")
+            return {"error": f"Error saving to DB: {e}"}
+
+        
+        
     def valid_value(self, value):
             return value and value != "N/A" and value != "Not specified"
         
@@ -862,6 +960,11 @@ class Collate(APIView):
 
                 # Extract the experience section from the resume
                 experience_section = self.extract_experience_section(extracted_text)
+                
+                # Extract job details using the new prompt
+                job_details_json = self.extract_job_details(experience_section)
+                job_response = job_details_json
+                
 
                 # Extract the skills as JSON using the LLM
                 skills_json = self.extract_experience_skills(experience_section)
@@ -871,6 +974,7 @@ class Collate(APIView):
 
                 # Log the LLM response for debugging
                 logging.info(f"LLM Response Content: {response_content}")
+                logging.info(f"LLM Response Content: {job_response}")
 
                 # Attempt to parse the JSON content
                 try:
@@ -879,13 +983,30 @@ class Collate(APIView):
 
                     # Attempt to load the JSON
                     data = json.loads(response_content)
+                    
                 except json.JSONDecodeError:
                     logging.error("Error: Unable to parse skills JSON from the LLM output.")
                     return {"error": "Invalid JSON format in the skills data."}
+                
+                try:
+                    if job_response.startswith("```json"):
+                        job_response = job_response[8:].strip("```").strip()  # Remove code block markers
+
+                    job_details = json.loads(job_response)
+                except json.JSONDecodeError:
+                    logging.error("Error: Unable to parse job details JSON.")
+                    return {"error": "Invalid JSON format in job details."}
 
                 # Check if data is valid
                 if not isinstance(data, dict):
                     return {"error": "Invalid skills data."}
+                
+                # Save job details to the DB
+                save_result = self.save_job_details_to_db(user_id, job_details)
+                if save_result is not None and "error" in save_result:
+                    return save_result
+
+                    {"message": "Job details extracted and saved successfully."}
 
                 # Collate data and sum times for each skill
                 total_time_spent_months = 0
@@ -1055,5 +1176,32 @@ class CandidateDomain(APIView):
             return Response({"error": "Candidate skills data not found."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
-    
+        
+        
+class CandidateWorkExperiences(APIView):
+    def get(self, request, user_id):
+        
+        
+        try:
+            # Retrieve the candidate's work experience
+            candidate_work_experience = CandidateWorkExperience.objects(candidate_id=user_id).first()
+
+            if not candidate_work_experience:
+                return Response({"error": "No work experience found for this candidate."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Collect up to 2 experiences in a list
+            experience_list = []
+            for i in range(min(2, len(candidate_work_experience.company_name))):
+                experience_entry = {
+                    "Company Name": candidate_work_experience.company_name[i],
+                    "Position": candidate_work_experience.position[i],
+                    "date/time": candidate_work_experience.date_time[i],
+                    "location": candidate_work_experience.location[i],
+                }
+                experience_list.append(experience_entry)
+
+            # Return the experience list
+            return Response(experience_list, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    

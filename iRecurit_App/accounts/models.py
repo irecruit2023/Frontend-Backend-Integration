@@ -82,3 +82,14 @@ class CandidateSkills(Document):
     domain = StringField()
     
     meta = {'collection': 'candidate_skills'}
+    
+
+class CandidateWorkExperience(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    resume = ReferenceField(Resume)
+    candidate_id = ReferenceField(User)  # Reference to Candidate
+    company_name = ListField(StringField())
+    position = ListField(StringField())
+    date_time = ListField(StringField())
+    location = ListField(StringField())
+    meta = {'collection': 'candidate_work_experience'}
