@@ -777,6 +777,23 @@ class Collate(APIView):
             experience_section = experience_section[:section_end.start()]
 
         return experience_section.strip()
+    
+    def extract_education_section(self, text):
+    # Find the starting position of the "Education" section
+        match = re.search(r'\b(EDUCATION|Education|Academic Background|QUALIFICATIONS|Studies)\b', text, re.IGNORECASE)
+        
+        if not match:
+            return None  # Return None if the "education" section is not found
+
+        start = match.start()
+        education_section = text[start:]
+
+        # Stop extraction at the next major section
+        section_end = re.search(r'\b(CERTIFICATES|CERTIFICATIONS|SKILLS|ACHIEVEMENTS|EXPERIENCE)\b', education_section, re.IGNORECASE)
+        if section_end:
+            education_section = education_section[:section_end.start()]
+
+        return education_section.strip()
 
     # Function to extract skills from the experience section using the LLM
     def extract_experience_skills(self, experience_text):
@@ -832,7 +849,7 @@ class Collate(APIView):
 
                         - Comapany Name
                         - Position
-                        - date/time(get the months in name not in number)
+                        - date/time in string(get the months in name not in number)
                         - location
 
                 {experience_text}
@@ -852,6 +869,37 @@ class Collate(APIView):
             logging.error(f"Error during LLM call for job details: {e}")
             return {"error": f"Error during LLM call: {e}"}
         
+    def extract_education_details(self, education_text):
+        if not education_text:
+            return {"error": "No education section found in the resume."}
+        
+        try:
+            prompt = ChatPromptTemplate.from_template(
+            '''
+            Parse the given education text to extract only one latest educational information and return a JSON object containing 
+                the following fields:
+
+                        - Institution
+                        - Degree
+                        - CGPA
+                        - Year of course end
+                        
+                Here is the education section:
+                {education_text}
+                '''    
+            )
+            
+            formatted_prompt = prompt.format(education_text=education_text)
+            
+            response = llm.invoke(formatted_prompt)
+            
+            return response.content
+        
+        except Exception as e:
+            logging.error(f"Error during LLM call for education details: {e}")
+            return {"error": f"Error during LLM call: {e}"}
+        
+    
     def save_job_details_to_db(self, user_id, job_details):
         try:
         # Parse job_details if it's a JSON string
@@ -881,10 +929,11 @@ class Collate(APIView):
             candidate_job = CandidateWorkExperience.objects(resume=resume).first()
 
             # Extract fields to be saved, ensuring they are non-empty
-            companies = [job.get("Company Name") for job in job_details_list if job.get("Company Name")]
-            positions = [job.get("Position") for job in job_details_list if job.get("Position")]
-            dates = [job.get("date/time") for job in job_details_list if job.get("date/time")]
-            locations = [job.get("location") for job in job_details_list if job.get("location")]
+            companies = [job.get("Company Name") if job.get("Company Name") else "None" for job in job_details_list]
+            positions = [job.get("Position") if job.get("Position") else "None" for job in job_details_list]
+            dates = [job.get("date/time") if job.get("date/time") else "None" for job in job_details_list]
+            locations = [job.get("location") if job.get("location") else "None" for job in job_details_list]
+
 
             # Log the extracted lists for verification
             logging.info(f"Companies: {companies}, Positions: {positions}, Dates: {dates}, Locations: {locations}")
@@ -917,6 +966,63 @@ class Collate(APIView):
             logging.error(f"Error saving job details to DB: {e}")
             return {"error": f"Error saving to DB: {e}"}
 
+    def save_education_detail_to_db(self, user_id, education_detail):
+        try:
+            # Convert JSON string to dictionary if necessary
+            if isinstance(education_detail, str):
+                logging.info("Converting education_detail from JSON string to dictionary.")
+                education_detail = json.loads(education_detail)
+
+            # Make sure we're always working with a list for consistent processing
+            education_list = []
+            if isinstance(education_detail, dict):
+                education_list = [education_detail]  # Wrap single entry in a list
+            elif isinstance(education_detail, list):
+                education_list = education_detail
+            else:
+                logging.error("Invalid JSON format in education details.")
+                return {"error": "Invalid JSON format in education details."}
+
+            # Fetch the resume document
+            resume = Resume.objects.get(candidate=user_id)
+
+            # Retrieve or create the CandidateEducation entry
+            candidate_education = CandidateEducation.objects(resume=resume).first()
+
+            # Extract fields to be saved as lists, converting all values to strings
+            institutions = [str(edu.get("Institution", "")) for edu in education_list]
+            degrees = [str(edu.get("Degree", "")) for edu in education_list]
+            cgpas = [str(edu.get("CGPA", "")) for edu in education_list]  # Convert to strings
+            end_dates = [str(edu.get("Year of course end", "")) for edu in education_list]  # Convert to strings
+
+            if candidate_education:
+                # Update the existing document
+                candidate_education.institution_name = institutions
+                candidate_education.degree = degrees
+                candidate_education.cgpa = cgpas
+                candidate_education.end_date = end_dates
+                candidate_education.save()
+                logging.info("Existing education entry updated in DB.")
+            else:
+                # Create a new document
+                candidate_education = CandidateEducation(
+                    resume=resume,
+                    candidate_id=user_id,
+                    institution_name=institutions,
+                    degree=degrees,
+                    cgpa=cgpas,
+                    end_date=end_dates
+                )
+                candidate_education.save()
+                logging.info("New education entry created in DB.")
+
+        except json.JSONDecodeError as e:
+            logging.error(f"Failed to parse education_details JSON: {e}")
+            return {"error": f"JSON parsing error: {e}"}
+        except Exception as e:
+            logging.error(f"Error saving education details to DB: {e}")
+            return {"error": f"Error saving to DB: {e}"}
+                
         
         
     def valid_value(self, value):
@@ -960,6 +1066,7 @@ class Collate(APIView):
 
                 # Extract the experience section from the resume
                 experience_section = self.extract_experience_section(extracted_text)
+                education_section = self.extract_education_section(extracted_text)
                 
                 # Extract job details using the new prompt
                 job_details_json = self.extract_job_details(experience_section)
@@ -971,10 +1078,15 @@ class Collate(APIView):
 
                 # Process the LLM response
                 response_content = skills_json  # Assume this is the response from your LLM extraction method
+                
+                
+                
+                education_detail_json = self.extract_education_details(education_section)
 
                 # Log the LLM response for debugging
                 logging.info(f"LLM Response Content: {response_content}")
                 logging.info(f"LLM Response Content: {job_response}")
+                logging.info(f"LLM Response Content: {education_detail_json}")
 
                 # Attempt to parse the JSON content
                 try:
@@ -984,8 +1096,8 @@ class Collate(APIView):
                     # Attempt to load the JSON
                     data = json.loads(response_content)
                     
-                except json.JSONDecodeError:
-                    logging.error("Error: Unable to parse skills JSON from the LLM output.")
+                except json.JSONDecodeError or Exception as e:
+                    logging.error("Error: Unable to parse skills JSON from the LLM output {e}.")
                     return {"error": "Invalid JSON format in the skills data."}
                 
                 try:
@@ -993,9 +1105,18 @@ class Collate(APIView):
                         job_response = job_response[8:].strip("```").strip()  # Remove code block markers
 
                     job_details = json.loads(job_response)
-                except json.JSONDecodeError:
-                    logging.error("Error: Unable to parse job details JSON.")
+                except json.JSONDecodeError or Exception  as e:
+                    logging.error(f"Error: Unable to parse job details JSON.{e}")
                     return {"error": "Invalid JSON format in job details."}
+                
+                try:
+                    if education_detail_json.startswith("```json"):
+                        education_detail_json = education_detail_json[8:].strip("```").strip()
+
+                    education_data = json.loads(education_detail_json)
+                except json.JSONDecodeError:
+                    logging.error("Error: Unable to parse education JSON.")
+                    return {"error": "Invalid JSON format in the education data."}
 
                 # Check if data is valid
                 if not isinstance(data, dict):
@@ -1007,6 +1128,10 @@ class Collate(APIView):
                     return save_result
 
                     {"message": "Job details extracted and saved successfully."}
+                    
+                save_education = self.save_education_detail_to_db(user_id, education_detail=education_detail_json)
+                if save_education is not None and "error" in save_education:
+                    return save_education
 
                 # Collate data and sum times for each skill
                 total_time_spent_months = 0
@@ -1205,3 +1330,37 @@ class CandidateWorkExperiences(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
+        
+
+class CandidateEducationDetail(APIView):
+    def get(self, request, user_id):
+        try:
+            # Fetch the CandidateEducation entry for the given user_id
+            candidate_education = CandidateEducation.objects(candidate_id=user_id).first()
+            
+            if candidate_education:
+                # Prepare the data to send in response
+                data = {
+                    "Institution": candidate_education.institution_name[0] if candidate_education.institution_name else None,
+                    "Degree": candidate_education.degree[0] if candidate_education.degree else None,
+                    "CGPA": None if candidate_education.cgpa and candidate_education.cgpa[0] == "None" else candidate_education.cgpa[0] if candidate_education.cgpa else None,
+                    "Year of course end": None if candidate_education.end_date and candidate_education.end_date[0] == "None" else candidate_education.end_date[0] if candidate_education.end_date else None,
+                }
+                
+                return Response({
+                    'status': status.HTTP_200_OK,
+                    'success': True,
+                    'data': data,
+                    'message': 'Got the candidate education'
+                }, status=status.HTTP_200_OK)
+            
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Education not available for this candidate."
+                }, status=status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

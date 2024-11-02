@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/get_profile_picture/<str:user_id>/',  Profile_Picture_Retrieve.as_view(), name=' Profile_Picture_Retrieve'),
     path('api/chart-data/', Chart_Data_API.as_view(), name='chart-data'),
     path('api/job_experience/<str:user_id>/', CandidateWorkExperiences.as_view(), name='CandidateWorkExperience'),
+    path('api/education/<str:user_id>/', CandidateEducationDetail.as_view(), name='CandidateEducation'),
     #path('api/process/', ProcessResume.as_view(), name='ProcessResume'),
     path('index/', views.index_html, name='index_html'),
     re_path(r'^$', index_view, name='index'),  # Root URL

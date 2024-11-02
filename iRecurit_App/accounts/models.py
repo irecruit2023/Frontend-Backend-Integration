@@ -93,3 +93,16 @@ class CandidateWorkExperience(Document):
     date_time = ListField(StringField())
     location = ListField(StringField())
     meta = {'collection': 'candidate_work_experience'}
+    
+    
+class CandidateEducation(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    resume = ReferenceField(Resume)
+    candidate_id = ReferenceField(User)
+    institution_name = ListField(StringField())
+    cgpa = ListField(StringField())
+    degree = ListField(StringField())
+    end_date = ListField(StringField())
+    
+    meta = {'collection' : 'candidate_education'}
+    
