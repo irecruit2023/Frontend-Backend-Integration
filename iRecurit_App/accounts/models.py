@@ -106,3 +106,11 @@ class CandidateEducation(Document):
     
     meta = {'collection' : 'candidate_education'}
     
+class CandidateResumeSummary(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    resume = ReferenceField(Resume)
+    candidate_id = ReferenceField(User)
+    summary = StringField()
+    
+    meta = {'collection' : 'candidate_resume_summary'}
+    

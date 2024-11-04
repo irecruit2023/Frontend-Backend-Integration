@@ -880,6 +880,7 @@ class Collate(APIView):
                 the following fields:
 
                         - Institution
+                        - In which tire of city the institute in based of(Example tire 1, tire 2)
                         - Degree
                         - CGPA
                         - Year of course end
@@ -898,6 +899,33 @@ class Collate(APIView):
         except Exception as e:
             logging.error(f"Error during LLM call for education details: {e}")
             return {"error": f"Error during LLM call: {e}"}
+        
+        
+    def extract_summary(self, total_text):
+        try:
+        # Define the prompt for generating a summary of the entire resume
+            prompt = ChatPromptTemplate.from_template(
+                '''
+                Provide a concise, professional summary of the candidate's resume.
+                Focus on presenting the candidate's most relevant strengths and recent roles to give recruiters a quick understanding of their background.
+                Avoid unnecessary details and structure the summary to be impactful and recruiter-friendly in 2-4 lines.
+
+                {total_text}
+                '''
+            )
+
+            # Format the prompt with the full resume text
+            formatted_prompt = prompt.format(total_text=total_text)
+
+            # Call the LLM with the formatted prompt
+            summary = llm.invoke(formatted_prompt)
+
+            # Get the content from the response (AIMessage)
+            return summary.content
+
+        except Exception as e:
+            return f"Error generating resume summary: {e}"
+
         
     
     def save_job_details_to_db(self, user_id, job_details):
@@ -1022,6 +1050,34 @@ class Collate(APIView):
         except Exception as e:
             logging.error(f"Error saving education details to DB: {e}")
             return {"error": f"Error saving to DB: {e}"}
+        
+        
+    def save_summary_to_db(self, user_id, summary_text):
+        try:
+            # Check if a summary already exists for the given resume and user
+            resume = Resume.objects.get(candidate = user_id)
+            
+            candidate_summary = CandidateResumeSummary.objects(resume=resume).first()
+
+            if candidate_summary:
+                # Update the existing summary
+                candidate_summary.summary = summary_text
+                candidate_summary.save()
+            else:
+                # Create a new summary document
+                CandidateResumeSummary(
+                    resume=resume,
+                    candidate_id=user_id,
+                    summary=summary_text
+                ).save()
+
+            logging.info("Successfully saved or updated the summary in CandidateResumeSummary.")
+            return {"success": True}
+        except Exception as e:
+            logging.error(f"Error saving resume summary: {e}")
+            return {"error": f"Failed to save resume summary: {e}"}
+        
+        
                 
         
         
@@ -1079,14 +1135,18 @@ class Collate(APIView):
                 # Process the LLM response
                 response_content = skills_json  # Assume this is the response from your LLM extraction method
                 
-                
-                
                 education_detail_json = self.extract_education_details(education_section)
+                
+                summary_text = self.extract_summary(extracted_text)
+                summary_result = self.save_summary_to_db(user_id, summary_text)
+                if summary_result.get("error"):
+                    logging.error("Error saving resume summary.")
 
                 # Log the LLM response for debugging
                 logging.info(f"LLM Response Content: {response_content}")
                 logging.info(f"LLM Response Content: {job_response}")
                 logging.info(f"LLM Response Content: {education_detail_json}")
+                logging.info(f"LLM Response Content: {summary_text}")
 
                 # Attempt to parse the JSON content
                 try:
@@ -1132,6 +1192,8 @@ class Collate(APIView):
                 save_education = self.save_education_detail_to_db(user_id, education_detail=education_detail_json)
                 if save_education is not None and "error" in save_education:
                     return save_education
+                
+                
 
                 # Collate data and sum times for each skill
                 total_time_spent_months = 0
@@ -1363,4 +1425,32 @@ class CandidateEducationDetail(APIView):
         
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class CandidateSummary(APIView):
+    def get(self, request, user_id):
+        
+        try:
+            candidate_summary = CandidateResumeSummary.objects(candidate_id = user_id).first()
+            
+            if candidate_summary:
+                
+                return Response({
+                        'status': status.HTTP_200_OK,
+                        'success': True,
+                        'data': candidate_summary.summary,
+                        'message': 'Got the candidate summary'
+                    }, status=status.HTTP_200_OK)
+            
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Summary not available for this candidate."
+                }, status=status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+            
 
