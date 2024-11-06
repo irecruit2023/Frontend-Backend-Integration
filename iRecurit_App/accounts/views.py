@@ -763,7 +763,7 @@ class Collate(APIView):
 
     # Function to extract the experience section from the resume text
     def extract_experience_section(self, text):
-        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE)\b', text, re.IGNORECASE)
+        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE|EMPLOYMENT DETAILS)\b', text, re.IGNORECASE)
 
         if not match:
             return None  # Return None if the "experience" section is not found
@@ -818,7 +818,7 @@ class Collate(APIView):
                     - "cloud_technology": Cloud technology used in the projects like AWS, GCP, if any. Default to "N/A" if not applicable.
                     - "time": Time spent on the project in months. (only numbers in months)
 
-                Ensure the JSON structure is maintained even if some fields are missing.
+                Ensure the JSON structure is maintained even if some fields are missing. And do not give any other details or explanation
 
                 Here is the experience section:
                 {experience_text}
@@ -941,7 +941,7 @@ class Collate(APIView):
             # Handle different possible structures of job_details
             if isinstance(job_details, dict):
                 if "job_details" in job_details:
-                    job_details_list = job_details.get("job_details", [])
+                    job_details_list = job_details.get("job_details" or "jobs", [])
                 else:
                     job_details_list = [job_details]  # Single job entry
             elif isinstance(job_details, list):
@@ -1156,8 +1156,8 @@ class Collate(APIView):
                     # Attempt to load the JSON
                     data = json.loads(response_content)
                     
-                except json.JSONDecodeError or Exception as e:
-                    logging.error("Error: Unable to parse skills JSON from the LLM output {e}.")
+                except Exception as e:
+                    logging.error(f"Error: Unable to parse skills JSON from the LLM output {e}.")
                     return {"error": "Invalid JSON format in the skills data."}
                 
                 try:
@@ -1174,8 +1174,8 @@ class Collate(APIView):
                         education_detail_json = education_detail_json[8:].strip("```").strip()
 
                     education_data = json.loads(education_detail_json)
-                except json.JSONDecodeError:
-                    logging.error("Error: Unable to parse education JSON.")
+                except Exception as e:
+                    logging.error(f"Error: Unable to parse education JSON{e}.")
                     return {"error": "Invalid JSON format in the education data."}
 
                 # Check if data is valid
@@ -1373,22 +1373,34 @@ class CandidateWorkExperiences(APIView):
             # Retrieve the candidate's work experience
             candidate_work_experience = CandidateWorkExperience.objects(candidate_id=user_id).first()
 
-            if not candidate_work_experience:
-                return Response({"error": "No work experience found for this candidate."}, status=status.HTTP_404_NOT_FOUND)
+            if candidate_work_experience:
+                
 
             # Collect up to 2 experiences in a list
-            experience_list = []
-            for i in range(min(2, len(candidate_work_experience.company_name))):
-                experience_entry = {
-                    "Company Name": candidate_work_experience.company_name[i],
-                    "Position": candidate_work_experience.position[i],
-                    "date/time": candidate_work_experience.date_time[i],
-                    "location": candidate_work_experience.location[i],
-                }
-                experience_list.append(experience_entry)
+                experience_list = []
+                for i in range(min(2, len(candidate_work_experience.company_name))):
+                    experience_entry = {
+                        "Company Name": candidate_work_experience.company_name[i],
+                        "Position": candidate_work_experience.position[i],
+                        "date/time": candidate_work_experience.date_time[i],
+                        "location": candidate_work_experience.location[i],
+                    }
+                    experience_list.append(experience_entry)
 
-            # Return the experience list
-            return Response(experience_list, status=status.HTTP_200_OK)
+                # Return the experience list
+                return Response({
+                        'status': status.HTTP_200_OK,
+                        'success': True,
+                        'data': experience_list,
+                        'message': 'Got the candidate work experience'
+                    }, status=status.HTTP_200_OK)
+                
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Work Experience not available for this candidate."
+                }, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
