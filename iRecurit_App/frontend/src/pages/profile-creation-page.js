@@ -16,7 +16,7 @@ import graph from "../assets/images/graph.png"
 import TopNavBar from "../components/top-nav-bar";
 import RadarChart from "../components/skill-analysis-chart";
 import PrimaryButton from "../components/primary-button-2";
-import { getResume } from "../utils/util";
+import { getResume, getUserEducation } from "../utils/util";
 import editIcon from "../assets/icons/mode-edit.svg"
 import DeleteIcon from "../assets/icons/delete.svg"
 import WorkExpModal from "../modals/profile-work-exp-modal";
@@ -25,7 +25,7 @@ import DeleteModal from "../modals/delete-modal";
 import CertificationModal from "../modals/certification-modal";
 import CaseStudyUpload from "../modals/case-study-modal";
 import Achievement from "../modals/achievement-modal";
-import { getTopSkills } from "../utils/util";
+import { getTopSkills, getUserDomain, getUserSummary } from "../utils/util";
 
 const ProfileCreationPage = () => {
 
@@ -39,6 +39,11 @@ const ProfileCreationPage = () => {
   const [isAchievementCardVisible, setAchievementCardVisible] = useState(true); // To show/hide achievement card
   const [isCertificationCardVisible, setCertificationCardVisible] = useState(true); // To show/hide certification card
   const [skills, setSkills] = useState([]);
+  const [userDomain, setuserDomain] = useState("User Domain");
+  const [userSummary, setUserSummary] = useState(`Here’s your moment to shine! 
+    Share what makes you unforgettable—give the world a reason to stop, smile, and say, ‘Tell me more!`);
+  const [educationDetails, setEducationDetails] = useState("");
+
 
   // Function to handle the deletion of the achievement card
   const handleDeleteAchievement = () => {
@@ -90,22 +95,66 @@ const ProfileCreationPage = () => {
     }
   };
 
+
+
+  const fetchTopSkills = async (userId) => {
+    try {
+      const response = await getTopSkills(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setSkills(response.data); // Update state with the skills array
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
+  const fetchUserDomain = async (userId) => {
+    try {
+      const response = await getUserDomain(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setuserDomain(response.data); // Update state with the skills array
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
+  const fetchUserSummary = async (userId) => {
+    try {
+      const response = await getUserSummary(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setUserSummary(response.data); // Update state with the skills array
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
+
+  const fetchEducationDetails = async (userId) => {
+    try {
+      const response = await getUserEducation(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setEducationDetails(response.data); // Update state with the skills array
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
   useEffect(() => {
     // Fetch top 5 skills from the API
-    console.log("calles")
     const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
-    const fetchTopSkills = async () => {
-      try {
-        const response = await getTopSkills(userId); // Assume getTop5Skills() is defined elsewhere
-        if (response && response.success && response.data) {
-          setSkills(response.data); // Update state with the skills array
-        }
-      } catch (error) {
-        console.error('Failed to fetch skills:', error);
-      }
-    };
+    // const userId = "88a2eb2d-d76d-4158-ac61-e2a2d5163671"
 
-    fetchTopSkills();
+    fetchTopSkills(userId);
+    fetchUserDomain(userId)
+    fetchUserSummary(userId)
+    fetchEducationDetails(userId)
   }, []);
 
 
@@ -131,7 +180,18 @@ const ProfileCreationPage = () => {
                   <div className={styles.rectangleParent}>
                     <div className={styles.frameChild} />
                     <div className={styles.nameRole}>
-                      <h1 className={styles.vidhiSharma}>Vidhi Sharma</h1>
+                      <h1
+                        className={styles.vidhiSharma}
+                        style={{
+                          fontSize:
+                            (localStorage?.loginInformation && JSON.parse(localStorage.loginInformation)?.data?.name?.length > 11)
+                              ? '1.5rem' // Decreased font size for long names
+                              : 'inherit' // Default font size for shorter names
+                        }}
+                      >
+                        {localStorage?.loginInformation ? JSON.parse(localStorage.loginInformation)?.data?.name || '' : ''}
+                      </h1>
+
                       <div className={styles.softwareEngineer}>
                         Software Engineer
                       </div>
@@ -164,10 +224,10 @@ const ProfileCreationPage = () => {
                     <div className={styles.degreeInfo}>
                       <b className={styles.btechComputerScienceContainer}>
                         <p className={styles.btechComputerScience}>
-                          B.Tech Computer Science
+                          {educationDetails.Degree}
                         </p>
                         <p className={styles.amityUniversity}>
-                          Amity University - 2022
+                         {educationDetails.Institution} - {educationDetails["Year of course end"]}
                         </p>
                       </b>
                     </div>
@@ -243,7 +303,7 @@ const ProfileCreationPage = () => {
                   <div className={styles.rectangleGroup}>
                     <div className={styles.frameInner} />
                     <div className={styles.databaseManagementExpert}>
-                      Database Management Expert
+                      {userDomain}
                     </div>
                   </div>
                   <div className={styles.technicalSkills}>
@@ -312,11 +372,11 @@ const ProfileCreationPage = () => {
                   }
                     className={styles.caseStudyHeader}>
                     <div className={styles.caseStudyHeaderChild} />
-                    <h3 className={styles.committedToAchieving}>
-                      Committed to achieving excellence in everything I do,
-                      utilise my skills, dedication and strong work ethic, and
-                      ensuring that every action I take is driven by integrity
-                      and good values.
+                    <h3
+                      className={styles.committedToAchieving}
+                      style={{ fontSize: userSummary.length > 100 ? '1rem' : '1.8rem' }}
+                    >
+                      {userSummary}
                     </h3>
                     <img style={{ cursor: 'pointer' }} onClick={handleObjectiveOpenModal} className={styles.modeEditIcon} alt="" src={editIcon} />
                   </div>
