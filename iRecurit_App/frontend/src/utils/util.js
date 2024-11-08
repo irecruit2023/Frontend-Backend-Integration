@@ -438,5 +438,34 @@ export const getUserEducation= async (user_id) => {
   }
 };
 
+export const getUserJobExperience= async (user_id) => {
+  console.log(user_id)
+  try {
+    // Make the API request for email confirmation
+    const response = await fetch(`/api/job_experience/${user_id}/`, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Extract the error details
+      throw new Error(`Failed to fetch  job_experience : ${errorData.message}`);
+    }
+
+    // Parse and return the response data
+    const data = await response.json();
+    console.log("job_experience  Data:", data);  // Log the data for verification
+    return data;
+
+  } catch (error) {
+    console.error("Error fetching job_experience data:", error);
+    return null;  // Return null in case of an error
+  }
+};
+
+
+
 
 

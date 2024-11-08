@@ -25,7 +25,7 @@ import DeleteModal from "../modals/delete-modal";
 import CertificationModal from "../modals/certification-modal";
 import CaseStudyUpload from "../modals/case-study-modal";
 import Achievement from "../modals/achievement-modal";
-import { getTopSkills, getUserDomain, getUserSummary } from "../utils/util";
+import { getTopSkills, getUserDomain, getUserSummary, getUserJobExperience } from "../utils/util";
 
 const ProfileCreationPage = () => {
 
@@ -43,6 +43,7 @@ const ProfileCreationPage = () => {
   const [userSummary, setUserSummary] = useState(`Here’s your moment to shine! 
     Share what makes you unforgettable—give the world a reason to stop, smile, and say, ‘Tell me more!`);
   const [educationDetails, setEducationDetails] = useState("");
+  const [userJobExp, setUserJobExp] = useState([]);
 
 
   // Function to handle the deletion of the achievement card
@@ -146,6 +147,20 @@ const ProfileCreationPage = () => {
   };
 
 
+
+  const fetchuserJobDetails = async (userId) => {
+    try {
+      const response = await getUserJobExperience(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setUserJobExp(response.data); // Update state with the skills array
+        console.log(userJobExp, response.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
   useEffect(() => {
     // Fetch top 5 skills from the API
     const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
@@ -155,6 +170,7 @@ const ProfileCreationPage = () => {
     fetchUserDomain(userId)
     fetchUserSummary(userId)
     fetchEducationDetails(userId)
+    fetchuserJobDetails(userId)
   }, []);
 
 
@@ -227,7 +243,7 @@ const ProfileCreationPage = () => {
                           {educationDetails.Degree}
                         </p>
                         <p className={styles.amityUniversity}>
-                         {educationDetails.Institution} - {educationDetails["Year of course end"]}
+                          {educationDetails.Institution} - {educationDetails["Year of course end"]}
                         </p>
                       </b>
                     </div>
@@ -254,46 +270,29 @@ const ProfileCreationPage = () => {
                     src="/vector-6.svg"
                   />
                   <div className={styles.experiences}>
-                    <div className={styles.experienceItems}>
-                      <div className={styles.experienceDetails}>
-                        <div className={styles.experienceIcons} />
+                    {userJobExp.map((experience, index) => (
+                      <div className={styles.experienceItems} key={index}>
+                        <div className={styles.experienceDetails}>
+                          <div className={styles.experienceIcons} />
+                        </div>
+                        <div className={styles.razorpaySoftwareEngineeringContainer}>
+                          {experience["Company Name"] && (
+                            <p className={styles.razorpay}>{experience["Company Name"]}</p>
+                          )}
+                          {experience.Position && (
+                            <p className={styles.softwareEngineeringInternshi}>{experience.Position}</p>
+                          )}
+                          {experience["date/time"] && (
+                            <p className={styles.jan2024}>{experience["date/time"]}</p>
+                          )}
+                          {experience.location && (
+                            <p className={styles.softwareEngineeringInternshi}>{experience.location}</p>
+                          )}
+                        </div>
                       </div>
-
-                      <div
-                        className={styles.razorpaySoftwareEngineeringContainer}
-                      >
-                        <p className={styles.razorpay}>Razorpay</p>
-                        <p className={styles.softwareEngineeringInternshi}>
-                          Software Engineering Internship
-                        </p>
-                        <p className={styles.jan2024}>
-                          Jan 2024 - Present - Full Time
-                        </p>
-                        <p className={styles.softwareEngineeringInternshi}>
-                          Gurgaon, India
-                        </p>
-                      </div>
-                    </div>
-                    <div className={styles.experienceItems}>
-                      <div className={styles.experienceDetails}>
-                        <div className={styles.experienceIcons} />
-                      </div>
-                      <div
-                        className={styles.razorpaySoftwareEngineeringContainer}
-                      >
-                        <p className={styles.razorpay}>1mg</p>
-                        <p className={styles.softwareEngineeringInternshi}>
-                          Software Engineering Internship
-                        </p>
-                        <p className={styles.jan2024}>
-                          Oct 2023 - Dec 2023 - Full Time
-                        </p>
-                        <p className={styles.softwareEngineeringInternshi}>
-                          Gurgaon, India
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
+
                 </div>
               </div>
             </div>
