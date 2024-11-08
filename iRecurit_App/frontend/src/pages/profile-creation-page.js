@@ -165,7 +165,6 @@ const ProfileCreationPage = () => {
     // Fetch top 5 skills from the API
     const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
     // const userId = "88a2eb2d-d76d-4158-ac61-e2a2d5163671"
-
     fetchTopSkills(userId);
     fetchUserDomain(userId)
     fetchUserSummary(userId)
@@ -243,7 +242,7 @@ const ProfileCreationPage = () => {
                           {educationDetails.Degree}
                         </p>
                         <p className={styles.amityUniversity}>
-                          {educationDetails.Institution} - {educationDetails["Year of course end"]}
+                         {educationDetails["Year of course end"] ? `${educationDetails.Institution} - ${educationDetails["Year of course end"]}` : educationDetails.Institution}
                         </p>
                       </b>
                     </div>
