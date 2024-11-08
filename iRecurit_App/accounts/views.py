@@ -46,6 +46,7 @@ from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 import base64
+from typing import Dict
 
 
 logging.basicConfig(
@@ -780,7 +781,7 @@ class Collate(APIView):
     
     def extract_education_section(self, text):
     # Find the starting position of the "Education" section
-        match = re.search(r'\b(EDUCATION|Education|Academic Background|QUALIFICATIONS|Studies)\b', text, re.IGNORECASE)
+        match = re.search(r'\b(EDUCATION|Education|Academic Background|QUALIFICATIONS|Studies|EDUCATIONAL QUALIFICATION|EDUCATIONAL CREDENTIALS)\b', text, re.IGNORECASE)
         
         if not match:
             return None  # Return None if the "education" section is not found
@@ -813,7 +814,7 @@ class Collate(APIView):
                     - "JobRole": Role in the project.
                     - "framework": The framework(s) used (e.g., React, Django). Default to "N/A" if not applicable.
                     - "programming_language": The programming language(s) used (e.g., Python, C++). Default to "N/A" if not applicable.
-                    - "tools": The tools used (e.g., Git, Docker). Default to "N/A" if not applicable.
+                    - "tools": The tools used (e.g., Git, Docker) also add the database in this(like Mongodb, MySQL). Default to "N/A" if not applicable.
                     - "database": The database used, if any. Default to "N/A" if not applicable.
                     - "cloud_technology": Cloud technology used in the projects like AWS, GCP, if any. Default to "N/A" if not applicable.
                     - "time": Time spent on the project in months. (only numbers in months)
@@ -844,13 +845,15 @@ class Collate(APIView):
             # Define the prompt for extracting job details
             prompt = ChatPromptTemplate.from_template(
                 '''
-            Parse the given text to extract all job details without taking the project into consideraion of the candidate  and return a JSON object containing 
+            Parse the given text to extract all job details without taking the project into consideraion of the candidate  and return in JSON format with consistent structure, regardless of the content
                 the following fields:
 
                         - Comapany Name
                         - Position
                         - date/time in string(get the months in name not in number)
                         - location
+                        
+                        And do not give any other details or explanation
 
                 {experience_text}
                 '''
@@ -878,12 +881,14 @@ class Collate(APIView):
             '''
             Parse the given education text to extract only one latest educational information and return a JSON object containing 
                 the following fields:
-
+                    
                         - Institution
-                        - In which tire of city the institute in based of(Example tire 1, tire 2)
+                        - Tier : In which tire of city the institute in based of(Example tire 1, tire 2)
                         - Degree
                         - CGPA
                         - Year of course end
+                        
+                        And do not give any other details or explanation
                         
                 Here is the education section:
                 {education_text}
@@ -909,6 +914,7 @@ class Collate(APIView):
                 Provide a concise, professional summary of the candidate's resume.
                 Focus on presenting the candidate's most relevant strengths and recent roles to give recruiters a quick understanding of their background.
                 Avoid unnecessary details and structure the summary to be impactful and recruiter-friendly in 2-4 lines.
+                Just give me the summary text nothing else and keep the formate consistent.
 
                 {total_text}
                 '''
@@ -941,7 +947,7 @@ class Collate(APIView):
             # Handle different possible structures of job_details
             if isinstance(job_details, dict):
                 if "job_details" in job_details:
-                    job_details_list = job_details.get("job_details" or "jobs", [])
+                    job_details_list = job_details.get("job_details" or "Jobs", [])
                 else:
                     job_details_list = [job_details]  # Single job entry
             elif isinstance(job_details, list):
@@ -1040,6 +1046,67 @@ class Collate(APIView):
                     degree=degrees,
                     cgpa=cgpas,
                     end_date=end_dates
+                )
+                candidate_education.save()
+                logging.info("New education entry created in DB.")
+
+        except json.JSONDecodeError as e:
+            logging.error(f"Failed to parse education_details JSON: {e}")
+            return {"error": f"JSON parsing error: {e}"}
+        except Exception as e:
+            logging.error(f"Error saving education details to DB: {e}")
+            return {"error": f"Error saving to DB: {e}"}
+        
+    
+    def save_education_detail_to_db(self, user_id, education_detail):
+        try:
+            # Convert JSON string to dictionary if necessary
+            if isinstance(education_detail, str):
+                logging.info("Converting education_detail from JSON string to dictionary.")
+                education_detail = json.loads(education_detail)
+
+            # Make sure we're always working with a list for consistent processing
+            education_list = []
+            if isinstance(education_detail, dict):
+                education_list = [education_detail]  # Wrap single entry in a list
+            elif isinstance(education_detail, list):
+                education_list = education_detail
+            else:
+                logging.error("Invalid JSON format in education details.")
+                return {"error": "Invalid JSON format in education details."}
+
+            # Fetch the resume document
+            resume = Resume.objects.get(candidate=user_id)
+
+            # Retrieve or create the CandidateEducation entry
+            candidate_education = CandidateEducation.objects(resume=resume).first()
+
+            # Extract fields to be saved as lists, converting all values to strings
+            institutions = [str(edu.get("Institution", "")) for edu in education_list]
+            degrees = [str(edu.get("Degree", "")) for edu in education_list]
+            cgpas = [str(edu.get("CGPA", "")) for edu in education_list]  # Convert to strings
+            end_dates = [str(edu.get("Year of course end", "")) for edu in education_list]  # Convert to strings
+            tier = [str(edu.get("Tier", "")) for edu in education_list]  # Convert to strings
+
+            if candidate_education:
+                # Update the existing document
+                candidate_education.institution_name = institutions
+                candidate_education.degree = degrees
+                candidate_education.cgpa = cgpas
+                candidate_education.end_date = end_dates
+                candidate_education.tier = tier
+                candidate_education.save()
+                logging.info("Existing education entry updated in DB.")
+            else:
+                # Create a new document
+                candidate_education = CandidateEducation(
+                    resume=resume,
+                    candidate_id=user_id,
+                    institution_name=institutions,
+                    degree=degrees,
+                    cgpa=cgpas,
+                    end_date=end_dates,
+                    tier=tier
                 )
                 candidate_education.save()
                 logging.info("New education entry created in DB.")
@@ -1165,7 +1232,7 @@ class Collate(APIView):
                         job_response = job_response[8:].strip("```").strip()  # Remove code block markers
 
                     job_details = json.loads(job_response)
-                except json.JSONDecodeError or Exception  as e:
+                except Exception  as e:
                     logging.error(f"Error: Unable to parse job details JSON.{e}")
                     return {"error": "Invalid JSON format in job details."}
                 
@@ -1278,6 +1345,7 @@ class Collate(APIView):
 
                     
                 return final_json
+
 
             except Resume.DoesNotExist:
                 return Response({"error": "Resume not found."}, status=status.HTTP_404_NOT_FOUND)
@@ -1419,6 +1487,7 @@ class CandidateEducationDetail(APIView):
                     "Degree": candidate_education.degree[0] if candidate_education.degree else None,
                     "CGPA": None if candidate_education.cgpa and candidate_education.cgpa[0] == "None" else candidate_education.cgpa[0] if candidate_education.cgpa else None,
                     "Year of course end": None if candidate_education.end_date and candidate_education.end_date[0] == "None" else candidate_education.end_date[0] if candidate_education.end_date else None,
+                    "Tier": None if candidate_education.tier and candidate_education.tier[0] == "None" else candidate_education.tier[0] if candidate_education.tier else None,
                 }
                 
                 return Response({
@@ -1466,3 +1535,175 @@ class CandidateSummary(APIView):
             
             
 
+def fetch_candidate_data(user_id):
+    
+    candidate_skills = CandidateSkills.objects(candidate_id=user_id).first()
+    if not candidate_skills:
+        print(f"No skills data found for candidate ID: {user_id}")
+        return None
+    
+    candidate_education = CandidateEducation.objects(candidate_id=user_id).first()
+    if not candidate_education:
+        print(f"No education data found for candidate ID: {user_id}")
+        return None
+    
+    candidate_data = {
+        "experience_years": candidate_skills.total_years_of_experience,
+        "skills_acquired": len(candidate_skills.programming_languages) + len(candidate_skills.framework) + len(candidate_skills.tools),
+        "degree": candidate_education.degree[0] if candidate_education.degree else "unknown",
+        "tier": candidate_education.tier[0] if candidate_education.tier else "unknown",
+        #"achievements": bool(candidate_skills.job_role)  # Assuming achievements if job roles/projects exist
+    }
+    
+    return candidate_data
+
+def grade_candidate(user_id):
+    candidate_data = fetch_candidate_data(user_id)
+    if not candidate_data:
+        print(f"Unable to fetch data for candidate ID: {user_id}")
+        return None
+    
+    score = calculate_candidate_score(candidate_data)
+    print(f"Candidate ID: {user_id} | Score: {score}")
+    return score
+
+
+def calculate_candidate_score(candidate_data: Dict) -> float:
+    """
+    Calculate the candidate's profile score based on the grading algorithm.
+    """
+    # Define weightages for each factor
+    weights = {
+        "experience": 0.35,
+        "skills": 0.30,
+        "degree": 0.20,
+        "tier": 0.15,
+        # "achievements": 0.05
+    }
+
+    # Experience scoring
+    experience_years = candidate_data['experience_years']
+    if experience_years < 2:
+        experience_score = 5
+    elif 2 <= experience_years < 5:
+        experience_score = 6
+    elif 5 <= experience_years < 10:
+        experience_score = 7
+    elif 10 <= experience_years < 15:
+        experience_score = 8
+    else:
+        experience_score = 9
+        
+    logging.info(F"experience_score:{experience_score}")
+
+    # Skills scoring
+    skills_acquired = candidate_data['skills_acquired']
+    if experience_years <= 5:
+        required_skills = 1.5 * experience_years
+    elif experience_years <= 10:
+        required_skills = 5 + 1.0 * (experience_years - 5)
+    elif experience_years <= 15:
+        required_skills = 10 + 0.5 * (experience_years - 10)
+    else:
+        required_skills = 12.5 + 0.25 * (experience_years - 15)
+
+    if skills_acquired >= required_skills:
+        skills_score = 10
+    elif skills_acquired >= 0.8 * required_skills:
+        skills_score = 9
+    elif skills_acquired >= 0.6 * required_skills:
+        skills_score = 8
+    else:
+        skills_score = 5
+        
+    logging.info(f"required_skills:{required_skills}")
+    logging.info(f"skills_score:{skills_score}")
+
+    # Degree scoring
+    degree = candidate_data['degree'].lower()
+    if degree in ['m.tech', 'masters in computer science', "master of science in computer science & technology"]:
+        degree_score = 10
+    elif degree in ['b.tech', 'bachelors in computer science']:
+        degree_score = 9
+    elif degree == 'mca':
+        degree_score = 8
+    elif degree in ['m.tech non-cs', 'masters non-cs']:
+        degree_score = 7
+    elif degree in ['b.tech non-cs']:
+        degree_score = 6
+    else:
+        degree_score = 4
+    
+    logging.info(f"degree_score{degree_score}")
+
+    # Institution scoring
+    tier = candidate_data['tier'].lower()
+    if tier == 'tier 1':
+        tier_score = 10
+    elif tier == 'tier 2':
+        tier_score = 9
+    elif tier == 'tier 3':
+        tier_score = 7
+    else:
+        tier_score = 5
+        
+    logging.info(f"tier_score:{tier_score}")
+
+    # Achievements scoring
+    # achievements_score = 10 if candidate_data.get('achievements') else 0
+
+    # Calculate total score based on weights
+    total_score = (
+        weights["experience"] * (experience_score / 10) +
+        weights["skills"] * (skills_score / 10) +
+        weights["degree"] * (degree_score / 10) +
+        weights["tier"] * (tier_score / 10) 
+        # weights["achievements"] * (achievements_score / 10)
+    ) * 10  # Scale to out of 10
+
+    logging.info(total_score)
+    return round(total_score, 2)
+    
+
+
+class CandidateScore(APIView):
+    def get(self, request, user_id):
+        try:
+            # Retrieve candidate's experience, skills, degree, institution, and achievements from the database
+            candidate_skills = CandidateSkills.objects(candidate_id=user_id).first()
+            candidate_education = CandidateEducation.objects(candidate_id=user_id).first()
+            
+            if candidate_skills and candidate_education:
+                # Extracting the data for scoring
+                candidate_data = {
+                    "experience_years": candidate_skills.total_years_of_experience,
+                    "skills_acquired": len(candidate_skills.framework) + len(candidate_skills.programming_languages) + len(candidate_skills.tools) + len(candidate_skills.cloud_technologies),
+                    "degree": candidate_education.degree[0] if candidate_education.degree else "unknown",
+                    "tier": candidate_education.tier[0] if candidate_education.tier else "unknown",
+                    # "achievements": bool(candidate_skills.domain)  # Assuming achievements if there's a domain
+                }
+                
+                # Calculate the score using your grading function
+                score = calculate_candidate_score(candidate_data)
+                print(score)
+                
+                # Response with score data
+                return Response({
+                    'status': status.HTTP_200_OK,
+                    'success': True,
+                    'data': {
+                        'candidate_id': user_id,
+                        'score': score
+                    },
+                    'message': 'Candidate score calculated successfully'
+                }, status=status.HTTP_200_OK)
+            
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Candidate data not found."
+                }, status=status.HTTP_404_NOT_FOUND)
+        
+        except Exception as e:
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -103,6 +103,7 @@ class CandidateEducation(Document):
     cgpa = ListField(StringField())
     degree = ListField(StringField())
     end_date = ListField(StringField())
+    tier = ListField(StringField())
     
     meta = {'collection' : 'candidate_education'}
     
