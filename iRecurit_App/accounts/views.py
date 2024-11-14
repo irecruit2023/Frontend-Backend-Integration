@@ -867,7 +867,7 @@ class Collate(APIView):
 
     # Function to extract the experience section from the resume text
     def extract_experience_section(self, text):
-        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE|EMPLOYMENT DETAILS)\b', text, re.IGNORECASE)
+        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE|EMPLOYMENT DETAILS|TECHNICAL SKILL SET| TECHNICAL SKILL| SKILLS)\b', text, re.IGNORECASE)
 
         if not match:
             return None  # Return None if the "experience" section is not found
