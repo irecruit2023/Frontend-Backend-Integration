@@ -80,6 +80,7 @@ class CandidateSkills(Document):
     # time_spent = DictField()
     total_years_of_experience = FloatField()
     domain = StringField()
+    score = FloatField(default=0)
     
     meta = {'collection': 'candidate_skills'}
     
@@ -114,4 +115,23 @@ class CandidateResumeSummary(Document):
     summary = StringField()
     
     meta = {'collection' : 'candidate_resume_summary'}
+    
+    
+class Candidate_Achivement_Certificate(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    resume = ReferenceField(Resume)
+    candidate_id = ReferenceField(User)
+    achievements_list = ListField(StringField(), default=[])
+    certificate_name = ListField(StringField())
+    certificate_issuer = ListField(StringField())
+    
+    suggested_certificate_name = ListField(StringField())
+    suggested_certificate_issuer = ListField(StringField())
+    suggested_certificate_link = ListField(StringField())
+    suggested_certificate_level = ListField(StringField())
+    suggested_certificate_relevent_score = ListField(StringField())
+    
+    meta = {'collection' : 'candidate_achivement_certificate'}
+    
+    
     
