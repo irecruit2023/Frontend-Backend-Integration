@@ -723,7 +723,7 @@ class Chart_Data_API(APIView):
                 score, grade = self.calculate_skill_score_and_grade(months_of_experience, total_experience_months, total_years_of_experience)
 
                 # Append the skill name with its grade and the corresponding score
-                labels.append(f"{skill} ({grade})")
+                labels.append(f"{skill} ")
                 dataset.append(score)
 
             # Prepare the response data in the specified chart format
