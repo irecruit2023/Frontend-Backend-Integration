@@ -9,13 +9,35 @@ import { ReactComponent as  VerticalMenu } from "../assets/icons/overflowmenuver
 import { ReactComponent as  Avatar } from "../assets/icons/iconuseravatar.svg";
 import { useNavigate } from "react-router-dom";
 
-const TopNavBar = ({ className = "" }) => {
+const TopNavBar = ({ className = "" , userType = "user"}) => {
   const [searchValue, setSearchValue] = useState("");
   const navigate = useNavigate();
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
   };
+
+
+
+    // Menu items for user and organization
+    const userMenu = [
+      { label: "Jobs", link: "/jobs" },
+      { label: "Events", link: "/events" },
+      { label: "Blogs", link: "/blogs" },
+    ];
+  
+    const organizationMenu = [
+      { label: "Account", link: "/account" },
+      { label: "Inbox", link: "/inbox" },
+      { label: "Contacts", link: "/contacts" },
+      { label: "Privacy Setting", link: "/privacy-settings" },
+      { label: "Feedback", link: "/feedback" },
+    ];
+
+
+
+    const menu = userType === "user" ? userMenu : organizationMenu;
+
 
   return (
     <header className={[styles.topNavBar, className].join(" ")}>
@@ -27,14 +49,22 @@ const TopNavBar = ({ className = "" }) => {
               <IrecruitLogo/>
             </div>
             <div className={styles.primaryNav}>
-              <a className={styles.jobs}>Jobs</a>
-              <a className={styles.events}>Events</a>
-              <a className={styles.blogs}>Blogs</a>
-              <div className={styles.irecruitProPlanWrapper}>
+              {menu.map((item) => (
+                <a
+                  key={item.label}
+                  className={styles.item}
+                  style ={{color:'black', fontWeight:'500', whiteSpace: "nowrap"}}
+                  onClick={() => navigate(item.link)}
+                >
+                  {item.label}
+                </a>
+              ))}
+
+              {userType === "user"  && <div className={styles.irecruitProPlanWrapper}>
                 <a className={styles.irecruitProPlan}>
                   iRecruit Pro Plan
                 </a>
-              </div>
+              </div>}
             </div>
           </div>
           <div className={styles.userNavContainerWrapper}>

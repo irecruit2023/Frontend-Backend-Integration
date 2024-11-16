@@ -8,9 +8,13 @@ import Home from "./pages/home";
 import SignUp from "./pages/signUp";
 import SignUpMessage from "./pages/signUpMessage";
 import Main from "./pages/main";
-import Profile from "./pages/profile-creation-page";
+import Profile from "./pages/profile";
 import EmailActivation from "./pages/activation";
 import EmailExpiredMessage from "./pages/email-expired-message";
+import Jobs from "./pages/jobs";
+import Account from "./pages/account";
+
+
 
 function App() {
   const action = useNavigationType();
@@ -30,6 +34,8 @@ function App() {
         <Route path="/login" element={<Login/>} />
         <Route path="/signUp" element={<SignUp/>} />
         <Route path="/home" element={<Home />} />
+        <Route path="/jobs" element={<Jobs/>} />
+        <Route path="/account" element={<Account/>} />
         <Route path="/main" element={<Main/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/signUpMessage" element={<SignUpMessage/>} />

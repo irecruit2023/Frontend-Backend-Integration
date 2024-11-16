@@ -11,7 +11,7 @@ import { ReactComponent as  RightHomeIcon } from "../assets/icons/right.svg";
 
 
 
-const Home = () => {
+const Jobs = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -21,49 +21,12 @@ const Home = () => {
 
 
 
-  const messages = {
-    user: {
-      greeting: `Hello ${JSON.parse(localStorage.loginInformation).data.name}, and welcome to iRecruit!`,
-      description: [
-        "This platform is your gateway to countless opportunities, crafted to help you showcase your skills and find your dream career.",
-        "Together, let's embark on this journey, where your talent meets its destiny in the sprawling landscape of opportunities.",
-      ],
-    },
-    organization: {
-      greeting: `Hello ${JSON.parse(localStorage.loginInformation).data.name}, and welcome to iRecruit for Organizations!`,
-      description: [
-        "This platform empowers your organization to discover the best talent and streamline your recruitment process like never before.",
-        "Use our cutting-edge tools to post jobs, manage applications, and connect with top talent efficiently.",
-      ],
-    },
-    job: {
-      greeting: `Job`,
-      description: [
-        `Our portal streamlines the hiring process, offering a seamless way to add job opportunities and attract the perfect candidate—faster, simpler, and more effectively. 
-
-        Choose to upload your job description as a PDF or build it out using our intuitive template with ready-to-go sections. With our tools, you’ll be set up to connect with top talent effortlessly!
-
-        Next - Our advanced AI Engine verifies and validates your submission to ensure all required sections are present, so only complete, high-quality job descriptions are posted—enhancing your listing's appeal and attracting better candidate responses. If any details are missing, you’ll be notified instantly, giving you the chance to fine-tune your JD for maximum impact. `,
-      ],
-    },
-
-    Account: {
-      greeting: `Job`,
-      description: [
-        `Please review the details and confirm if everything is accurate, or make any necessary updates where needed.`,
-      ],
-    },
-  };
-
-
-
-
   return (
     <div className={styles.root}>
-      <TopNavBar />
+      <TopNavBar  userType="jobs"/>
       <main className={styles.contentContainerWrapper}>
         <section className={styles.contentContainer}>
-          <WelcomeHeader/>
+          <WelcomeHeader userType ="jobs" />
           <div className={styles.benefitsContainerWrapper}>
             <div className={styles.benefitsContainer}>
               <div className={styles.unleashTheFullPotentialOfParent}>
@@ -111,4 +74,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Jobs;

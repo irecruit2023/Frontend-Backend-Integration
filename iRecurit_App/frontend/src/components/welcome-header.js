@@ -1,0 +1,64 @@
+import { React, useState } from 'react';
+import styles from "./welcome-header.module.css";
+
+
+
+
+
+const WelcomeHeader = ({userType= "user"}) => {
+    console.log(userType)
+
+    const messages = {
+        user: {
+            greeting: `Hello ${JSON.parse(localStorage.loginInformation).data.name}, and welcome to iRecruit!`,
+            description: [
+                "This platform is your gateway to countless opportunities, crafted to help you showcase your skills and find your dream career.",
+                "Together, let's embark on this journey, where your talent meets its destiny in the sprawling landscape of opportunities.",
+            ],
+        },
+        organization: {
+            greeting: `Hello ${JSON.parse(localStorage.loginInformation).data.name}, and welcome to iRecruit for Organizations!`,
+            description: [
+                "This platform empowers your organization to discover the best talent and streamline your recruitment process like never before.",
+                "Use our cutting-edge tools to post jobs, manage applications, and connect with top talent efficiently.",
+            ],
+        },
+        jobs: {
+            greeting: `Job`,
+            description: [
+                `Our portal streamlines the hiring process, offering a seamless way to add job opportunities and attract the perfect candidate—faster, simpler, and more effectively. 
+
+        Choose to upload your job description as a PDF or build it out using our intuitive template with ready-to-go sections. With our tools, you’ll be set up to connect with top talent effortlessly!
+
+        Next - Our advanced AI Engine verifies and validates your submission to ensure all required sections are present, so only complete, high-quality job descriptions are posted—enhancing your listing's appeal and attracting better candidate responses. If any details are missing, you’ll be notified instantly, giving you the chance to fine-tune your JD for maximum impact. `,
+            ],
+        },
+
+        account: {
+            greeting: `Account`,
+            description: [
+                `Please review the details and confirm if everything is accurate, or make any necessary updates where needed.`,
+            ],
+        },
+    };
+
+    return (
+        <div className={styles.content}>
+            <h2 className={styles.WelcomeContainer}>
+                {userType=== "user" && <> <span>Hello {JSON.parse(localStorage.loginInformation).data.name},</span>
+                <span className={styles.welcomeMsg}>
+                    {" "}
+                    and welcome to iRecruit!
+                </span> </>}
+                {messages[userType].greeting}
+            </h2> 
+            <div className={styles.description}>
+                {messages[userType].description}
+            
+            </div>
+        </div>
+
+    );
+};
+
+export default WelcomeHeader;

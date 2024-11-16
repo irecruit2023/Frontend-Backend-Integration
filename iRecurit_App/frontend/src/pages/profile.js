@@ -1,6 +1,6 @@
 // import FrameComponent3 from "../components/frame-component3";
 // import PrimaryButton from "../components/primary-button1";
-import styles from "./profile-creation-page.module.css";
+import styles from "./profile.module.css";
 import React, { useEffect, useState } from 'react';
 
 import cIcon from '../assets/images/c@2x.png';

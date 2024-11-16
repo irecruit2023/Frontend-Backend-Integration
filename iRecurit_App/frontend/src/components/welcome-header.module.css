@@ -1,0 +1,36 @@
+.welcomeMsg {
+    color: var(--colour-primary-p4-text);
+  }
+  .WelcomeContainer,
+  .description {
+    width: 968px;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+  }
+  .WelcomeContainer {
+    margin: 0;
+    font-size: inherit;
+    line-height: 31px;
+    font-weight: 600;
+    font-family: inherit;
+  }
+  .description {
+    font-size: var(--popins-body-copy-body-regular-size);
+    color: var(--colour-primary-p4-text);
+  }
+  .content {
+    align-self: stretch;
+    border-radius: var(--br-base);
+    background-color: #ffeceb;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--padding-45xl) var(--padding-xl) var(--padding-45xl)
+      var(--padding-96xl);
+    box-sizing: border-box;
+    gap: var(--gap-5xl);
+    max-width: 100%;
+    color: var(--colour-primary-p1);
+  }
