@@ -68,7 +68,7 @@ def index_html(request):
     return HttpResponse(content, content_type='text/html')
 
 
-
+## api for signup
 @api_view(['POST'])
 @csrf_exempt
 def signup_view(request):
@@ -113,6 +113,7 @@ def signup_view(request):
         #return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
 
 
+#api to verify the email
 @csrf_exempt
 @api_view(['GET'])
 def verify_email(request, uidb64, token):
@@ -161,8 +162,10 @@ def verify_email(request, uidb64, token):
             return redirect('https://irecruit-u.com/expired')
     else:
         return redirect('https://irecruit-u.com/expired')
-    
-    
+
+
+
+#api to send the verification email    
 @api_view(['GET'])
 def resend_verification_email(request):
     try:
@@ -218,7 +221,9 @@ def resend_verification_email(request):
         }
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    
+
+
+# api for user login
 @api_view(['POST'])
 @csrf_exempt
 def login_view(request):
@@ -275,6 +280,8 @@ def login_view(request):
         
 
 
+
+# api for user verification
 class VerifyUser(APIView):
     authentication_classes = [JWTAuthentication]
     def get(self, request):
@@ -303,6 +310,7 @@ class VerifyUser(APIView):
 
 
 
+# api for getting refresh token
 @api_view(['POST'])
 @csrf_exempt
 def refresh_token_view(request):
@@ -341,9 +349,11 @@ def refresh_token_view(request):
     return Response(response)
 
 
-    
-scheduler = JobScheduler()
 
+
+
+scheduler = JobScheduler()
+# api for uploading the resume
 class UploadResume(APIView):
     parser_classes = [MultiPartParser, FormParser]
     authentication_classes = [JWTAuthentication] 
@@ -390,7 +400,9 @@ class UploadResume(APIView):
 
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
         
-        
+
+
+# api to check the email confirmation
 class Check_Confirmation(APIView):
     def get(self, request):
         try: 
@@ -441,7 +453,10 @@ class Check_Confirmation(APIView):
                     "message": str(e)
             }
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+
+
+
 class Generate_Profile(APIView):
     authentication_classes = [JWTAuthentication]
     
@@ -499,7 +514,9 @@ class Generate_Profile(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
-        
+
+
+# api to get the user resume that is uploaded by user
 class GetResume(APIView):
     authentication_classes = [JWTAuthentication]
 
@@ -625,7 +642,9 @@ class UpdateJobStatus(APIView):
                 }    
         return Response(response, status=status.HTTP_404_NOT_FOUND)
     
-    
+
+
+# api for uploading candidate profile picture 
 class Upload_profile_picture(APIView):
     
     authentication_classes = [JWTAuthentication]
@@ -651,7 +670,9 @@ class Upload_profile_picture(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+
+
+# api to get the profile picture of the candidate
 class Profile_Picture_Retrieve(APIView):
     authentication_classes = [JWTAuthentication]
     """
@@ -686,6 +707,7 @@ class Profile_Picture_Retrieve(APIView):
 
 
 
+# api to get the values for spider chart on the profile section
 class Chart_Data_API(APIView):
     authentication_classes = [JWTAuthentication]
 
@@ -766,6 +788,8 @@ class Chart_Data_API(APIView):
             logging.error(f"Internal Server Error: {str(e)}")
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+
+# function  for calculating the score for each skills
     def calculate_skill_score_and_grade(self, months_of_experience, total_experience_months, total_years_of_experience):
         """
         Calculate the skill score and assign a grade based on months of experience
@@ -848,6 +872,8 @@ if not openai_api_key:
 # Initialize the LLM model using Langchain
 llm = ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key)
 
+
+# api that is used for generating the profile of the candidate
 class Collate(APIView):
     authentication_classes = [JWTAuthentication]
 
@@ -882,6 +908,7 @@ class Collate(APIView):
 
         return experience_section.strip()
     
+    #Function to extract the education section
     def extract_education_section(self, text):
     # Find the starting position of the "Education" section
         match = re.search(r'\b(EDUCATION|Education|Academic Background|QUALIFICATIONS|Studies|EDUCATIONAL QUALIFICATION|EDUCATIONAL CREDENTIALS)\b', text, re.IGNORECASE)
@@ -899,6 +926,7 @@ class Collate(APIView):
 
         return education_section.strip()
     
+    #Function to extract the achievement section
     def extract_achievements_section(self, text):
         """
         Extracts text from the 'Achievements' section of the resume.
@@ -919,7 +947,8 @@ class Collate(APIView):
         else:
             logging.info("No 'Achievements' section found in resume.")
             return None  # Return None if no 'Achievements' section is found
-        
+    
+    #Function to extract the certificate section
     def extract_certificate_section(self, text):
         """
         Extracts text from the 'certificate' section of the resume.
@@ -987,7 +1016,7 @@ class Collate(APIView):
             logging.error(f"Error during LLM call: {e}")
             return {"error": f"Error during LLM call: {e}"}
         
-        
+    #Function to extract the job details 
     def extract_job_details(self, experience_text):
         try:
             # Define the prompt for extracting job details
@@ -1019,7 +1048,9 @@ class Collate(APIView):
         except Exception as e:
             logging.error(f"Error during LLM call for job details: {e}")
             return {"error": f"Error during LLM call: {e}"}
-        
+    
+    
+    # Function to extract the education details
     def extract_education_details(self, education_text):
         if not education_text:
             return {"error": "No education section found in the resume."}
@@ -1053,7 +1084,7 @@ class Collate(APIView):
             logging.error(f"Error during LLM call for education details: {e}")
             return {"error": f"Error during LLM call: {e}"}
         
-        
+    # Function to extract the summary of the candidate resume
     def extract_summary(self, total_text):
         try:
         # Define the prompt for generating a summary of the entire resume
@@ -1077,6 +1108,7 @@ class Collate(APIView):
         except Exception as e:
             return f"Error generating resume summary: {e}"
         
+    
     
     def extract_achievements(self, achievements_text):
         try:
@@ -1161,7 +1193,8 @@ class Collate(APIView):
         except Exception as e:
             logging.error(f"Error extracting certificate: {e}")
             return None
-            
+    
+    #Function to extract suggestation for the certificate on the basis of the candidate skills     
     def suggest_certifications(self, experience_text):
         # """Suggest relevant certifications based on experience with improved accuracy."""
         try:
@@ -1197,7 +1230,8 @@ class Collate(APIView):
             logging.error(f"Error extracting certificate: {e}")
             return None
         
-        
+    
+    # Function to save job details
     def save_job_details_to_db(self, user_id, job_details):
         try:
         # Parse job_details if it's a JSON string
@@ -1264,6 +1298,7 @@ class Collate(APIView):
             logging.error(f"Error saving job details to DB: {e}")
             return {"error": f"Error saving to DB: {e}"}
 
+    ## Function to save education details
     def save_education_detail_to_db(self, user_id, education_detail):
         try:
             # Convert JSON string to dictionary if necessary
@@ -1321,68 +1356,8 @@ class Collate(APIView):
             logging.error(f"Error saving education details to DB: {e}")
             return {"error": f"Error saving to DB: {e}"}
         
-    
-    def save_education_detail_to_db(self, user_id, education_detail):
-        try:
-            # Convert JSON string to dictionary if necessary
-            if isinstance(education_detail, str):
-                logging.info("Converting education_detail from JSON string to dictionary.")
-                education_detail = json.loads(education_detail)
-
-            # Make sure we're always working with a list for consistent processing
-            education_list = []
-            if isinstance(education_detail, dict):
-                education_list = [education_detail]  # Wrap single entry in a list
-            elif isinstance(education_detail, list):
-                education_list = education_detail
-            else:
-                logging.error("Invalid JSON format in education details.")
-                return {"error": "Invalid JSON format in education details."}
-
-            # Fetch the resume document
-            resume = Resume.objects.get(candidate=user_id)
-
-            # Retrieve or create the CandidateEducation entry
-            candidate_education = CandidateEducation.objects(resume=resume).first()
-
-            # Extract fields to be saved as lists, converting all values to strings
-            institutions = [str(edu.get("Institution", "")) for edu in education_list]
-            degrees = [str(edu.get("Degree", "")) for edu in education_list]
-            cgpas = [str(edu.get("CGPA", "")) for edu in education_list]  # Convert to strings
-            end_dates = [str(edu.get("Year of course end", "")) for edu in education_list]  # Convert to strings
-            tier = [str(edu.get("Tier", "")) for edu in education_list]  # Convert to strings
-
-            if candidate_education:
-                # Update the existing document
-                candidate_education.institution_name = institutions
-                candidate_education.degree = degrees
-                candidate_education.cgpa = cgpas
-                candidate_education.end_date = end_dates
-                candidate_education.tier = tier
-                candidate_education.save()
-                logging.info("Existing education entry updated in DB.")
-            else:
-                # Create a new document
-                candidate_education = CandidateEducation(
-                    resume=resume,
-                    candidate_id=user_id,
-                    institution_name=institutions,
-                    degree=degrees,
-                    cgpa=cgpas,
-                    end_date=end_dates,
-                    tier=tier
-                )
-                candidate_education.save()
-                logging.info("New education entry created in DB.")
-
-        except json.JSONDecodeError as e:
-            logging.error(f"Failed to parse education_details JSON: {e}")
-            return {"error": f"JSON parsing error: {e}"}
-        except Exception as e:
-            logging.error(f"Error saving education details to DB: {e}")
-            return {"error": f"Error saving to DB: {e}"}
         
-        
+    # Function to save summary
     def save_summary_to_db(self, user_id, summary_text):
         try:
             # Check if a summary already exists for the given resume and user
@@ -1497,8 +1472,11 @@ class Collate(APIView):
         
             return {"error": f"Error saving certificate data: {str(e)}"}
             
+            
+            
     def valid_value(self, value):
             return value and value != "N/A" and value != "Not specified"
+        
         
     # Function to collate experience data
     def collate_experience_data(self, user_id):
@@ -1536,7 +1514,7 @@ class Collate(APIView):
                 if not extracted_text:
                     return {"error": "Failed to extract text from the PDF."}
 
-                # Extract the experience/education/achievements section from the resume
+                # Extract the experience/education/achievements/certificate section from the resume
                 experience_section = self.extract_experience_section(extracted_text)
                 education_section = self.extract_education_section(extracted_text)
                 achievements_section = self.extract_achievements_section(extracted_text)
@@ -1547,15 +1525,15 @@ class Collate(APIView):
                 job_details_json = self.extract_job_details(experience_section)
                 job_response = job_details_json
                 
+                # Extract achievement details using the prompt and saving in db
                 achievements = self.extract_achievements(achievements_section)
-            
                 achievement_result = self.save_achievements(user_id, achievements)
                 if achievement_result.get("error"):
                         logging.error("Error saving achievements.")
                 
+                
+                # # Extract certificate details using the prompt and saving it to db
                 certificate = self.extract_certificate(certificate_section)
-
-                # Fallback to suggestion if certificate is empty or contains "certifications: []"
                 if certificate and '"certifications": []' not in certificate:
                     # Certificate is present and doesn't contain an empty list, so proceed with it
                     json_content = certificate
@@ -1587,7 +1565,6 @@ class Collate(APIView):
                     logging.error(f"Error: Unable to parse JSON from the certificate LLM output: {e}")
                     return {"error": "Invalid JSON format in the certificate data."}
 
-
                 # Log the data to be saved
                 logging.info(f"Data to be saved: {data}")
 
@@ -1612,11 +1589,14 @@ class Collate(APIView):
                 logging.info("Certificate data saved successfully.")
                                         
 
+
                 # Extract the skills as JSON using the LLM
                 skills_json = self.extract_experience_skills(experience_section)
 
                 # Process the LLM response
                 response_content = skills_json  # Assume this is the response from your LLM extraction method
+                
+                
                 
                 education_detail_json = self.extract_education_details(education_section)
                 
@@ -1787,8 +1767,9 @@ class Collate(APIView):
             'message': 'created & saved the skill json'
         }, status=status.HTTP_201_CREATED)
     
-    
-    
+
+
+#function to get the top skills     
 def get_top_skills(user_id):
     # Fetch the candidate profile data from MongoDB
     candidate_profile = CandidateSkills.objects(candidate_id=user_id).first()
@@ -1811,6 +1792,8 @@ def get_top_skills(user_id):
     top_skills = [skill for skill, value in sorted_skills]
     return top_skills
 
+
+#api to get the top skills  
 @api_view(['GET'])
 def top_skills_view(request, user_id):
     # Call the function to get the top 5 skills for the given candidate
@@ -1831,6 +1814,7 @@ def top_skills_view(request, user_id):
         }, status=status.HTTP_404_NOT_FOUND)
         
 
+#api to get the candidate domain
 class CandidateDomain(APIView):
     def get(self, request, user_id=None):
         try:
@@ -1854,7 +1838,8 @@ class CandidateDomain(APIView):
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        
+    
+# api to get candidate work experience
 class CandidateWorkExperiences(APIView):
     def get(self, request, user_id):
         
@@ -1896,6 +1881,7 @@ class CandidateWorkExperiences(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
         
 
+#api to get the candidate education details
 class CandidateEducationDetail(APIView):
     def get(self, request, user_id):
         try:
@@ -1930,6 +1916,8 @@ class CandidateEducationDetail(APIView):
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
+
+# api to get the summary
 class CandidateSummary(APIView):
     def get(self, request, user_id):
         
@@ -1990,6 +1978,7 @@ def grade_candidate(user_id):
     return score
 
 
+#funcation to calculate the score of candidate profile
 def calculate_candidate_score(candidate_data: Dict) -> float:
     """
     Calculate the candidate's profile score based on the grading algorithm.
@@ -2087,7 +2076,7 @@ def calculate_candidate_score(candidate_data: Dict) -> float:
     return round(total_score, 2)
     
 
-
+# api for candidate score
 class CandidateScore(APIView):
     def get(self, request, user_id):
         try:
@@ -2116,7 +2105,7 @@ class CandidateScore(APIView):
                     'status': status.HTTP_200_OK,
                     'success': True,
                     'data': {
-                        'candidate_id': user_id,
+                        # 'candidate_id': user_id,
                         'score': candidate_skills.score
                     },
                     'message': 'Candidate score calculated successfully'
@@ -2132,6 +2121,7 @@ class CandidateScore(APIView):
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+# api for candidate achievements
 class CandidateAchievements(APIView):
     def get(self, request, user_id):
         
@@ -2156,7 +2146,8 @@ class CandidateAchievements(APIView):
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        
+
+# api for candidate certificates
 class GetCertificate(APIView):
     def get(self, request, user_id):
         try:
@@ -2194,12 +2185,31 @@ class GetCertificate(APIView):
 
                 # If response_data contains certificates or suggestions, return them
                 if response_data:
-                    return Response(response_data, status=status.HTTP_200_OK)
+                    return Response({
+                        'status': status.HTTP_200_OK,
+                        'success': True,
+                        'data': response_data,
+                        'message': 'Got the candidate certificate'
+                    }, status=status.HTTP_200_OK)
                 else:
-                    return Response({"error": "No certificate or suggestion found."}, status=status.HTTP_404_NOT_FOUND)
-
+                    return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "No certificate or suggestion found."
+                }, status=status.HTTP_404_NOT_FOUND)
+                    
             else:
-                return Response({"error": "Certificate data not found for this user."}, status=status.HTTP_404_NOT_FOUND)
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Certificate data not found for this user."
+                }, status=status.HTTP_404_NOT_FOUND)
+                
 
         except Exception as e:
-            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message':  f"Internal Server Error: {str(e)}"
+                }, status=status.HTTP_404_NOT_FOUND)
+            
