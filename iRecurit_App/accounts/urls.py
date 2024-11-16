@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/score/<str:user_id>/', CandidateScore.as_view(), name='Candidate_score'),
     path('api/achievements/<str:user_id>/', CandidateAchievements.as_view(), name='Candidate_achievements'),
     path('api/certificates/<str:user_id>/', GetCertificate.as_view(), name='Candidate_certificates'),
+    path('api/upload_case_study/<str:user_id>/', UploadCsaStudyPPT.as_view(), name='Candidate_case_study'),
     #path('api/process/', ProcessResume.as_view(), name='ProcessResume'),
     path('index/', views.index_html, name='index_html'),
     re_path(r'^$', index_view, name='index'),  # Root URL
