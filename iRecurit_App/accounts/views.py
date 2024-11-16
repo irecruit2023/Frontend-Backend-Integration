@@ -31,10 +31,6 @@ from django.shortcuts import render
 import logging
 import os, json
 from django.shortcuts import redirect
-from datetime import datetime, timedelta
-from datetime import timedelta, datetime
-from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from collections import defaultdict
 from bson import ObjectId
@@ -47,6 +43,7 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 import base64
 from typing import Dict
+
 
 
 logging.basicConfig(
@@ -71,6 +68,7 @@ def index_html(request):
     return HttpResponse(content, content_type='text/html')
 
 
+## api for signup
 @api_view(['POST'])
 @csrf_exempt
 def signup_view(request):
@@ -115,6 +113,7 @@ def signup_view(request):
         #return HttpResponse(error_message, status=status.HTTP_400_BAD_REQUEST, content_type='text/plain')
 
 
+#api to verify the email
 @csrf_exempt
 @api_view(['GET'])
 def verify_email(request, uidb64, token):
@@ -163,8 +162,10 @@ def verify_email(request, uidb64, token):
             return redirect('https://irecruit-u.com/expired')
     else:
         return redirect('https://irecruit-u.com/expired')
-    
-    
+
+
+
+#api to send the verification email    
 @api_view(['GET'])
 def resend_verification_email(request):
     try:
@@ -220,7 +221,9 @@ def resend_verification_email(request):
         }
         return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-    
+
+
+# api for user login
 @api_view(['POST'])
 @csrf_exempt
 def login_view(request):
@@ -277,6 +280,8 @@ def login_view(request):
         
 
 
+
+# api for user verification
 class VerifyUser(APIView):
     authentication_classes = [JWTAuthentication]
     def get(self, request):
@@ -305,6 +310,7 @@ class VerifyUser(APIView):
 
 
 
+# api for getting refresh token
 @api_view(['POST'])
 @csrf_exempt
 def refresh_token_view(request):
@@ -343,9 +349,11 @@ def refresh_token_view(request):
     return Response(response)
 
 
-    
-scheduler = JobScheduler()
 
+
+
+scheduler = JobScheduler()
+# api for uploading the resume
 class UploadResume(APIView):
     parser_classes = [MultiPartParser, FormParser]
     authentication_classes = [JWTAuthentication] 
@@ -392,7 +400,9 @@ class UploadResume(APIView):
 
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
         
-        
+
+
+# api to check the email confirmation
 class Check_Confirmation(APIView):
     def get(self, request):
         try: 
@@ -443,7 +453,10 @@ class Check_Confirmation(APIView):
                     "message": str(e)
             }
             return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+
+
+
 class Generate_Profile(APIView):
     authentication_classes = [JWTAuthentication]
     
@@ -501,7 +514,9 @@ class Generate_Profile(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
-        
+
+
+# api to get the user resume that is uploaded by user
 class GetResume(APIView):
     authentication_classes = [JWTAuthentication]
 
@@ -627,7 +642,9 @@ class UpdateJobStatus(APIView):
                 }    
         return Response(response, status=status.HTTP_404_NOT_FOUND)
     
-    
+
+
+# api for uploading candidate profile picture 
 class Upload_profile_picture(APIView):
     
     authentication_classes = [JWTAuthentication]
@@ -653,7 +670,9 @@ class Upload_profile_picture(APIView):
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+
+
+# api to get the profile picture of the candidate
 class Profile_Picture_Retrieve(APIView):
     authentication_classes = [JWTAuthentication]
     """
@@ -686,40 +705,65 @@ class Profile_Picture_Retrieve(APIView):
                 'Message': 'Profile photo not found.'
                 })
 
-possible_labels = [
-    'JavaScript', 'Python', 'Machine Learning', 'Cloud', 'Java', 'C++', 'Ruby', 
-    'Django', 'NextJS', 'Shell scripting', 'Database', 'Docker', 'FastAPI', 'Go Lang'
-]
 
+
+# api to get the values for spider chart on the profile section
 class Chart_Data_API(APIView):
     authentication_classes = [JWTAuthentication]
-    
-    def get(self, request, *args, **kwargs):
-        
-        # Randomly select 7 unique labels from POSSIBLE_LABEL
-        labels= random.sample(possible_labels,6)
-        
-        # Generate two sets of random data, each having values between 0 and 100
-        dataset_1 = [random.randint(0,100) for _ in range(6)]
-        dataset_2 = [random.randint(0,100) for _ in range(6)]
-        
-        
-        #generating response
-        data = {
-            "labels": labels,
-            "datasets": [
-                {
-                    "label": 'My First Dataset',
-                    "data": dataset_1,
-                    "fill": True,
-                    "backgroundColor": 'rgba(255, 99, 132, 0.2)',
-                    "borderColor": 'rgb(255, 99, 132)',
-                    "pointBackgroundColor": 'rgb(255, 99, 132)',
-                    "pointBorderColor": '#fff',
-                    "pointHoverBackgroundColor": '#fff',
-                    "pointHoverBorderColor": 'rgb(255, 99, 132)',
-                },
-                {
+
+    def get(self, request, user_id):
+        try:
+            # Fetch candidate skill data from MongoDB
+            candidate_skills = CandidateSkills.objects(candidate_id=user_id).first()
+
+            if not candidate_skills:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "No skills data found for this candidate."
+                }, status=status.HTTP_404_NOT_FOUND)
+
+            total_years_of_experience = candidate_skills.total_years_of_experience
+            total_experience_months = total_years_of_experience * 12
+            skills_with_months = {}
+            logging.info(f"total_experience_months{total_experience_months}")
+
+            # Combine skills from different categories
+            for category in ['cloud_technologies', 'framework', 'tools', 'programming_languages']:
+                category_skills = getattr(candidate_skills, category, {})
+                skills_with_months.update(category_skills)
+
+            # Ensure we have at least 6 unique skills for the graph
+            selected_skills = random.sample(list(skills_with_months.keys()), min(6, len(skills_with_months)))
+            labels = []
+            dataset = []
+            dataset_2 = []
+
+            # Calculate scores and grading for each selected skill based on the experience data
+            for skill in selected_skills:
+                months_of_experience = skills_with_months.get(skill, 0)
+                score, grade = self.calculate_skill_score_and_grade(months_of_experience, total_experience_months, total_years_of_experience)
+
+                # Append the skill name with its grade and the corresponding score
+                labels.append(f"{skill} ")
+                dataset.append(score)
+
+            # Prepare the response data in the specified chart format
+            data = {
+                "labels": labels,
+                "datasets": [
+                    {
+                        "label": 'Candidate Skill Scores',
+                        "data": dataset,
+                        "fill": True,
+                        "backgroundColor": 'rgba(54, 162, 235, 0.2)',
+                        "borderColor": 'rgb(54, 162, 235)',
+                        "pointBackgroundColor": 'rgb(54, 162, 235)',
+                        "pointBorderColor": '#fff',
+                        "pointHoverBackgroundColor": '#fff',
+                        "pointHoverBorderColor": 'rgb(54, 162, 235)',
+                    },
+                    {
                     "label": 'My Second Dataset',
                     "data": dataset_2,
                     "fill": True,
@@ -729,11 +773,94 @@ class Chart_Data_API(APIView):
                     "pointBorderColor": '#fff',
                     "pointHoverBackgroundColor": '#fff',
                     "pointHoverBorderColor": 'rgb(54, 162, 235)',
-                }
-            ]
-        }
+                    }
+                ]
+            }
+
+            return Response({
+                'status': status.HTTP_200_OK,
+                'success': True,
+                'data': data,
+                'message': 'Skill chart data retrieved successfully.'
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            logging.error(f"Internal Server Error: {str(e)}")
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# function  for calculating the score for each skills
+    def calculate_skill_score_and_grade(self, months_of_experience, total_experience_months, total_years_of_experience):
+        """
+        Calculate the skill score and assign a grade based on months of experience
+        relative to total experience, with adjustments for career stage.
+        """
+        # Convert months to a relative score based on total experience
+        skill_relative_score = (months_of_experience / total_experience_months) * 100 if total_experience_months > 0 else 0
+
+        # Apply career-stage weighting based on total years of experience
+        if total_years_of_experience <= 3:
+            weighted_score = skill_relative_score * 1.1  # Early-career
+        elif total_years_of_experience <= 7:
+            weighted_score = skill_relative_score * 1.5  # Mid-career
+        else:
+            weighted_score = skill_relative_score * 2  # Senior-career
+
+        # Ensure the score does not exceed 100
+        weighted_score = min(weighted_score, 100)
+
+        # Determine the grade based on the weighted score
+        if weighted_score >= 85:
+            grade = "Expert"
+        elif weighted_score >= 65:
+            grade = "Proficient"
+        elif weighted_score >= 45:
+            grade = "Intermediate"
+        else:
+            grade = "Beginner"
+
+        logging.info(f"Skill: {months_of_experience} months, Score: {round(weighted_score, 2)}, Grade: {grade}")
+        return round(weighted_score, 2), grade
         
-        return Response(data)
+        
+        # Randomly select 7 unique labels from POSSIBLE_LABEL
+        # labels= random.sample(possible_labels,6)
+        
+        # # Generate two sets of random data, each having values between 0 and 100
+        # dataset_1 = [random.randint(0,100) for _ in range(6)]
+        # dataset_2 = [random.randint(0,100) for _ in range(6)]
+        
+        
+        # #generating response
+        # data = {
+        #     "labels": labels,
+        #     "datasets": [
+        #         {
+        #             "label": 'My First Dataset',
+        #             "data": dataset_1,
+        #             "fill": True,
+        #             "backgroundColor": 'rgba(255, 99, 132, 0.2)',
+        #             "borderColor": 'rgb(255, 99, 132)',
+        #             "pointBackgroundColor": 'rgb(255, 99, 132)',
+        #             "pointBorderColor": '#fff',
+        #             "pointHoverBackgroundColor": '#fff',
+        #             "pointHoverBorderColor": 'rgb(255, 99, 132)',
+        #         },
+                # {
+                #     "label": 'My Second Dataset',
+                #     "data": dataset_2,
+                #     "fill": True,
+                #     "backgroundColor": 'rgba(54, 162, 235, 0.2)',
+                #     "borderColor": 'rgb(54, 162, 235)',
+                #     "pointBackgroundColor": 'rgb(54, 162, 235)',
+                #     "pointBorderColor": '#fff',
+                #     "pointHoverBackgroundColor": '#fff',
+                #     "pointHoverBorderColor": 'rgb(54, 162, 235)',
+                # }
+        #     ]
+        # }
+        
+        # return Response(data)
     
 load_dotenv()
 
@@ -745,6 +872,8 @@ if not openai_api_key:
 # Initialize the LLM model using Langchain
 llm = ChatOpenAI(model_name="gpt-4o-mini", openai_api_key=openai_api_key)
 
+
+# api that is used for generating the profile of the candidate
 class Collate(APIView):
     authentication_classes = [JWTAuthentication]
 
@@ -764,7 +893,7 @@ class Collate(APIView):
 
     # Function to extract the experience section from the resume text
     def extract_experience_section(self, text):
-        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE|EMPLOYMENT DETAILS)\b', text, re.IGNORECASE)
+        match = re.search(r'\b(EXPERIENCE|Work Experience|Work experience|WORK PROFICIENCY|PROFESSIONAL EXPERIENCE|Professional Experience|Projects|PROJECTS|PROJECT|EXPERIENCE|EMPLOYMENT DETAILS|TECHNICAL SKILL SET| TECHNICAL SKILL| SKILLS)\b', text, re.IGNORECASE)
 
         if not match:
             return None  # Return None if the "experience" section is not found
@@ -779,6 +908,7 @@ class Collate(APIView):
 
         return experience_section.strip()
     
+    #Function to extract the education section
     def extract_education_section(self, text):
     # Find the starting position of the "Education" section
         match = re.search(r'\b(EDUCATION|Education|Academic Background|QUALIFICATIONS|Studies|EDUCATIONAL QUALIFICATION|EDUCATIONAL CREDENTIALS)\b', text, re.IGNORECASE)
@@ -795,6 +925,53 @@ class Collate(APIView):
             education_section = education_section[:section_end.start()]
 
         return education_section.strip()
+    
+    #Function to extract the achievement section
+    def extract_achievements_section(self, text):
+        """
+        Extracts text from the 'Achievements' section of the resume.
+        """
+        # Define a regex pattern to find the 'Achievements' heading
+        # and capture all content until the next major heading
+        pattern = re.compile(
+            r"(Achievements|Awards|Accomplishments)[\s\S]*?(?=\n[A-Z][a-z]+\s*|$)", 
+            re.IGNORECASE
+        )
+
+        # Search for the pattern in resume_text
+        match = pattern.search(text)
+        
+        if match:
+            achievements_text = match.group()
+            return achievements_text
+        else:
+            logging.info("No 'Achievements' section found in resume.")
+            return None  # Return None if no 'Achievements' section is found
+    
+    #Function to extract the certificate section
+    def extract_certificate_section(self, text):
+        """
+        Extracts text from the 'certificate' section of the resume.
+        """
+        # Define a regex pattern to find the 'Achievements' heading
+        # and capture all content until the next major heading
+        pattern = re.compile(
+            r"(certificate|certificates|CERTIFICATE|CERTIFICATES|CERTIFICATIONS|certifications)[\s\S]*?(?=\n[A-Z][a-z]+\s*|$)", 
+            re.IGNORECASE
+        )
+
+        # Search for the pattern in resume_text
+        match = pattern.search(text)
+    
+        if match:
+            certificate_text = match.group()
+            logging.info(f"certificate_text:{certificate_text}")
+            return certificate_text.strip()
+            
+        else:
+            logging.info("No 'certificate' section found in resume.")
+            return None  # Return None if no 'certificate' section is found
+        
 
     # Function to extract skills from the experience section using the LLM
     def extract_experience_skills(self, experience_text):
@@ -839,7 +1016,7 @@ class Collate(APIView):
             logging.error(f"Error during LLM call: {e}")
             return {"error": f"Error during LLM call: {e}"}
         
-        
+    #Function to extract the job details 
     def extract_job_details(self, experience_text):
         try:
             # Define the prompt for extracting job details
@@ -871,7 +1048,9 @@ class Collate(APIView):
         except Exception as e:
             logging.error(f"Error during LLM call for job details: {e}")
             return {"error": f"Error during LLM call: {e}"}
-        
+    
+    
+    # Function to extract the education details
     def extract_education_details(self, education_text):
         if not education_text:
             return {"error": "No education section found in the resume."}
@@ -905,16 +1084,13 @@ class Collate(APIView):
             logging.error(f"Error during LLM call for education details: {e}")
             return {"error": f"Error during LLM call: {e}"}
         
-        
+    # Function to extract the summary of the candidate resume
     def extract_summary(self, total_text):
         try:
         # Define the prompt for generating a summary of the entire resume
             prompt = ChatPromptTemplate.from_template(
                 '''
-                Provide a concise, professional summary of the candidate's resume.
-                Focus on presenting the candidate's most relevant strengths and recent roles to give recruiters a quick understanding of their background.
-                Avoid unnecessary details and structure the summary to be impactful and recruiter-friendly in 2-4 lines.
-                Just give me the summary text nothing else and keep the formate consistent.
+                Summarize the following resume in 2-3 sentences, highlighting key skills, , and abilities and experience without specifing any number of years he has work. Focus on major achievements, core skills, and relevant experiences. Here is the resume text:.
 
                 {total_text}
                 '''
@@ -931,9 +1107,131 @@ class Collate(APIView):
 
         except Exception as e:
             return f"Error generating resume summary: {e}"
-
         
     
+    
+    def extract_achievements(self, achievements_text):
+        try:
+            # Define the prompt to extract achievements
+            prompt = ChatPromptTemplate.from_template(
+                '''
+                Extract all achievements written in the resume with a consistent structure without any additional text as given:
+                
+                example:[
+    "Winner of Postman API track in HacktoSkill Online Hackathon (25+ teams participated)",
+    "Winner under SID-SET 2023 at IDEA-FEST 2023 sponsored by AICT DSIR (out of 25+ teams)"
+]
+
+                
+
+                {achievements_text}
+                '''
+            )
+
+            # Format the prompt
+            formatted_prompt = prompt.format(achievements_text=achievements_text)
+
+            # Call the LLM to process the achievements
+            achievement_response = llm.invoke(formatted_prompt)
+            
+            # Process the response to return a list of achievements
+            # Process the response to return a list of achievements
+            achievements = achievement_response.content.strip("[]")  # Strip the outer brackets
+
+        # Split by commas and clean up each item
+            achievements = [
+                item.strip().strip('"').strip("'")  # Remove extra quotes and spaces
+                for item in achievements.split(",")
+                if item.strip()  # Only include non-empty items
+            ]
+
+        # If no achievements are extracted, return an appropriate message
+            return achievements if achievements else None
+
+        except Exception as e:
+            logging.error(f"Error extracting achievements: {e}")
+            return None
+    
+    
+    def extract_certificate(self, certificate_text):
+        try:
+            # Log the certificate text to see the input
+            logging.info(f"Certificate Text: {certificate_text}")
+            
+            # Define the prompt to extract certifications
+            prompt = ChatPromptTemplate.from_template(
+                '''
+                Analyze the following certification section from a resume and extract structured information in a json format with consistent structure.
+                Include details such as:
+                - Certification name
+                - Issuing organization
+
+
+
+                Certification Section:
+                    {certificate_text}
+                '''
+            )
+
+            # Format the prompt with certificate text
+            formatted_prompt = prompt.format(certificate_text=certificate_text)
+            
+
+            # Call the LLM to process the achievements
+            certificate_response = llm.invoke(formatted_prompt)
+            
+
+            # Extract and return the certificate data
+            if certificate_response and hasattr(certificate_response, 'content'):
+                certificate_date = certificate_response.content
+                logging.info(f"Extracted Certificate Data: {certificate_date}")
+                return certificate_date
+            else:
+                logging.warning("No valid certificate data found in the response.")
+                return None
+
+        except Exception as e:
+            logging.error(f"Error extracting certificate: {e}")
+            return None
+    
+    #Function to extract suggestation for the certificate on the basis of the candidate skills     
+    def suggest_certifications(self, experience_text):
+        # """Suggest relevant certifications based on experience with improved accuracy."""
+        try:
+            prompt = ChatPromptTemplate.from_template("""
+                Based on the provided professional experience, suggest atleast 5 relevant certifications in json foramte  with consistent structure without any additional content and heading just the json.
+                Consider:
+                1. Current skill level and experience
+                2. Career progression and potential growth areas
+                3. Industry-standard certifications
+                4. Both technical and professional certifications
+                
+                            "name": "Certification name",
+                            "issuer": "Certification provider",
+                            "level": "Beginner/Intermediate/Advanced",
+                            "relevance_score": 1-10,
+                            "link": "Official certification URL"
+                        
+
+                Experience Data:
+                {experience_text}
+            """)
+
+            # print(prompt.format(experience_data=json.dumps(experience_data)))
+            formatted_prompt = prompt.format(experience_text=experience_text)
+
+                # Call the LLM to process the achievements
+            suggest_certificate_response = llm.invoke(formatted_prompt)
+            
+            suggested_data = suggest_certificate_response.content
+            return suggested_data
+        
+        except Exception as e:
+            logging.error(f"Error extracting certificate: {e}")
+            return None
+        
+    
+    # Function to save job details
     def save_job_details_to_db(self, user_id, job_details):
         try:
         # Parse job_details if it's a JSON string
@@ -1000,6 +1298,7 @@ class Collate(APIView):
             logging.error(f"Error saving job details to DB: {e}")
             return {"error": f"Error saving to DB: {e}"}
 
+    ## Function to save education details
     def save_education_detail_to_db(self, user_id, education_detail):
         try:
             # Convert JSON string to dictionary if necessary
@@ -1057,68 +1356,8 @@ class Collate(APIView):
             logging.error(f"Error saving education details to DB: {e}")
             return {"error": f"Error saving to DB: {e}"}
         
-    
-    def save_education_detail_to_db(self, user_id, education_detail):
-        try:
-            # Convert JSON string to dictionary if necessary
-            if isinstance(education_detail, str):
-                logging.info("Converting education_detail from JSON string to dictionary.")
-                education_detail = json.loads(education_detail)
-
-            # Make sure we're always working with a list for consistent processing
-            education_list = []
-            if isinstance(education_detail, dict):
-                education_list = [education_detail]  # Wrap single entry in a list
-            elif isinstance(education_detail, list):
-                education_list = education_detail
-            else:
-                logging.error("Invalid JSON format in education details.")
-                return {"error": "Invalid JSON format in education details."}
-
-            # Fetch the resume document
-            resume = Resume.objects.get(candidate=user_id)
-
-            # Retrieve or create the CandidateEducation entry
-            candidate_education = CandidateEducation.objects(resume=resume).first()
-
-            # Extract fields to be saved as lists, converting all values to strings
-            institutions = [str(edu.get("Institution", "")) for edu in education_list]
-            degrees = [str(edu.get("Degree", "")) for edu in education_list]
-            cgpas = [str(edu.get("CGPA", "")) for edu in education_list]  # Convert to strings
-            end_dates = [str(edu.get("Year of course end", "")) for edu in education_list]  # Convert to strings
-            tier = [str(edu.get("Tier", "")) for edu in education_list]  # Convert to strings
-
-            if candidate_education:
-                # Update the existing document
-                candidate_education.institution_name = institutions
-                candidate_education.degree = degrees
-                candidate_education.cgpa = cgpas
-                candidate_education.end_date = end_dates
-                candidate_education.tier = tier
-                candidate_education.save()
-                logging.info("Existing education entry updated in DB.")
-            else:
-                # Create a new document
-                candidate_education = CandidateEducation(
-                    resume=resume,
-                    candidate_id=user_id,
-                    institution_name=institutions,
-                    degree=degrees,
-                    cgpa=cgpas,
-                    end_date=end_dates,
-                    tier=tier
-                )
-                candidate_education.save()
-                logging.info("New education entry created in DB.")
-
-        except json.JSONDecodeError as e:
-            logging.error(f"Failed to parse education_details JSON: {e}")
-            return {"error": f"JSON parsing error: {e}"}
-        except Exception as e:
-            logging.error(f"Error saving education details to DB: {e}")
-            return {"error": f"Error saving to DB: {e}"}
         
-        
+    # Function to save summary
     def save_summary_to_db(self, user_id, summary_text):
         try:
             # Check if a summary already exists for the given resume and user
@@ -1144,12 +1383,100 @@ class Collate(APIView):
             logging.error(f"Error saving resume summary: {e}")
             return {"error": f"Failed to save resume summary: {e}"}
         
-        
+    
+    def save_achievements(self, user_id, achievements):
+        try:
+            # Retrieve or create the user resume document
+            resume = Resume.objects.get(candidate=user_id)
+            
+            # Create or update the Achievements document linked to this resume
+            candidate_achievements = Candidate_Achivement_Certificate.objects(resume=resume).first()
+
+            if candidate_achievements:
+                # Update existing achievements
+                candidate_achievements.achievements_list = achievements or ["No achievements found"]
+                candidate_achievements.save()
+                logging.info("Achievements updated in the database.")
+            else:
+                # Create new achievements entry if none exists
+                candidate_achievements = Candidate_Achivement_Certificate(
+                    resume=resume,
+                    candidate_id=user_id,
+                    achievements_list=achievements or ["No achievements found"]
+                )
+                candidate_achievements.save()
+                logging.info("New achievements entry saved in the database.")
+
+            return {"success": True}
+        except Exception as e:
+            # Return an error message in case of failure
+                return {"error": f"Failed to save achievements: {e}"}
                 
         
         
+    def save_certificate(self, user_id, certificate=None, suggestions=None):
+        try:
+            # Fetch the resume associated with the candidate
+            resume = Resume.objects(candidate=user_id).first()
+            if not resume:
+                logging.error(f"No resume found for user {user_id}.")
+                return {"error": "No resume found for this user."}
+
+            # Fetching existing certificate data
+            get_certificates = Candidate_Achivement_Certificate.objects(resume=resume).first()
+            if not get_certificates:
+                logging.warning(f"No certificate data found for user {user_id}.")
+                return {"error": "No certificate data found."}
+
+            # Extract certifications if available
+            if certificate and isinstance(certificate, dict) and 'certifications' in certificate:
+                certifications = certificate.get("certifications", [])
+                certificate_names = [cert.get("certification_name", "") for cert in certifications]
+                certificate_issuers = [cert.get("issuing_organization", "") for cert in certifications]
+
+                get_certificates.certificate_name = certificate_names
+                get_certificates.certificate_issuer = certificate_issuers
+            else:
+                get_certificates.certificate_name = []
+                get_certificates.certificate_issuer = []
+
+            # Handling suggested certificates if any
+            if suggestions and isinstance(suggestions, list):
+                
+                logging.info(f"suggestion in function: {suggestions}")
+
+                get_certificates.suggested_certificate_name = [cert.get("name", "") for cert in suggestions]
+                get_certificates.suggested_certificate_issuer = [cert.get("issuer", "") for cert in suggestions]
+                get_certificates.suggested_certificate_link = [cert.get("link", "") for cert in suggestions]
+                get_certificates.suggested_certificate_level = [cert.get("level", "") for cert in suggestions]
+                get_certificates.suggested_certificate_relevent_score = [str(cert.get("relevance_score", "")) for cert in suggestions]
+            else:
+                get_certificates.suggested_certificate_name = []
+                get_certificates.suggested_certificate_issuer = []
+                get_certificates.suggested_certificate_link = []
+                get_certificates.suggested_certificate_level = []
+                get_certificates.suggested_certificate_relevent_score = []
+
+
+            # Debug: Check certificate data before saving
+            logging.info(f"Certificate data before save: {get_certificates.to_mongo()}")
+
+            # Save the updated document
+            get_certificates.save()
+
+            logging.info("Certificate data saved successfully.")
+            return {"status": "success", "message": "Certificate data saved successfully."}
+
+        except Exception as e:
+            logging.error(f"Error saving certificate data: {e}")
+        
+            return {"error": f"Error saving certificate data: {str(e)}"}
+            
+            
+            
     def valid_value(self, value):
             return value and value != "N/A" and value != "Not specified"
+        
         
     # Function to collate experience data
     def collate_experience_data(self, user_id):
@@ -1187,14 +1514,81 @@ class Collate(APIView):
                 if not extracted_text:
                     return {"error": "Failed to extract text from the PDF."}
 
-                # Extract the experience section from the resume
+                # Extract the experience/education/achievements/certificate section from the resume
                 experience_section = self.extract_experience_section(extracted_text)
                 education_section = self.extract_education_section(extracted_text)
+                achievements_section = self.extract_achievements_section(extracted_text)
+                certificate_section = self.extract_certificate_section(extracted_text)
+                
                 
                 # Extract job details using the new prompt
                 job_details_json = self.extract_job_details(experience_section)
                 job_response = job_details_json
                 
+                # Extract achievement details using the prompt and saving in db
+                achievements = self.extract_achievements(achievements_section)
+                achievement_result = self.save_achievements(user_id, achievements)
+                if achievement_result.get("error"):
+                        logging.error("Error saving achievements.")
+                
+                
+                # # Extract certificate details using the prompt and saving it to db
+                certificate = self.extract_certificate(certificate_section)
+                if certificate and '"certifications": []' not in certificate:
+                    # Certificate is present and doesn't contain an empty list, so proceed with it
+                    json_content = certificate
+                else:
+                    # Either certificate is None or it's empty, so get suggestion
+                    suggestion = self.suggest_certifications(experience_section)
+                    json_content = suggestion
+
+                # Log the content of json_content for debugging
+                logging.info(f"JSON Content Before Parsing: {json_content}")
+
+                # Verify json_content is not empty or just whitespace before parsing
+                if not json_content or not json_content.strip():
+                    logging.error("No JSON content available for parsing.")
+                    return {"error": "No JSON content available for parsing."}
+
+                # Clean up JSON markers if they exist
+                if json_content.startswith("```json"):
+                    json_content = json_content[8:].strip("```").strip()  # Remove markdown-style markers
+
+                try:
+                    # Attempt to parse JSON data from certificate or suggestion
+                    data = json.loads(json_content)
+                    if not data:
+                        logging.error("Parsed JSON data is empty.")
+                        return {"error": "Parsed JSON data is empty."}
+
+                except json.JSONDecodeError as e:
+                    logging.error(f"Error: Unable to parse JSON from the certificate LLM output: {e}")
+                    return {"error": "Invalid JSON format in the certificate data."}
+
+                # Log the data to be saved
+                logging.info(f"Data to be saved: {data}")
+
+                # If the certificate is None or empty, save it as None
+                if certificate is None or '"certifications": []' in certificate:
+                    certificate_save = self.save_certificate(user_id, certificate=None, suggestions=data)
+                    logging.info(f"certificate_save:{certificate_save}")
+                else:
+                    certificate_save = self.save_certificate(user_id, certificate=data)
+                    logging.info(f'certificate_save:{certificate_save}')
+
+                # Check if certificate_save is None
+                if certificate_save is None:
+                    logging.error("Certificate save operation returned None.")
+                    return {"error": "Failed to save certificate data."}
+
+                # Check if there is an error in the response (e.g., if certificate_save contains 'error' key)
+                if isinstance(certificate_save, dict) and "error" in certificate_save:
+                    logging.error(f"Error saving certificate data: {certificate_save['error']}")
+                    return certificate_save
+
+                logging.info("Certificate data saved successfully.")
+                                        
+
 
                 # Extract the skills as JSON using the LLM
                 skills_json = self.extract_experience_skills(experience_section)
@@ -1202,18 +1596,25 @@ class Collate(APIView):
                 # Process the LLM response
                 response_content = skills_json  # Assume this is the response from your LLM extraction method
                 
+                
+                
                 education_detail_json = self.extract_education_details(education_section)
                 
                 summary_text = self.extract_summary(extracted_text)
                 summary_result = self.save_summary_to_db(user_id, summary_text)
                 if summary_result.get("error"):
                     logging.error("Error saving resume summary.")
+                    
+                
 
                 # Log the LLM response for debugging
                 logging.info(f"LLM Response Content: {response_content}")
                 logging.info(f"LLM Response Content: {job_response}")
                 logging.info(f"LLM Response Content: {education_detail_json}")
                 logging.info(f"LLM Response Content: {summary_text}")
+                logging.info(f"LLM Response Content: {achievements}")
+                logging.info(f"LLM Response Content: {certificate}")
+                #logging.info(f"LLM Response Content: {suggestation}")
 
                 # Attempt to parse the JSON content
                 try:
@@ -1259,6 +1660,7 @@ class Collate(APIView):
                 save_education = self.save_education_detail_to_db(user_id, education_detail=education_detail_json)
                 if save_education is not None and "error" in save_education:
                     return save_education
+                
                 
                 
 
@@ -1365,8 +1767,9 @@ class Collate(APIView):
             'message': 'created & saved the skill json'
         }, status=status.HTTP_201_CREATED)
     
-    
-    
+
+
+#function to get the top skills     
 def get_top_skills(user_id):
     # Fetch the candidate profile data from MongoDB
     candidate_profile = CandidateSkills.objects(candidate_id=user_id).first()
@@ -1389,6 +1792,8 @@ def get_top_skills(user_id):
     top_skills = [skill for skill, value in sorted_skills]
     return top_skills
 
+
+#api to get the top skills  
 @api_view(['GET'])
 def top_skills_view(request, user_id):
     # Call the function to get the top 5 skills for the given candidate
@@ -1409,6 +1814,7 @@ def top_skills_view(request, user_id):
         }, status=status.HTTP_404_NOT_FOUND)
         
 
+#api to get the candidate domain
 class CandidateDomain(APIView):
     def get(self, request, user_id=None):
         try:
@@ -1432,7 +1838,8 @@ class CandidateDomain(APIView):
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        
+    
+# api to get candidate work experience
 class CandidateWorkExperiences(APIView):
     def get(self, request, user_id):
         
@@ -1474,6 +1881,7 @@ class CandidateWorkExperiences(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
         
 
+#api to get the candidate education details
 class CandidateEducationDetail(APIView):
     def get(self, request, user_id):
         try:
@@ -1508,6 +1916,8 @@ class CandidateEducationDetail(APIView):
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
+
+# api to get the summary
 class CandidateSummary(APIView):
     def get(self, request, user_id):
         
@@ -1568,6 +1978,7 @@ def grade_candidate(user_id):
     return score
 
 
+#funcation to calculate the score of candidate profile
 def calculate_candidate_score(candidate_data: Dict) -> float:
     """
     Calculate the candidate's profile score based on the grading algorithm.
@@ -1665,7 +2076,7 @@ def calculate_candidate_score(candidate_data: Dict) -> float:
     return round(total_score, 2)
     
 
-
+# api for candidate score
 class CandidateScore(APIView):
     def get(self, request, user_id):
         try:
@@ -1683,8 +2094,10 @@ class CandidateScore(APIView):
                     # "achievements": bool(candidate_skills.domain)  # Assuming achievements if there's a domain
                 }
                 
-                # Calculate the score using your grading function
+                # Calculate and save the score using your grading function
                 score = calculate_candidate_score(candidate_data)
+                candidate_skills.score = score
+                candidate_skills.save()
                 print(score)
                 
                 # Response with score data
@@ -1692,8 +2105,8 @@ class CandidateScore(APIView):
                     'status': status.HTTP_200_OK,
                     'success': True,
                     'data': {
-                        'candidate_id': user_id,
-                        'score': score
+                        # 'candidate_id': user_id,
+                        'score': candidate_skills.score
                     },
                     'message': 'Candidate score calculated successfully'
                 }, status=status.HTTP_200_OK)
@@ -1707,3 +2120,96 @@ class CandidateScore(APIView):
         
         except Exception as e:
             return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+# api for candidate achievements
+class CandidateAchievements(APIView):
+    def get(self, request, user_id):
+        
+        try:
+            candidate_achievement = Candidate_Achivement_Certificate.objects(candidate_id = user_id).first()
+            
+            if candidate_achievement:
+                return Response({
+                        'status': status.HTTP_200_OK,
+                        'success': True,
+                        'data': candidate_achievement.achievements_list,
+                        'message': 'Got the candidate achievements'
+                    }, status=status.HTTP_200_OK)
+                
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Achievements not available for this candidate."
+                }, status=status.HTTP_404_NOT_FOUND)
+                
+        except Exception as e:
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+# api for candidate certificates
+class GetCertificate(APIView):
+    def get(self, request, user_id):
+        try:
+            # Fetch the candidate's certificate data by user_id
+            candidate_certificate = Candidate_Achivement_Certificate.objects(candidate_id=user_id).first()
+
+            # Check if candidate_certificate exists
+            if candidate_certificate:
+                response_data = []
+
+                # Check if certificate_name exists in the retrieved document
+                if candidate_certificate.certificate_name:  # If certificate exists
+                    
+                    name = candidate_certificate.certificate_name
+                    issuer = candidate_certificate.certificate_issuer
+                    # Add the certificate to the response data
+                    for i in range(len(name)):
+                        response_data.append({
+                            "Certificate_name": f"{name[i]} by {issuer[i]}",
+                        
+                        })
+
+                # If no certificate, check for suggested certificates
+                if candidate_certificate.suggested_certificate_name:  # If suggestions exist
+                    # Handle both single value and list of suggestions
+                    suggested_names = candidate_certificate.suggested_certificate_name
+                    suggested_issuers = candidate_certificate.suggested_certificate_issuer
+                    suggested_links = candidate_certificate.suggested_certificate_link
+
+                    for i in range(len(suggested_names)):
+                        response_data.append({
+                            "Certificate_name": f"{suggested_names[i]} by {suggested_issuers[i] if i < len(suggested_issuers) else 'Unknown'}",
+                            "Certificate_url": suggested_links[i] if i < len(suggested_links) else 'No URL provided'
+                        })
+
+                # If response_data contains certificates or suggestions, return them
+                if response_data:
+                    return Response({
+                        'status': status.HTTP_200_OK,
+                        'success': True,
+                        'data': response_data,
+                        'message': 'Got the candidate certificate'
+                    }, status=status.HTTP_200_OK)
+                else:
+                    return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "No certificate or suggestion found."
+                }, status=status.HTTP_404_NOT_FOUND)
+                    
+            else:
+                return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message': "Certificate data not found for this user."
+                }, status=status.HTTP_404_NOT_FOUND)
+                
+
+        except Exception as e:
+            return Response({
+                    'status': status.HTTP_404_NOT_FOUND,
+                    'success': False,
+                    'message':  f"Internal Server Error: {str(e)}"
+                }, status=status.HTTP_404_NOT_FOUND)
+            
