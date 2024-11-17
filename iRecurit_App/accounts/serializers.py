@@ -226,3 +226,82 @@ class ProfilePictureSerializer(serializers.Serializer):
             profile_picture.save()
 
         return profile_picture
+    
+
+class PptSerializer(serializers.Serializer):
+    file = serializers.FileField()
+
+    def create(self, validated_data):
+        user_id = self.context['user_id']
+        candidate = User.objects.get(candidate_id=user_id)
+
+        file_data = validated_data.pop('file')  # Remove 'file' from validated_data
+
+        if not file_data.content_type.startswith('application/vnd.openxmlformats-officedocument.presentationml.presentation'):
+            raise serializers.ValidationError({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data': None,
+                'message': 'PPTX_FILES_ONLY'
+            })
+
+        # Generate filename
+        filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
+
+        # Connect to MongoDB and GridFS
+        client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+        db = client[settings.DATABASES['default']['NAME']]
+        fs = gridfs.GridFS(db)
+
+        # Read file content and save to GridFS as bytes
+        file_data_bytes = file_data.read()  # This should return bytes
+        file_id = fs.put(file_data_bytes, filename=filename, content_type=file_data.content_type)
+
+        # Create the Resume object with the user and file data
+        ppt = CaseStudy(
+            candidate=candidate,
+            file=str(file_id),
+            filename=filename,
+            candidate_name=f"{candidate.candidate_first_name} {candidate.candidate_last_name}"
+        )
+        ppt.save()
+
+        return ppt
+    
+    def update(self, instance, validated_data):
+        user_id = self.context['user_id']
+        candidate = User.objects.get(candidate_id=user_id)
+
+        file_data = validated_data.pop('file')
+
+        if not file_data.content_type.startswith('application/vnd.openxmlformats-officedocument.presentationml.presentation'):
+            raise serializers.ValidationError({
+                'Status_code': status.HTTP_400_BAD_REQUEST,
+                'Success': False,
+                'data': None,
+                'message': 'PDF_FILES_ONLY'
+            })
+
+        filename = f"{candidate.candidate_first_name}_{candidate.candidate_last_name}_{candidate.candidate_id}.pdf"
+
+        client = MongoClient(settings.DATABASES['default']['CLIENT']['host'])
+        db = client[settings.DATABASES['default']['NAME']]
+        fs = gridfs.GridFS(db)
+
+        # Delete the old file from GridFS
+        try:
+            # Ensure we convert the string ID to ObjectId for deletion
+            fs.delete(ObjectId(instance.file))  # Convert string ID to ObjectId
+        except gridfs.NoFile:
+            pass  # Handle the case where the file does not exist
+
+        # Save the new file to GridFS
+        file_data_bytes = file_data.read()  # Ensure we get bytes here
+        file_id = fs.put(file_data_bytes, filename=filename, content_type=file_data.content_type)
+
+        # Update the instance with the new file details
+        instance.file = str(file_id)
+        instance.filename = filename
+        instance.save()
+
+        return instance

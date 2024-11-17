@@ -133,5 +133,14 @@ class Candidate_Achivement_Certificate(Document):
     
     meta = {'collection' : 'candidate_achivement_certificate'}
     
+
+class CaseStudy(Document):
+    id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
+    candidate = ReferenceField(User)
+    candidate_name = StringField(required=True)
+    file = StringField(required=True)
+    filename = StringField()
+    status = StringField(default='uploaded')
     
+    meta = {'collection': 'candidate_case_study_ppt'}
     

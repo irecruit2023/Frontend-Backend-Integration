@@ -2213,3 +2213,49 @@ class GetCertificate(APIView):
                     'message':  f"Internal Server Error: {str(e)}"
                 }, status=status.HTTP_404_NOT_FOUND)
             
+            
+
+class UploadCsaStudyPPT(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    #authentication_classes = [JWTAuthentication] 
+    # permission_classes  = [IsAuthenticated]  # Uncomment if you want to require authentication
+
+    def post(self, request, user_id):
+        
+
+        existing_ppt = CaseStudy.objects.filter(candidate=user_id).first()
+
+        if existing_ppt:
+            serializer = PptSerializer(existing_ppt, data=request.data, context={'user_id': user_id})
+        else:
+            serializer = PptSerializer(data=request.data, context={'user_id': user_id})
+
+        if serializer.is_valid():
+            ppt = serializer.save()
+
+            # Celery task
+            # process_resume.delay(str(resume.id))  
+
+            response = {
+                "status_code": status.HTTP_200_OK,
+                "success": True,
+                "data": serializer.data,
+                "message": "RESUME_UPLOADED_SUCCESSFULLY"
+            }
+            return Response(response, status=status.HTTP_200_OK)
+        else:
+            # Custom error handling
+            error_messages = []
+            for field, errors in serializer.errors.items():
+                error_messages.extend(errors)
+            # Join all error messages into a single string
+            error_message = ' '.join(error_messages)
+
+            response = {
+                "status_code": status.HTTP_400_BAD_REQUEST,
+                "success": False,
+                "data": None,
+                "message": error_message
+            }
+
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
