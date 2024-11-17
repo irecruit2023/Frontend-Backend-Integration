@@ -25,7 +25,7 @@ import DeleteModal from "../modals/delete-modal";
 import CertificationModal from "../modals/certification-modal";
 import CaseStudyUpload from "../modals/case-study-modal";
 import Achievement from "../modals/achievement-modal";
-import { getTopSkills, getUserDomain, getUserSummary, getUserJobExperience } from "../utils/util";
+import { getTopSkills, getUserDomain, getUserSummary, getUserJobExperience, getUserCertificates, getUserAchievements } from "../utils/util";
 
 const ProfileCreationPage = () => {
 
@@ -44,6 +44,8 @@ const ProfileCreationPage = () => {
     Share what makes you unforgettable—give the world a reason to stop, smile, and say, ‘Tell me more!`);
   const [educationDetails, setEducationDetails] = useState("");
   const [userJobExp, setUserJobExp] = useState([]);
+  const [userCertficate, setUserCertificates] = useState([]);
+  const [userAchievements, setUserAchievements] = useState([]);
 
 
   // Function to handle the deletion of the achievement card
@@ -161,6 +163,33 @@ const ProfileCreationPage = () => {
   };
 
 
+  const fetchUserCertificate = async (userId) => {
+    try {
+      const response = await getUserCertificates(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setUserCertificates(response.data); // Update state with the skills array
+        console.log(userJobExp, response.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
+  const fetchUserAchievements = async (userId) => {
+    try {
+      const response = await getUserAchievements(userId); // Assume getTop5Skills() is defined elsewhere
+      if (response && response.success && response.data) {
+        setUserAchievements(response.data); // Update state with the skills array
+        console.log(userJobExp, response.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch skills:', error);
+    }
+  };
+
+
+
   useEffect(() => {
     // Fetch top 5 skills from the API
     const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
@@ -170,6 +199,8 @@ const ProfileCreationPage = () => {
     fetchUserSummary(userId)
     fetchEducationDetails(userId)
     fetchuserJobDetails(userId)
+    fetchUserAchievements(userId)
+    fetchUserCertificate(userId)
   }, []);
 
 
@@ -242,7 +273,7 @@ const ProfileCreationPage = () => {
                           {educationDetails.Degree}
                         </p>
                         <p className={styles.amityUniversity}>
-                         {educationDetails["Year of course end"] ? `${educationDetails.Institution} - ${educationDetails["Year of course end"]}` : educationDetails.Institution}
+                          {educationDetails["Year of course end"] ? `${educationDetails.Institution} - ${educationDetails["Year of course end"]}` : educationDetails.Institution}
                         </p>
                       </b>
                     </div>
@@ -486,32 +517,25 @@ const ProfileCreationPage = () => {
                       src="/vector-5.svg"
                     />
                     <div className={styles.certificationsList}>
-                      <div className={styles.experienceItems}>
-                        <div className={styles.experienceDetails}>
-                          <div className={styles.ellipseDiv} />
+                      {userCertficate.map((cert, index) => (
+                        <div key={index} className={styles.experienceItems}>
+                          <div className={styles.experienceDetails}>
+                            <div className={styles.ellipseDiv} />
+                          </div>
+                          <div className={styles.certificationContainer}>
+                            <a
+                              href={cert.Certificate_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style ={{color:'black'}}
+                              className={styles.advanceJavaProgramming}
+                            >
+                              {cert.Certificate_name}
+                            </a>
+                            {/* <span className={styles.date}>{cert.date}</span> */}
+                          </div>
                         </div>
-                        <div className={styles.advanceJavaProgrammingContainer}>
-                          <span
-                            className={styles.advanceJavaProgramming}
-                          >{`Advance Java Programming Coursera `}</span>
-                          <span className={styles.jan20241}>Jan 2024</span>
-                        </div>
-                      </div>
-                      <div className={styles.experienceItems}>
-                        <div className={styles.ellipseContainer}>
-                          <div className={styles.ellipseDiv} />
-                        </div>
-                        <div className={styles.pythonForDataContainer}>
-                          <p className={styles.pythonForData}>
-                            Python for Data Science Coursera
-                          </p>
-                          <p className={styles.developedChatbotWhich}>
-                            Oct 2023
-                          </p>
-                        </div>
-
-                      </div>
-
+                      ))}
                     </div>
                     <img style={{ alignSelf: 'self-end', cursor: 'pointer', paddingTop: '32px' }} onClick={() => handleDeleteOpenModal("Certifications")} className={styles.modeEditIcon} alt="" src={DeleteIcon} />
                   </div>)}
@@ -520,22 +544,33 @@ const ProfileCreationPage = () => {
                     <div className={styles.achievemnets}>Achievemnets
                       <img style={{ cursor: 'pointer' }} onClick={handleAchievementModal} className={styles.modeEditIcon} alt="" src={editIcon} />
                     </div>
-                    <div className={styles.achievementItem}>
-                      <div className={styles.experienceDetails}>
-                        <div className={styles.achievementIcon} />
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                        justifyContent: 'space-between',
+                        width: '100%',
+
+                      }}
+                    >
+                      <div>
+                        {userAchievements.map((achievement, index) => (
+                          <div key={index} className={styles.achievementItem}>
+                            <div className={styles.experienceDetails}>
+                              <div className={styles.achievementIcon} />
+                            </div>
+                            <div className={styles.btechComputerScienceContainer}>
+                              <p className={styles.pythonForData}>Achievement {index + 1}</p>
+                              <p className={styles.developedChatbotWhich}>{achievement}</p>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <div className={styles.btechComputerScienceContainer}>
-                        <p className={styles.pythonForData}>
-                          Chat Bot Implementation 1mg
-                        </p>
-                        <p className={styles.developedChatbotWhich}>
-                          Developed chatbot, which helped customer to reduce in
-                          their customer support department
-                        </p>
+
+                      <div>
+                        <img style={{ alignSelf: 'self-end', cursor: 'pointer', paddingTop: '32px' }} onClick={() => handleDeleteOpenModal("Achievements")} className={styles.modeEditIcon} alt="" src={DeleteIcon} />
                       </div>
                     </div>
-                    <img style={{ alignSelf: 'self-end', cursor: 'pointer', paddingTop: '32px' }} onClick={() => handleDeleteOpenModal("Achievements")} className={styles.modeEditIcon} alt="" src={DeleteIcon} />
-
                   </div>
                   )}
                   {(isCertificationCardVisible || isAchievementCardVisible) && (
@@ -614,7 +649,7 @@ const ProfileCreationPage = () => {
                 handleDeleteCertification(); // Call certification delete function
               }
             }} />
-          <CertificationModal isOpen={certification} onClose={handleCertificationCloseModal} />
+          <CertificationModal isOpen={certification} onClose={handleCertificationCloseModal} userCertficate = {userCertficate}/>
           <CaseStudyUpload isOpen={isCaseStudyModalOpen} onClose={handleCaseStudyCloseModal} />
           <Achievement isOpen={isAchievementModalOpen} onClose={handleAchievementCloseModal} />
         </section>

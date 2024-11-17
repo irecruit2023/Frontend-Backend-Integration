@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import styles from "./certification-modal.module.css";
 import { useState } from "react";
 
-const ObjectiveModal = ({ className = "", isOpen, onClose }) => {
+const ObjectiveModal = ({ className = "", isOpen, onClose, userCertficate }) => {
+  console.log("userCer", userCertficate)
   const [expandedItem, setExpandedItem] = useState(null);
 
   if (!isOpen) return null;
@@ -45,6 +46,7 @@ const ObjectiveModal = ({ className = "", isOpen, onClose }) => {
       <div className={[styles.modalContent, className].join(" ")}>
         <div className={styles.certificationsContainer}>
           <div className={styles.certificationsContent}>
+            {/* Upper Section */}
             <div className={styles.upperMessage}>
               <div className={styles.certificationHeading}>No certifications yet?</div>
               <div className={styles.heading}>
@@ -53,24 +55,28 @@ const ObjectiveModal = ({ className = "", isOpen, onClose }) => {
               </div>
             </div>
 
+            {/* Certifications List */}
             <div className={styles.lowerList}>
               <ul style={{ padding: "0px" }}>
-                {certifications.map((cert, index) => (
+                {userCertficate.map((cert, index) => (
                   <li
                     key={index}
                     className={styles.items}
-                    onClick={() => toggleExpand(index, cert.url)}
+                    onClick={() => toggleExpand(index, cert.Certificate_url)}
                     style={{ cursor: "pointer" }}
                   >
-                <div style={{padding: "24px 24px"}}>
-                <div onClick={() => openUrl(cert.url)} className={styles.itemTitle}>
-                      {cert.title}
-                </div>
-                    {expandedItem === index && (
-                      <div className={styles.itemDetails}>
-                        {cert.details}
+                    <div style={{ padding: "24px 24px" }}>
+                      <div
+                        onClick={() => openUrl(cert.Certificate_url)}
+                        className={styles.itemTitle}
+                      >
+                        {cert.Certificate_name}
                       </div>
-                    )}
+                      {expandedItem === index && (
+                        <div className={styles.itemDetails}>
+                          {/* Add more certification details here if needed */}
+                        </div>
+                      )}
                     </div>
                   </li>
                 ))}
@@ -78,6 +84,8 @@ const ObjectiveModal = ({ className = "", isOpen, onClose }) => {
             </div>
           </div>
         </div>
+
+        {/* Footer Section */}
         <footer style={{ marginBottom: "48px" }} className={styles.secondaryButtonParent}>
           <div className={styles.secondaryButton} onClick={onClose}>
             <div className={styles.secondary}>Cancel</div>

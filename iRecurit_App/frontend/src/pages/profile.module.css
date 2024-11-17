@@ -720,6 +720,7 @@
   overflow: hidden;
   flex-shrink: 0;
   z-index: 1;
+  color:'#ffc63d'
 }
 .caseStudyIcon {
   display: flex;
@@ -898,14 +899,14 @@
 }
 .certificationsContent {
   flex: 0.8633;
-  height: 267px;;
+  min-height: 267px;;
   background-color: var(--colour-tertiary-t6-all-white);
   border: 1px solid var(--colour-tertiary-t3-outline);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: var(--padding-3xl) 26px 91px;
+  padding: var(--padding-3xl) 26px 21px;
   gap: var(--gap-xs);
   min-width: 296px;
 }
