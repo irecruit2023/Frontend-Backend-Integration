@@ -526,5 +526,32 @@ export const getUserAchievements= async (user_id) => {
 
 
 
+// upload_case_study
+export const uploadCaseStudy = async (file,user_id) => {
+  let response = null;
+  const formData = new FormData();
+  formData.append('file', file); // Append the file to formData
+
+  try {
+
+    const res = await fetch(`/api/upload_case_study/${user_id}/`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    console.log("res",res)
+
+    response = await res.json(); // Parse the JSON response
+    console.log(response)
+    return response;
+
+  } catch (error) {
+    console.error('Upload resume error:', error);
+    throw new Error(error.message || 'Failed to upload resume');
+  }
+};
+
+
+
 
 

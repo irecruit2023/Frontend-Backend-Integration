@@ -146,7 +146,7 @@
 
 .uploadWrapper{
 width: 662px;
-height: 301px;
+height: auto;
 gap: 29px;
 /* opacity: 0px; */
 
@@ -385,6 +385,79 @@ justify-content: center;
     transform: scale(1);
   }
 }
+
+
+  .fillNoFormsContainer,
+  .uploadResume {
+    width: 662px;
+    position: relative;
+    color: var(--colour-primary-p4-text-light);
+    display: inline-block;
+    max-width: 100%;
+  }
+  .uploadResume {
+    margin: 0;
+    line-height: 31px;
+    font-weight: 600;
+    font-family: inherit;
+    color: var(--colour-primary-p1);
+  }
+  .vectorIcon {
+    height: 21px;
+    width: 15px;
+    position: relative;
+  }
+  .iconframe1171275249 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--padding-9xs);
+  }
+  .resumeTitle {
+    position: relative;
+    line-height: 140%;
+  }
+
+  .iconContainer,
+  .resumeLabel {
+    display: flex;
+    box-sizing: border-box;
+  }
+
+  .iconContainer {
+    width: 605px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+    gap: var(--gap-5xs);
+    max-width: calc(100% - 28px);
+  }
+  .iconclose {
+    height: 24px;
+    width: 24px;
+    position: relative;
+  }
+  .buttonContainer,
+  .iconContainerParent {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+  }
+  .iconContainerParent {
+    border-radius: var(--br-5xs);
+    background-color: var(--colour-tertiary-t5);
+    border: 1px solid #f2665d;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-xs) var(--padding-xs) var(--padding-xs)
+      var(--padding-mini);
+    gap: var(--gap-9xs);
+    text-align: left;
+    font-family: var(--body-base);
+  }
 
 
 

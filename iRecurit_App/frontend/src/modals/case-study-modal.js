@@ -2,33 +2,70 @@ import PrimaryButton from "./primary-button";
 import PropTypes from "prop-types";
 import styles from "./case-study-modal.module.css";
 import { useState } from "react";
+import { ReactComponent as Iconcross } from "../assets/icons/iconclose.svg";
+import { ReactComponent as Icondocument } from "../assets/icons/document.svg";
+import { uploadCaseStudy } from "../utils/util";
+import { notifyError } from "../helper";
 
 const CaseStudyUpload = ({ className = "", isOpen, onClose }) => {
     const [loading, setLoading] = useState(false); // For showing the loader
     const [text, setText] = useState("We highly recommend adding a case study to your profile."); // Initial text
     const [uploadText, setUploadText] = useState("Getting you started");
+    const [uploadedFileName, setUploadedFileName] = useState(""); // Track the uploaded file's name
 
     if (!isOpen) return null;
 
-    const handleFileUpload = (e) => {
+    const handleFileUpload = async(e) => {
         const file = e.target.files[0];
         if (file) {
             setLoading(true); // Show loader
-            setText("Awesome Vidhi!");
+            setUploadedFileName(file.name); // Save the file name
+            setText(`Awesome ${localStorage?.loginInformation ? JSON.parse(localStorage.loginInformation)?.data?.name : 'User'}!`);
+
             setUploadText("You are about to upload a case study");
             // Simulate file upload (replace this with actual file upload logic)
-            setTimeout(() => {
-                setLoading(false); // Hide loader after upload completes
-                setText("We highly recommend adding a case study to your profile.");
-                setUploadText("Getting you started");
-            }, 5000); // Simulating a 5-second upload delay
+
+            try {
+                const response =  await uploadCaseStudy(file, JSON.parse(localStorage?.loginInformation)?.data?.user_id);
+                console.log("rese",response)
+                if (response.success) {
+                 setLoading(false);
+                 setText("We highly recommend adding a case study to your profile.");
+                 setUploadText("Getting you started");
+                  console.log('Resume uploaded successfully:', response);
+                } else {
+                  notifyError(response.message);
+                }
+              } catch (error) {
+                console.log("rese",error)
+                notifyError(error);
+              } finally {
+                setLoading(false);
+              }
         }
     };
 
     const handleClose = () => {
         // Reset the text when closing the modal
         setText("We highly recommend adding a case study to your profile.");
+        setUploadedFileName(""); // Reset uploaded file name
         onClose(); // Call the parent onClose function to handle actual closing
+    };
+
+    // Handle drag over event
+    const handleDragOver = (e) => {
+        e.preventDefault(); // Allow file drop
+        e.stopPropagation();
+    };
+
+    // Handle drop event
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            handleFileUpload({ target: { files: [file] } }); // Simulate file upload
+        }
     };
 
     return (
@@ -60,18 +97,36 @@ const CaseStudyUpload = ({ className = "", isOpen, onClose }) => {
 
                             <div className={styles.uploadWrapper}>
                                 <div className={styles.uploadHeading}>or Upload Case Study</div>
-                                <div className={styles.uploadSection}>
+                                <div
+                                    className={styles.uploadSection}
+                                    onDragOver={handleDragOver} // Enable dragging
+                                    onDrop={handleDrop} // Handle dropped files
+                                >
                                     <div className={styles.dropYourFileContainer}>
                                         {loading ? (
                                             <div style={{ height: '241px', display: 'flex', alignContent: 'center', justifyContent: 'center', alignItems: 'center' }} className={styles.dropzoneWrapper}>
                                                 <div className={styles.loaderWrapper}>
-                                                    <p className={styles.uploadingText}>Uploading  files</p>
+                                                    <p className={styles.uploadingText}>Uploading files</p>
                                                     <div className={styles.loader}>
                                                         <div></div>
                                                         <div></div>
                                                         <div></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        ) : uploadedFileName ? (
+                                            <div className={styles.iconContainerParent}>
+                                                <div className={styles.iconContainer}>
+                                                    <div className={styles.iconframe1171275249}>
+                                                        <Icondocument />
+                                                    </div>
+                                                    <div className={styles.resumeLabel}>
+                                                        <div className={styles.resumeTitle}>
+                                                            {uploadedFileName}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <Iconcross onClick={onClose} className={styles.closeIcon} />
                                             </div>
                                         ) : (
                                             <>
@@ -101,7 +156,7 @@ const CaseStudyUpload = ({ className = "", isOpen, onClose }) => {
                                         )}
                                     </div>
 
-                                    {!loading && (
+                                    {!loading && !uploadedFileName && (
                                         <>
                                             <div className={styles.secondaryButton}>
                                                 <div className={styles.secondary}>Upload from G Drive</div>
