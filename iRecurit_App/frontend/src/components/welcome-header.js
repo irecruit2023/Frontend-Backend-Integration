@@ -17,10 +17,9 @@ const WelcomeHeader = ({userType= "user"}) => {
             ],
         },
         organization: {
-            greeting: `Hello ${JSON.parse(localStorage.loginInformation).data.name}, and welcome to iRecruit for Organizations!`,
+            greeting: `Hello and welcome to iRecruit`,
             description: [
-                "This platform empowers your organization to discover the best talent and streamline your recruitment process like never before.",
-                "Use our cutting-edge tools to post jobs, manage applications, and connect with top talent efficiently.",
+                "Welcome aboard! Our platform is your gateway to a universe of possibilities, crafted to celebrate the unique skills and passions that set them apart. Together, let's navigate this journey where you find talents that are perfect match in a world full of opportunities..",
             ],
         },
         jobs: {

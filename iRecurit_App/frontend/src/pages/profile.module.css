@@ -245,7 +245,7 @@
   gap: 10px;
 }
 .educationContainerWrapper {
-  height: 172px;
+  height: auto;
   flex-direction: row;
   padding: 0 var(--padding-12xs);
   font-size: var(--popins-sub-heading-subheader1-size);

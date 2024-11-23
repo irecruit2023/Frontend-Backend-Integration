@@ -13,6 +13,7 @@ import EmailActivation from "./pages/activation";
 import EmailExpiredMessage from "./pages/email-expired-message";
 import Jobs from "./pages/jobs";
 import Account from "./pages/account";
+import Organization from "./pages/organization";
 
 
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/jobs" element={<Jobs/>} />
         <Route path="/account" element={<Account/>} />
+        <Route path="/organization" element={<Organization/>} />
         <Route path="/main" element={<Main/>} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/signUpMessage" element={<SignUpMessage/>} />
