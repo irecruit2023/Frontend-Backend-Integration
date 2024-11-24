@@ -39,6 +39,12 @@ const WelcomeHeader = ({userType= "user"}) => {
                 `Please review the details and confirm if everything is accurate, or make any necessary updates where needed.`,
             ],
         },
+        template: {
+            greeting: `Template - Job Description`,
+            description: [
+                `Our template guides you through key sections to create a clear, complete job post effortlessly.`,
+            ],
+        },
     };
 
     return (

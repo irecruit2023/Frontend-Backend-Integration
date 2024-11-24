@@ -15,6 +15,7 @@ import Jobs from "./pages/jobs";
 import Account from "./pages/account";
 import Organization from "./pages/organization";
 import OrganizationSignup from "./pages/organization-signup";
+import JobDescriptionTemplate from "./pages/jobs-template";
 
 
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/activate" element={<EmailActivation/>} />
         <Route path="/expired" element={<EmailExpiredMessage/>} />
         <Route path="/organization-signup" element={<OrganizationSignup/>} />
+        <Route path="/jobs-template" element={<JobDescriptionTemplate/>} />
       </Routes>
       <ToastContainer />
     </>
