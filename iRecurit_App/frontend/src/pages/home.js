@@ -63,7 +63,7 @@ const Home = () => {
       <TopNavBar />
       <main className={styles.contentContainerWrapper}>
         <section className={styles.contentContainer}>
-          <WelcomeHeader/>
+          <WelcomeHeader userType="user"/>
           <div className={styles.benefitsContainerWrapper}>
             <div className={styles.benefitsContainer}>
               <div className={styles.unleashTheFullPotentialOfParent}>

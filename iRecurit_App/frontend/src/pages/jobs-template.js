@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./jobs-template.style.module.css";  // Import custom CSS module
+import styles from "./jobs-template.style.module.css"; // Import custom CSS module
 
 import TopNavBar from "../components/top-nav-bar";
 import WelcomeHeader from "../components/welcome-header";
@@ -48,21 +48,17 @@ const JobDescriptionTemplate = () => {
         // Perform form submission logic here
     };
 
-
     return (
         <div className={styles.root}>
-
             <TopNavBar userType="template" />
             <main className={styles.contentContainerWrapper}>
                 <section className={styles.contentContainer}>
                     <WelcomeHeader userType="template" />
                     <div className={styles.benefitsContainerWrapper}>
                         <div className={styles.benefitsContainer}>
-
-                            {/* <div className={styles.unleashTheFullPotentialOfParent}> */}
                             <div className={`container mt-4 ${styles.formContainer}`}>
                                 <div className={`p-4 mb-3 ${styles.header}`}>Job Description</div>
-                                <form className={`p-4 ${styles.form}`}>
+                                <form className={`p-4 ${styles.form}`} onSubmit={handleSubmit}>
                                     {/* Job Title */}
                                     <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="jobTitle" className={`form-label ${styles.label}`}>Job Title</label>
@@ -70,6 +66,7 @@ const JobDescriptionTemplate = () => {
                                             type="text"
                                             className={`form-control ${styles.input}`}
                                             id="jobTitle"
+                                            placeholder="Enter the job title, e.g., Software Engineer"
                                             value={jobTitle}
                                             onChange={(e) => setJobTitle(e.target.value)}
                                             required
@@ -151,6 +148,7 @@ const JobDescriptionTemplate = () => {
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
                                             id="rolesResponsibility"
+                                            placeholder="Describe the key roles and responsibilities for this job"
                                             rows="4"
                                             value={rolesResponsibility}
                                             onChange={(e) => setRolesResponsibility(e.target.value)}
@@ -164,6 +162,7 @@ const JobDescriptionTemplate = () => {
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
                                             id="eligibilities"
+                                            placeholder="Mention the eligibility criteria for the job"
                                             rows="4"
                                             value={eligibilities}
                                             onChange={(e) => setEligibilities(e.target.value)}
@@ -177,6 +176,7 @@ const JobDescriptionTemplate = () => {
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
                                             id="requiredSkills"
+                                            placeholder="List the skills required for the job"
                                             rows="4"
                                             value={requiredSkills}
                                             onChange={(e) => setRequiredSkills(e.target.value)}
@@ -190,6 +190,7 @@ const JobDescriptionTemplate = () => {
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
                                             id="highlights"
+                                            placeholder="Highlight unique benefits or features of this job"
                                             rows="4"
                                             value={highlights}
                                             onChange={(e) => setHighlights(e.target.value)}
@@ -203,6 +204,7 @@ const JobDescriptionTemplate = () => {
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
                                             id="aboutCompany"
+                                            placeholder="Provide details about the company"
                                             rows="4"
                                             value={aboutCompany}
                                             onChange={(e) => setAboutCompany(e.target.value)}
@@ -212,11 +214,10 @@ const JobDescriptionTemplate = () => {
 
                                     {/* Submit Button */}
                                     <div className="mt-4 d-flex justify-content-between">
-                                        <button type="submit" className={`btn btn-primary ${styles.button}`}>Confirm & Proceed</button>
+                                        <button type="submit" className={` ${styles.button}`}>Confirm & Proceed</button>
                                     </div>
                                 </form>
                             </div>
-                            {/* </div> */}
                             <div className={styles.vectorParent}>
                                 <Ellipse2 className={styles.frameChild} alt="" />
                                 <Ellipse1 className={styles.frameItem} alt="" />
@@ -234,4 +235,3 @@ const JobDescriptionTemplate = () => {
 };
 
 export default JobDescriptionTemplate;
-

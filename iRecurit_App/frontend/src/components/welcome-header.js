@@ -50,11 +50,6 @@ const WelcomeHeader = ({userType= "user"}) => {
     return (
         <div className={styles.content}>
             <h2 className={styles.WelcomeContainer}>
-                {userType=== "user" && <> <span>Hello {JSON.parse(localStorage.loginInformation).data.name},</span>
-                <span className={styles.welcomeMsg}>
-                    {" "}
-                    and welcome to iRecruit!
-                </span> </>}
                 {messages[userType].greeting}
             </h2> 
             <div className={styles.description}>
