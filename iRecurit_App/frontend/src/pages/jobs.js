@@ -51,7 +51,7 @@ const Jobs = () => {
                 <p className={styles.cardText}>
                   Our template guides you through key sections to create a clear, complete job post effortlessly.
                 </p>
-                <a href="#" className={styles.btnPrimary}>
+                <a href="/jobs-template" className={styles.btnPrimary}>
                   Create Now
                 </a>
               </div>
@@ -81,7 +81,7 @@ const Jobs = () => {
         <section className={styles.contentContainer}>
           <WelcomeHeader userType="jobs" />
           <div  style ={{width:'100%'}}className={styles.benefitsContainerWrapper}>
-            <div   style ={{width:"90%"}} className={styles.benefitsContainer}>
+            <div   style ={{width:"100%"}} className={styles.benefitsContainer}>
               <JobDescription/>
              
               <div className={styles.vectorParent}>

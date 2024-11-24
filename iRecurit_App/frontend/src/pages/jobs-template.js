@@ -4,7 +4,6 @@ import styles from "./jobs-template.style.module.css";  // Import custom CSS mod
 
 import TopNavBar from "../components/top-nav-bar";
 import WelcomeHeader from "../components/welcome-header";
-import InputField from "../components/input-field";
 
 import { ReactComponent as Ellipse1 } from "../assets/icons/ellipse-6.svg";
 import { ReactComponent as Ellipse2 } from "../assets/icons/ellipse-5.svg";
@@ -61,11 +60,11 @@ const JobDescriptionTemplate = () => {
                         <div className={styles.benefitsContainer}>
 
                             {/* <div className={styles.unleashTheFullPotentialOfParent}> */}
-                            <div className={`container mt-5 ${styles.formContainer}`}>
-                                <div className={`p-4 mb-4 ${styles.header}`}>Job Description</div>
+                            <div className={`container mt-4 ${styles.formContainer}`}>
+                                <div className={`p-4 mb-3 ${styles.header}`}>Job Description</div>
                                 <form className={`p-4 ${styles.form}`}>
                                     {/* Job Title */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="jobTitle" className={`form-label ${styles.label}`}>Job Title</label>
                                         <input
                                             type="text"
@@ -78,7 +77,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* Job Type */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label className={`form-label ${styles.label}`}>Job Type</label>
                                         <div>
                                             <div className="form-check form-check-inline" style={{ fontSize: "19px" }}>
@@ -107,7 +106,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* Location */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label className={`form-label ${styles.label}`}>Location</label>
                                         <div className="row">
                                             <div className="col-md-4">
@@ -147,7 +146,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* Roles and Responsibilities */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="rolesResponsibility" className={`form-label ${styles.label}`}>Roles and Responsibilities</label>
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
@@ -160,7 +159,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* Eligibilities */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="eligibilities" className={`form-label ${styles.label}`}>Eligibilities</label>
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
@@ -173,7 +172,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* Required Skills */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="requiredSkills" className={`form-label ${styles.label}`}>Required Skills</label>
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
@@ -186,7 +185,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* Highlights */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="highlights" className={`form-label ${styles.label}`}>Highlights</label>
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
@@ -199,7 +198,7 @@ const JobDescriptionTemplate = () => {
                                     </div>
 
                                     {/* About Company */}
-                                    <div className={`mb-4 ${styles.inputGroup}`}>
+                                    <div className={`mb-3 ${styles.inputGroup}`}>
                                         <label htmlFor="aboutCompany" className={`form-label ${styles.label}`}>About Company</label>
                                         <textarea
                                             className={`form-control ${styles.textarea}`}
