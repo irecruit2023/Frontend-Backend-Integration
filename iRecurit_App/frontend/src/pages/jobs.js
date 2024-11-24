@@ -1,12 +1,13 @@
 import TopNavBar from "../components/top-nav-bar";
-import styles from "./home.module.css";
+import styles from "./jobs.module.css";
 import { Modal } from '../components/upload-resume';
 import WelcomeHeader from "../components/welcome-header";
-import {React,useState} from 'react';
+import { React, useState } from 'react';
+import InputField from "../components/input-field";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as  Ellipse1 } from "../assets/icons/ellipse-6.svg";
-import { ReactComponent as  Ellipse2 } from "../assets/icons/ellipse-5.svg";
-import { ReactComponent as  RightHomeIcon } from "../assets/icons/right.svg";
+import { ReactComponent as Ellipse1 } from "../assets/icons/ellipse-6.svg";
+import { ReactComponent as Ellipse2 } from "../assets/icons/ellipse-5.svg";
+import { ReactComponent as RightHomeIcon } from "../assets/icons/right.svg";
 
 
 
@@ -15,41 +16,74 @@ const Jobs = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const openModal = () => { console.log("called"), setModalOpen(true)};
+  const openModal = () => { console.log("called"), setModalOpen(true) };
   const closeModal = () => setModalOpen(false);
-  const navigateMain =()=>{ navigate("/main")}
+  const navigateMain = () => { navigate("/main") }
+
+
+
+  const JobDescription = () => {
+    return (
+      <div>
+        <div className={styles.row}>
+          <div className={styles.col}>
+            <div className={styles.card}>
+              <div className={styles.cardBody}>
+                <h5 className={styles.cardTitle}>Upload Job Description (PDF and Word)</h5>
+                <h6 className={styles.subTitle}>Have a JD ready?</h6>
+                <p className={styles.cardText}>
+                  Upload it in PDF, and we’ll handle the rest. Quick and efficient for instant posting.
+                </p>
+                <a href="#" className={styles.btnPrimary}>
+                  Upload Now
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className={styles.orSection}>
+            <span className={styles.orText}>OR</span>
+          </div>
+          <div className={styles.col}>
+            <div className={styles.card}>
+              <div className={styles.cardBody}>
+                <h5 className={styles.cardTitle}>Create Job Description Using Our Template</h5>
+                <h6 className={styles.subTitle}>Need structure?</h6>
+                <p className={styles.cardText}>
+                  Our template guides you through key sections to create a clear, complete job post effortlessly.
+                </p>
+                <a href="#" className={styles.btnPrimary}>
+                  Create Now
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        {/* Skip or Do it Later Section */}
+        <div className={styles.skipSection}>
+          <a href="#" className={styles.skipLink}>
+            Skip or Do it Later
+          </a>
+        </div>
+      </div>
+    );
+  };
+   
+
+
 
 
 
   return (
     <div className={styles.root}>
-      <TopNavBar  userType="jobs"/>
+      <TopNavBar userType="jobs" />
       <main className={styles.contentContainerWrapper}>
         <section className={styles.contentContainer}>
-          <WelcomeHeader userType ="jobs" />
-          <div className={styles.benefitsContainerWrapper}>
-            <div className={styles.benefitsContainer}>
-              <div className={styles.unleashTheFullPotentialOfParent}>
-                <h1 className={styles.unleashTheFull}>
-                  Unleash the full potential of your job search journey by
-                  kickstarting it with a polished profile for unparalleled
-                  career outcomes.
-                </h1>
-                <div className={styles.ofCandidatesWhoCompletedThWrapper}>
-                  <div className={styles.ofCandidatesWho}>
-                    88% of candidates who completed their profiles discovered a
-                    brighter career path.
-                  </div>
-                </div>
-              </div>
-              <div className={styles.primaryButtonParent}>
-                <div className={styles.primaryButton}>
-                  <div className={styles.primary} style ={{cursor:"pointer"}} onClick={openModal} >Complete Profile Now</div>
-                </div>
-                <div className={styles.secondaryButton} > 
-                  <div className={styles.secondary} style ={{cursor:"pointer"}}   onClick={navigateMain} >Skip and Explore</div>
-                </div>
-              </div>
+          <WelcomeHeader userType="jobs" />
+          <div  style ={{width:'100%'}}className={styles.benefitsContainerWrapper}>
+            <div   style ={{width:"90%"}} className={styles.benefitsContainer}>
+              <JobDescription/>
+             
               <div className={styles.vectorParent}>
                 <Ellipse2
                   className={styles.frameChild}

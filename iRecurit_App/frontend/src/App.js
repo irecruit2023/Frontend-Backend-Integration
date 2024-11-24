@@ -14,6 +14,7 @@ import EmailExpiredMessage from "./pages/email-expired-message";
 import Jobs from "./pages/jobs";
 import Account from "./pages/account";
 import Organization from "./pages/organization";
+import OrganizationSignup from "./pages/organization-signup";
 
 
 
@@ -43,6 +44,7 @@ function App() {
         <Route path="/signUpMessage" element={<SignUpMessage/>} />
         <Route path="/activate" element={<EmailActivation/>} />
         <Route path="/expired" element={<EmailExpiredMessage/>} />
+        <Route path="/organization-signup" element={<OrganizationSignup/>} />
       </Routes>
       <ToastContainer />
     </>
