@@ -67,6 +67,23 @@
   .button:hover {
     background-color:  var(--colour-primary-p1);
   }
+
+  .input {
+    align-self: stretch;
+    border-radius: var(--radius-200);
+    background-color: var(--colour-tertiary-t6-all-white);
+    border: 1px solid var(--colour-tertiary-t2-stroke);
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--padding-3xs) var(--padding-mini);
+    min-width: 240px;
+    max-width: 100%;
+    color: var(--colour-tertiary-t1-text-default);
+}
   
   
   
