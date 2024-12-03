@@ -291,16 +291,18 @@ const Account = () => {
                   <div className="row mt-4">
                     <div className="col-md-6">
                       <button
+                        onClick={()=>{navigate("/jobs")}}
                         type="submit"
-                        className={` btn-block ${styles.primaryButton}`}
+                        className={` btn-block  ${styles.buttonAccount}  ${styles.primaryButton}`}
                       >
                         Confirm and update
                       </button>
                     </div>
                     <div className="col-md-6">
                       <button
+                       onClick={()=>{navigate("/jobs")}}
                         type="button"
-                        className={`btn-block ${styles.secondaryButton}`}
+                        className={`btn-block  ${styles.buttonAccount}  ${styles.secondaryButton}`}
                       >
                         Skip and complete later
                       </button>

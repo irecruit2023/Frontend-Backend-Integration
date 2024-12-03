@@ -16,6 +16,8 @@ import Account from "./pages/account";
 import Organization from "./pages/organization";
 import OrganizationSignup from "./pages/organization-signup";
 import JobDescriptionTemplate from "./pages/jobs-template";
+import ThankYouComponent from "./pages/ThankYouComponent";
+import ManageJobsTable from "./pages/ManageJobsTable";
 
 
 
@@ -47,6 +49,8 @@ function App() {
         <Route path="/expired" element={<EmailExpiredMessage/>} />
         <Route path="/organization-signup" element={<OrganizationSignup/>} />
         <Route path="/jobs-template" element={<JobDescriptionTemplate/>} />
+        <Route path="/organization-thankyou" element={<ThankYouComponent/>} />
+        <Route path="/manage-jobs" element={<ManageJobsTable/>} />
       </Routes>
       <ToastContainer />
     </>

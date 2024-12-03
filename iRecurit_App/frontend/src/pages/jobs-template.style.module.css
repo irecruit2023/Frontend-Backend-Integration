@@ -49,20 +49,7 @@
     resize: none;
   }
   
-  .button {
-    align-self: stretch;
-    border-radius: var(--br-81xl);
-    background-color: var(--colour-primary-p1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: var(--padding-5xs) var(--padding-xl);
-    cursor: pointer;
-    white-space: nowrap;
-    border: none;
-  }
+
   
   .button:hover {
     background-color:  var(--colour-primary-p1);
@@ -83,6 +70,29 @@
     min-width: 240px;
     max-width: 100%;
     color: var(--colour-tertiary-t1-text-default);
+}
+
+.buttonAccount {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: stretch;
+  border-radius: var(--br-81xl);
+  background-color: var(--colour-primary-p1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-5xs) var(--padding-xl);
+  cursor: pointer;
+  white-space: nowrap;
+  border: none;
 }
   
   

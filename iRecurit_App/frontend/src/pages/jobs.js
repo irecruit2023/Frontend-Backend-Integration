@@ -1,6 +1,6 @@
 import TopNavBar from "../components/top-nav-bar";
 import styles from "./jobs.module.css";
-import { Modal } from '../components/upload-resume';
+import { Modal } from '../components/upload-description';
 import WelcomeHeader from "../components/welcome-header";
 import { React, useState } from 'react';
 import InputField from "../components/input-field";
@@ -15,7 +15,6 @@ import { ReactComponent as RightHomeIcon } from "../assets/icons/right.svg";
 const Jobs = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-
   const openModal = () => { console.log("called"), setModalOpen(true) };
   const closeModal = () => setModalOpen(false);
   const navigateMain = () => { navigate("/main") }
@@ -34,7 +33,7 @@ const Jobs = () => {
                 <p className={styles.cardText}>
                   Upload it in PDF, and we’ll handle the rest. Quick and efficient for instant posting.
                 </p>
-                <a href="#" className={styles.btnPrimary}>
+                <a className={styles.btnPrimary} onClick={openModal}>
                   Upload Now
                 </a>
               </div>

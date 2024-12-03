@@ -17,11 +17,11 @@ const Organization = () => {
   };
 
   const handleConfirm = () => {
-    navigate("/important-details"); // Navigate to the important details page
+    navigate("/account"); // Navigate to the important details page
   };
 
   const handleSkip = () => {
-    navigate("/main"); // Navigate to the main page
+    navigate("/account"); // Navigate to the main page
   };
 
   return (

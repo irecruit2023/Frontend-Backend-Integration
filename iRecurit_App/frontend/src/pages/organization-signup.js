@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputField2 from "../components/input-field2";
 import Cts from "../components/cts";
 import InputField3 from "../components/input-field3";
@@ -14,6 +15,9 @@ import { ReactComponent as IconU } from "../assets/icons/vector-41.svg";
 import { ReactComponent as IconR2 } from "../assets/icons/vector-51.svg";
 import { ReactComponent as IconI2 } from "../assets/icons/vector-61.svg";
 import { ReactComponent as IcontT } from "../assets/icons/vector-71.svg";
+import { Navigate } from "react-router-dom";
+
+
 
 
 const SignUp = () => {
@@ -24,6 +28,7 @@ const SignUp = () => {
         password: "",
         reEnterPassword: "",
     });
+    const navigate = useNavigate();
 
     const handleChange = (e, fieldName) => {
         const { value } = e.target;
@@ -248,7 +253,7 @@ const SignUp = () => {
                                         // checked={jobType.fullTime}
                                         // onChange={handleJobTypeChange}
                                         />
-                                        <label className="form-check-label" htmlFor="fullTime"  style={{ fontSize: "1rem" }}>First Half</label>
+                                        <label className="form-check-label" htmlFor="fullTime" style={{ fontSize: "1rem" }}>First Half</label>
                                     </div>
                                     <div className="form-check form-check-inline" style={{ fontSize: "19px" }}>
                                         <input
@@ -259,7 +264,7 @@ const SignUp = () => {
                                         // checked={jobType.remote}
                                         // onChange={handleJobTypeChange}
                                         />
-                                        <label className="form-check-label" htmlFor="remote"  style={{ fontSize: "1rem" }}>Second Half</label>
+                                        <label className="form-check-label" htmlFor="remote" style={{ fontSize: "1rem" }}>Second Half</label>
                                     </div>
                                 </div>
                             </div>
@@ -275,15 +280,15 @@ const SignUp = () => {
                                 gap: "20px",
                             }}
                         >
-                            <div style={{ flex: "1 1 45%", padding: "0 10px", color:'#6e6e6e' }}>
+                            <div style={{ flex: "1 1 45%", padding: "0 10px", color: '#6e6e6e' }}>
                                 <div>We assure you we will not spam your inbox</div>
-                                <div>Already have a recruiters account? <span style ={{color:"#f2665d"}}>Login </span></div>
+                                <div>Already have a recruiters account? <span style={{ color: "#f2665d" }}>Login </span></div>
                             </div>
                             <div style={{ flex: "1 1 45%", display: "flex", justifyContent: "space-between", gap: "10px" }}>
-                                <button className={` btn-block ${styles.primaryButton}`} style={{ flex: "1 1 48%", padding: "10px 20px" }}>
+                                <button className={` btn-block ${styles.primaryButton}`} style={{ flex: "1 1 48%", padding: "10px 20px" }} onClick={() => { navigate("/organization-thankyou") }}>
                                     Interested
                                 </button>
-                                <button className={` btn-block ${styles.secondaryButton}`} style={{ flex: "1 1 48%", padding: "10px 20px" }}>
+                                <button className={` btn-block ${styles.secondaryButton}`} style={{ flex: "1 1 48%", padding: "10px 20px" }}  onClick={() => { navigate("/organization-thankyou") }} >
                                     Request Demo
                                 </button>
                             </div>

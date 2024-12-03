@@ -5,7 +5,7 @@ import styles from "./welcome-header.module.css";
 
 
 
-const WelcomeHeader = ({userType= "user"}) => {
+const WelcomeHeader = ({ userType = "user" }) => {
     console.log(userType)
 
     const messages = {
@@ -25,11 +25,13 @@ const WelcomeHeader = ({userType= "user"}) => {
         jobs: {
             greeting: `Job`,
             description: [
-                `Our portal streamlines the hiring process, offering a seamless way to add job opportunities and attract the perfect candidate—faster, simpler, and more effectively. 
+                `
+    Our portal streamlines the hiring process, offering a seamless way to add job opportunities and attract the perfect candidate—faster, simpler, and more effectively.<br><br>
 
-        Choose to upload your job description as a PDF or build it out using our intuitive template with ready-to-go sections. With our tools, you’ll be set up to connect with top talent effortlessly!
+    Choose to upload your job description as a PDF or build it out using our intuitive template with ready-to-go sections. With our tools, you’ll be set up to connect with top talent effortlessly!<br><br>
 
-        Next - Our advanced AI Engine verifies and validates your submission to ensure all required sections are present, so only complete, high-quality job descriptions are posted—enhancing your listing's appeal and attracting better candidate responses. If any details are missing, you’ll be notified instantly, giving you the chance to fine-tune your JD for maximum impact. `,
+    Next - Our advanced AI Engine verifies and validates your submission to ensure all required sections are present, so only complete, high-quality job descriptions are posted—enhancing your listing's appeal and attracting better candidate responses. If any details are missing, you’ll be notified instantly, giving you the chance to fine-tune your JD for maximum impact.
+  `,
             ],
         },
 
@@ -49,14 +51,14 @@ const WelcomeHeader = ({userType= "user"}) => {
 
     return (
         <div className={styles.content}>
-            <h2 className={styles.WelcomeContainer}>
-                {messages[userType].greeting}
-            </h2> 
-            <div className={styles.description}>
-                {messages[userType].description}
-            
-            </div>
-        </div>
+        <h2 className={styles.WelcomeContainer}>
+            {messages[userType].greeting}
+        </h2>
+        <div
+            className={styles.description}
+            dangerouslySetInnerHTML={{ __html: messages[userType].description }}
+        />
+    </div>
 
     );
 };

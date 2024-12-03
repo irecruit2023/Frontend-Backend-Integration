@@ -214,7 +214,7 @@ const JobDescriptionTemplate = () => {
 
                                     {/* Submit Button */}
                                     <div className="mt-4 d-flex justify-content-between">
-                                        <button type="submit" className={` ${styles.button}`}>Confirm & Proceed</button>
+                                        <button type="submit" className={`  ${styles.buttonAccount}  ${styles.button}`}>Confirm & Proceed</button>
                                     </div>
                                 </form>
                             </div>

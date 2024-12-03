@@ -28,8 +28,8 @@ const TopNavBar = ({ className = "" , userType = "user"}) => {
   
     const organizationMenu = [
       { label: "Account", link: "/account" },
-      { label: "Inbox", link: "/inbox" },
-      { label: "Contacts", link: "/contacts" },
+      { label: "Jobs", link: "/jobs" },
+      { label: "invoice", link: "/invoice" },
       { label: "Privacy Setting", link: "/privacy-settings" },
       { label: "Feedback", link: "/feedback" },
     ];

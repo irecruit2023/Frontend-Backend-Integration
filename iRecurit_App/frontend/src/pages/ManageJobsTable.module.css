@@ -1,0 +1,120 @@
+.container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f8f9fa;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .sortContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .searchInput {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .jobRow {
+    background-color: #f9f9f9;
+  }
+  
+  .jobID {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .jobDescription {
+    background-color: #eaf4fe;
+    color: #555;
+    font-size: 14px;
+    padding: 10px;
+  }
+  
+  .activeStatus {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .acceptedStatus {
+    color: green;
+  }
+  
+  .rejectedStatus {
+    color: red;
+  }
+  
+  .viewDetailsButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .viewDetailsButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .candidateTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .candidateTable th,
+  .candidateTable td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .acceptButton {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .rejectButton {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .acceptButton:hover {
+    background-color: darkgreen;
+  }
+  
+  .rejectButton:hover {
+    background-color: darkred;
+  }
+  
