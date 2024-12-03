@@ -229,7 +229,8 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'apikey'  # This is always 'apikey' for SendGrid
 EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'adavadkardhruv@gmail.com'
+DEFAULT_FROM_EMAIL = 'i.recruit.uu@gmail.com'
+#DEFAULT_FROM_EMAIL = 'surya.kocherlakota@gmail.com'
 sendgrid_client = SendGridAPIClient(SENDGRID_API_KEY)
 
 #remove.bg api for removing the bg of profile_picture
