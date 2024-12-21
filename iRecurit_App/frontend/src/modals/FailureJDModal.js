@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from 'react';
 import styles from "./FailureJDModal.module.css";
 
-const FailureJDModal = () => {
+const FailureJDModal = ({ className = "", handleAfterAIAnalysis }) => {
   return (
-    <div className={styles.modalBackdrop}>
-      <div className={styles.modal}>
+    <div className={[styles.root, className].join(" ")}>
         <h1 className={styles.title}>Oops!</h1>
         <p className={styles.description}>
           It looks like a few essential sections are missing from your Job
@@ -35,7 +34,6 @@ const FailureJDModal = () => {
         <footer className={styles.footer}>
           Powered by <strong>iRecruit AI Engine</strong>
         </footer>
-      </div>
     </div>
   );
 };

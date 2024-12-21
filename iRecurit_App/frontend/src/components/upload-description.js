@@ -3,41 +3,48 @@ import PropTypes from 'prop-types';
 import styles from './upload-resume.module.css'; // Ensure you have CSS for modal and upload resume
 import DescriptionUploaded from "./description-uploaded";
 import DescriptionAnalysis from "./description-analysis";
-import ResumeAnalysisTwo from "./resume-analysis-two";
+import JobUploadSuccessModal from "../modals/Job-upload-success-modal"
+import FailureJDModalJDModal from "../modals/FailureJDModal"
 import { uploadResume, generateProfile } from '../utils/util';
 import { notifyError, notifySuccess } from '../helper';
 
 const UploadResume = ({ className = "" }) => {
   const [isUploaded, setIsUploaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showResumeAnalysis, setShowResumeAnalysis] = useState(false);
-  const [showResumeAnalysis2, setShowResumeAnalysis2] = useState(false);
+  const [showSuccessAIAnalysis, setShowSuccessAIAnalysis] = useState(false);
+  const [showFailAIAnalysis, setShowFailAIAnalysis] = useState(false);
+  const [showAnalysisLoading, setshowAnalysisLoading] = useState(false);
   const [fileName, setFileName] = useState("");
   const [error, setError] = useState(null); // State to handle error messages
   const [isDragOver, setIsDragOver] = useState(false); // Drag state
 
-  const handleResumeAnalysis = async() => {
-    setShowResumeAnalysis(true);
-    setShowResumeAnalysis2(false);
+
+  const handleDescriptionAnalysis = async() => {
+    setshowAnalysisLoading(true)
     try {
-      const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
-      const response = await generateProfile(userId);
-      console.log("rese",response)
-      if (response.success) {
-        notifySuccess(response.success)
-        console.log('Resume uploaded successfully:', response);
+
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
+      // Generate a random true/false success outcome
+      const isSuccess = Math.random() < 0.5; // 50% chance of success or failure
+      if (isSuccess) {
+        setshowAnalysisLoading(false)
+        setShowSuccessAIAnalysis(true)
       } else {
-        notifyError(response.message);
+        setshowAnalysisLoading(false)
+        setShowFailAIAnalysis(true)
       }
     } catch (error) {
-      console.log("rese",error)
-      notifyError(error);
+      setshowAnalysisLoading(false)
+      setShowFailAIAnalysis(true)
     } finally {
-      setIsLoading(false);
+      setshowAnalysisLoading(false)
     }
   };
 
-  const handleResumeAnalysis2 = () => {
+
+
+  const handleAfterAIAnalysis = () => {
 
     setShowResumeAnalysis(false);
     setShowResumeAnalysis2(true);
@@ -117,22 +124,18 @@ const UploadResume = ({ className = "" }) => {
 
   return (
     <>
-      {showResumeAnalysis && !showResumeAnalysis2 && (
-        <DescriptionAnalysis handleResumeAnalysis2={handleResumeAnalysis2} />
+      {showAnalysisLoading && (
+        <DescriptionAnalysis handleAfterAIAnalysis={handleAfterAIAnalysis} />
       )}
-      {!showResumeAnalysis && showResumeAnalysis2 && <ResumeAnalysisTwo />}
-      {!showResumeAnalysis && !showResumeAnalysis2 && (
+      {showSuccessAIAnalysis && (
+        <JobUploadSuccessModal  />
+      )}
+      {showFailAIAnalysis && (
+        <FailureJDModalJDModal />
+      )}
+      {!showAnalysisLoading && !showSuccessAIAnalysis &&!showFailAIAnalysis && (
         <div className={[styles.root, className].join(" ")}>
-          {/* <a className={styles.awesomeTxt}>Awesome, {JSON.parse(localStorage.loginInformation).data.name}!</a> */}
           <div className={styles.fillNoFormsContainer}>
-            {/* <p className={styles.fillNoForms}>
-              Fill no forms, save time and unleash the full potential of your job
-              search journey by
-            </p> */}
-            {/* <p className={styles.kickstartingItWith}>
-              kickstarting it with a polished profile for unparalleled career
-              outcomes.
-            </p> */}
           </div>
           <div className={styles.uploadResumeWrapper}>
             <h1 className={styles.uploadResume} style ={{textWrap:'nowrap'}}>Upload Job Description (PDF and Word)</h1>
@@ -196,7 +199,7 @@ const UploadResume = ({ className = "" }) => {
             </div>
           )}
 
-          {isUploaded && <DescriptionUploaded handleResumeAnalysis={handleResumeAnalysis} fileName={fileName} onClose={handleClose} />}
+          {isUploaded && <DescriptionUploaded handleDescriptionAnalysis={handleDescriptionAnalysis} fileName={fileName} onClose={handleClose} />}
 
           <div className={styles.rootInner}>
             <div className={styles.textBoxParent}>

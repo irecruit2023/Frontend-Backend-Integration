@@ -1,10 +1,9 @@
 import React from "react";
 import styles from "./SuccessJDModal.module.css";
 
-const SuccessJDModal = () => {
+const SuccessJDModal =  ({ className = "", handleAfterAIAnalysis }) => {
   return (
-    <div className={styles.modalBackdrop}>
-      <div className={styles.modal}>
+    <div className={[styles.root, className].join(" ")}>
         <h1 className={styles.title}>Congratulations!</h1>
         <p className={styles.description}>
           The job description has been successfully published on our portal.
@@ -24,8 +23,12 @@ const SuccessJDModal = () => {
           Powered by <strong>iRecruit AI Engine</strong>
         </footer>
       </div>
-    </div>
+
   );
 };
 
 export default SuccessJDModal;
+
+
+
+

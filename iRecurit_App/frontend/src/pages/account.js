@@ -74,48 +74,6 @@ const Account = () => {
           <WelcomeHeader userType="account" />
           <div className={styles.benefitsContainerWrapper}>
             <div className={styles.benefitsContainer}>
-              {/* <div className={styles.unleashTheFullPotentialOfParent}>
-                <h1 className={styles.unleashTheFull}>
-                  Change Password
-                </h1>
-                <div style={{
-
-
-                  width: '100%',
-                  maxWidth: '448px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '16px', // Space between fields and buttons
-                }} >
-                  <InputField
-                    style={{ marginTop: '8px' }}
-                    firstName="Password"
-                    name="password"
-                    // value={loginState.password}
-                    vectorIcon={true}
-                    // onChange={(e) => handleChange(e, "password")}
-                    placeholder="password"
-                  />
-                  <InputField
-                    firstName="Confirm Password"
-                    name="password"
-                    // value={loginState.password}
-                    vectorIcon={true}
-                    // onChange={(e) => handleChange(e, "password")}
-                    placeholder="password"
-                  />
-                </ div>
-
-                <div className={styles.primaryButtonParent}>
-                  <div className={styles.primaryButton}>
-                    <div className={styles.primary} style={{ cursor: "pointer" }} onClick={openModal} >Cancel</div>
-                  </div>
-                  <div className={styles.secondaryButton} >
-                    <div className={styles.secondary} style={{ cursor: "pointer" }} onClick={navigateMain} >Submit</div>
-                  </div>
-                </div>
-
-              </div> */}
               <div className={styles.container}>
                 <h2 className={`mb-4 ${styles.title}`}><b >Company Details</b></h2>
 

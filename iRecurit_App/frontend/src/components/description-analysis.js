@@ -3,7 +3,7 @@ import styles from "./resume-analysis.module.css";
 import dice from "../assets/images/dice.png"
 
 
-const DescriptionAnalysis = ({ className = "", handleResumeAnalysis2 }) => {
+const DescriptionAnalysis = ({ className = "", handleAfterAIAnalysis }) => {
     return (
         <div className={[styles.root, className].join(" ")}>
             <section className={styles.sitBackAndSeeTheMaParent}>
@@ -17,14 +17,10 @@ const DescriptionAnalysis = ({ className = "", handleResumeAnalysis2 }) => {
                     >{`Please hold tight while our AI engine works its magic! 
 In just a few minutes, we’ll thoroughly analyze your uploaded Job Description, ensuring it’s complete, optimized, and ready to attract top talent. 
  `}</p>
-                    <div  className="mt-2" style={{ fontSize: '15px', color:'black' }}><b> Your perfect job post is almost there - thanks for your patience! </b></div>
+                    <div className="mt-2" style={{ fontSize: '15px', color: 'black' }}><b> Your perfect job post is almost there - thanks for your patience! </b></div>
                 </div>
             </section>
-            <div className={styles.secondaryButtonWrapper} onClick={handleResumeAnalysis2}>
-                {/* <SecondaryButton
-                    secondary="Notify me once the analysis is complete"
-                    secondaryFontWeight="500"
-                /> */}
+            <div className={styles.secondaryButtonWrapper} onClick={handleAfterAIAnalysis}>
             </div>
             <img
                 className={styles.screenrecording20240124at22Icon}

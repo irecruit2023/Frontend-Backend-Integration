@@ -4,7 +4,7 @@ import styles from "./resume-uploaded.module.css";
 import { ReactComponent as Iconcross } from "../assets/icons/iconclose.svg";
 import { ReactComponent as Icondocument } from "../assets/icons/document.svg";
 
-const DescriptionUploaded = ({ className = "", handleResumeAnalysis, fileName, onClose }) => {
+const DescriptionUploaded = ({ className = "", handleDescriptionAnalysis, fileName, onClose }) => {
   return (
     <>
       <div className={styles.iconContainerParent}>
@@ -20,7 +20,7 @@ const DescriptionUploaded = ({ className = "", handleResumeAnalysis, fileName, o
         </div>
         <Iconcross onClick={onClose} className={styles.closeIcon} />
       </div>
-      <div className={styles.buttonContainer} onClick={handleResumeAnalysis}>
+      <div className={styles.buttonContainer} onClick={handleDescriptionAnalysis}>
         <SecondaryButton
           secondary="Upload Now"
           secondaryFontWeight="500"
