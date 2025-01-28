@@ -17,7 +17,7 @@ import Organization from "./pages/organization";
 import OrganizationSignup from "./pages/organization-signup";
 import JobDescriptionTemplate from "./pages/jobs-template";
 import ThankYouComponent from "./pages/ThankYouComponent";
-import ManageJobsTable from "./pages/ManageJobsTable";
+import ManageJobsTable from "./pages/manageJobsTable";
 
 
 

@@ -370,12 +370,19 @@
 
 @media (min-width: 1350px) {
   .logoContainer {
-    gap: var(--gap-113xl-5);
+    gap:24px;
   }
 }
 
 @media (max-width: 1350px) {
   .logoContainer {
     gap:24px;
+  }
+}
+
+
+@media (min-width: 1350px) {
+  .userNavItems {
+    max-width:202px;
   }
 }
