@@ -374,7 +374,7 @@
   }
 }
 
-@media (max-width: 1350px) {
+/* @media (max-width: 1350px) {
   .logoContainer {
     gap:24px;
   }
@@ -385,4 +385,4 @@
   .userNavItems {
     max-width:202px;
   }
-}
+} */

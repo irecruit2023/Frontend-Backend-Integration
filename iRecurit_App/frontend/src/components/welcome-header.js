@@ -10,7 +10,7 @@ const WelcomeHeader = ({ userType = "user" }) => {
 
     const messages = {
         user: {
-            greeting: `Hello ${JSON.parse(localStorage.loginInformation).data.name}, and welcome to iRecruit!`,
+            greeting: `Hello ${JSON.parse(localStorage?.getItem("loginInformation") || "{}")?.data?.name || ""}, and welcome to iRecruit!`,
             description: [
                 "This platform is your gateway to countless opportunities, crafted to help you showcase your skills and find your dream career.",
                 "Together, let's embark on this journey, where your talent meets its destiny in the sprawling landscape of opportunities.",

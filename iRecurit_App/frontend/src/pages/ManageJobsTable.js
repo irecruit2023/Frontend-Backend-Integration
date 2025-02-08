@@ -6,6 +6,7 @@ import TopNavBar from "../components/top-nav-bar";
 import { ReactComponent as Shortlisted } from "../assets/icons/shortlist-font.svg";
 import { ReactComponent as Rejected } from "../assets/icons/rejected-font.svg";
 import { ReactComponent as Progress } from "../assets/icons/in-progress-font.svg";
+import InterviewModal from "../modals/interview-modal"
 
 
 
@@ -84,7 +85,8 @@ const JobDashboard = () => {
 
 
 
-const JobTable = () => {
+const JobTable = (props) => {
+
   const [expandedRow, setExpandedRow] = useState(null);
 
 
@@ -242,7 +244,7 @@ const JobTable = () => {
                         </thead>
                         <tbody>
                           {candidates.map((candidate, index) => (
-                            <tr className="tableRow" key={index}>
+                            <tr className="tableRow" style ={{cursor:'pointer'}} key={index} onClick={() => props.setIsInterviewModalOpen(true)}>
 
                               <td>
                                 <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
@@ -323,6 +325,7 @@ const JobTable = () => {
 
 
 const ManageJobsTable = () => {
+  const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
 
   return (
     <div className="dashboard-container">
@@ -332,9 +335,10 @@ const ManageJobsTable = () => {
         <JobDashboard />
         <div className="table-section">
           <div className="manage-jobs-heading">Manage Job Openings</div>
-          <JobTable />
+          <JobTable isInterviewModalOpen ={isInterviewModalOpen} setIsInterviewModalOpen ={setIsInterviewModalOpen} />
         </div>
       </div>
+      {isInterviewModalOpen && <InterviewModal isInterviewModalOpen ={isInterviewModalOpen} setIsInterviewModalOpen ={setIsInterviewModalOpen} />}
     </div>
   );
 };

@@ -1,0 +1,341 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* font-family: popins; */
+  font-family: var(--popins-body-copy-body-regular);
+}
+
+.modalContainer {
+  /* width: 90%; */
+  height: 90%;
+  background: white;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  overflow: scroll;
+  width: 854px;
+
+  top: 3px;
+  left: 3px;
+  gap: 0px;
+  border-radius: 16px;
+  border: 1px;
+  opacity: 0px;
+  border: 1px solid #DCDCDC;
+  box-shadow: 0px 0px 16px 4px #0000000A;
+
+
+}
+
+.closeButton {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .modalContainer {
+    width: 95%;
+    padding: 15px;
+  }
+}
+
+.header {
+  background: #e0f0ff;
+  /* padding: 15px; */
+  border-radius: 8px;
+  background: #e0f0ff;
+  padding: 36px;
+  border-radius: 8px;
+  height: 161px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.jobId {
+  color: red;
+  font-weight: bold;
+}
+
+.status {
+  float: right;
+  color: green;
+  font-weight: bold;
+}
+
+.profileSection {
+  padding: 15px;
+}
+
+.profileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actionButtons button {
+  margin-left: 5px;
+}
+
+.shortlisted {
+  background: #d4f5d4;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: green;
+  border: none;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.interviewSection {
+  padding: 15px;
+}
+
+.inProgress {
+  color: orange;
+  font-weight: bold;
+}
+
+.rounds {
+  margin-top: 10px;
+}
+
+.roundCompleted {
+  display: flex;
+  align-items: center;
+  color: green;
+}
+
+.roundPending {
+  display: flex;
+  align-items: center;
+  color: red;
+}
+
+.roundDisabled {
+  display: flex;
+  align-items: center;
+  color: gray;
+}
+
+.icon {
+  margin-right: 10px;
+}
+
+.toBeScheduled {
+  color: red;
+  font-weight: bold;
+}
+
+
+
+.jobDetails {
+  font-family: Poppins;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 25.5px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+}
+
+.companyName {
+  font-family: Poppins;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25.5px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+}
+
+
+.jobHeading {
+  font-family: Poppins;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 28.5px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+}
+
+
+.interviewContainer {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.title {
+  /* text-align: center; */
+  color: #333;
+}
+
+.round {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.round h2 {
+  margin-top: 0;
+  color: #555;
+}
+
+.round p {
+  margin: 5px 0;
+  color: #666;
+}
+
+
+
+.container {
+  position: relative;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  /* background-color: #f8f8f8;
+  border: 1px solid #dcdcdc;
+  border-radius: 16px;
+  box-shadow: 0px 0px 16px 4px #0000000a; */
+}
+
+.verticalLine {
+  /* position: absolute;
+  left: 35px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #dcdcdc; */
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  left: 38px;
+  border-left: 0.75px dotted #6E6E6E;
+  transform: translateX(-50%);
+  z-index: -1;
+  /* Puts it behind the content */
+
+}
+
+.roundItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid white;
+  z-index: 10;
+}
+
+
+.contentBox {
+  width: 753px;
+  height: 78px;
+  margin-left: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid #dcdcdc;
+  background-color: white;
+  box-shadow: 0px 0px 16px 4px #0000000a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.details {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.opacity {
+  opacity: 0.5;
+}
+
+
+.content {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22.5px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #303030;
+
+
+}
+
+
+.upperZindex {
+  z-index: 1;
+}
+
+.interviewProgress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Poppins;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25.5px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #303030;
+
+
+}
+
+.userInfo {
+  font-family: Poppins;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22.5px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+
+}
