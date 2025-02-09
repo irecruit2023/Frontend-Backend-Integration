@@ -21,14 +21,14 @@ const TopNavBar = ({ className = "" , userType = "user"}) => {
 
     // Menu items for user and organization
     const userMenu = [
-      { label: "Jobs", link: "/jobs" },
+      { label: "Jobs", link: "/jobs-search" },
       { label: "Events", link: "/events" },
       { label: "Blogs", link: "/blogs" },
     ];
   
     const organizationMenu = [
       { label: "Account", link: "/account" },
-      { label: "Jobs", link: "/jobs" },
+      { label: " Manage Jobs", link: "/manage-jobs" },
       { label: "invoice", link: "/invoice" },
       { label: "Privacy Setting", link: "/privacy-settings" },
       { label: "Feedback", link: "/feedback" },

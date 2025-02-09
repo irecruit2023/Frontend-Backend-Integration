@@ -7,7 +7,7 @@ const ContentContainer = ({ className = "" }) => {
   return (
     <div className={[styles.contentContainer, className].join(" ")}>
       <div className={styles.content}>
-        <h1 className={styles.helloVidhi}>Hello {JSON.parse(localStorage?.loginInformation)?.data?.name}!</h1>
+        <h1 className={styles.helloVidhi}>Hello {JSON.parse(localStorage?.getItem("loginInformation") || "{}")?.data?.name || ""}!</h1>
         <h1 className={styles.embarkOnThe}>
           Embark on the road to your future, where each step marks the unfolding
           of limitless possibilities from this starting point.

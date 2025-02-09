@@ -17,7 +17,8 @@ import Organization from "./pages/organization";
 import OrganizationSignup from "./pages/organization-signup";
 import JobDescriptionTemplate from "./pages/jobs-template";
 import ThankYouComponent from "./pages/ThankYouComponent";
-import ManageJobsTable from "./pages/manageJobsTable";
+import ManageJobsTable from "./pages/manage-jobs-table";
+import JobsSearch from "./pages/jobs-search";
 
 
 
@@ -40,6 +41,7 @@ function App() {
         <Route path="/signUp" element={<SignUp/>} />
         <Route path="/home" element={<Home />} />
         <Route path="/jobs" element={<Jobs/>} />
+        <Route path="/jobs-search" element={<JobsSearch/>} />
         <Route path="/account" element={<Account/>} />
         <Route path="/organization" element={<Organization/>} />
         <Route path="/main" element={<Main/>} />
