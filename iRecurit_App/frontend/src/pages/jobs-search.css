@@ -496,7 +496,7 @@
 .row-view15 {
 	align-self: stretch;
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	align-items: center;
 }
 .row-view16 {
@@ -705,3 +705,571 @@
 	margin-left: 44px;
 	margin-right: 44px;
 }
+
+
+
+
+
+
+
+
+
+/* .absolute-view {
+	position: absolute;
+	bottom: -31px;
+	right: 134px;
+	width: 1364px;
+	height: 76px;
+	background: #ffffff;
+	border-radius: 100px;
+	border: 1px solid #dcdcdc;
+	padding-left: 25px;
+	padding-right: 12px;
+	box-shadow: 0px 4px 16px #00000008;
+  }
+  .horizontal-box {
+	flex: 1;
+	align-self: stretch;
+  }
+  .box2 {
+	height: 1px;
+	align-self: stretch;
+	margin-bottom: 43px;
+  } */
+  /* .button {
+	width: 154px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #52bb77;
+	border-radius: 100px;
+	border: none;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-align: left;
+  } */
+  /* .button2 {
+	width: 175px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #f2665d;
+	border-radius: 100px;
+	border: none;
+	padding-top: 18px;
+	padding-bottom: 18px;
+	text-align: left;
+  } */
+  .horizontal-button3 {
+	width: 88px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 20px;
+	border: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+  }
+  .horizontal-button4 {
+	width: 97px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 20px;
+	border: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+	margin-right: 12px;
+  }
+  .horizontal-button5 {
+	width: 108px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 20px;
+	border: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+  }
+  .horizontal-button6 {
+	width: 376px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 100px;
+	border: 1px solid #f2665d;
+	padding-top: 13px;
+	padding-bottom: 13px;
+	text-align: left;
+  }
+  /* .button7 {
+	width: 73px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 20px;
+	border: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+  }
+  .button8 {
+	width: 107px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 20px;
+	border: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+  }
+  .button9 {
+	width: 114px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 20px;
+	border: 1px solid #dcdcdc;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	text-align: left;
+  } */
+  /* .column {
+	align-self: stretch;
+	align-items: flex-start;
+	margin-bottom: 58px;
+	margin-left: 40px;
+	margin-right: 40px;
+	position: relative;
+  }
+  .column2 {
+	align-self: stretch;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	background: #ece1f9;
+	border-radius: 16px;
+	padding: 47px 44px 94px 44px;
+  } */
+  .horizontal-column3 {
+	width: 424px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	background: #fff3f2;
+	border-radius: 12px;
+	padding: 20px 24px 62px 24px;
+	margin-right: 32px;
+  }
+  .horizontal-column4 {
+	width: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-right: 12px;
+	
+  }
+  /* .column5 {
+	width: 424px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	background: #fff3f2;
+	border-radius: 12px;
+	padding: 20px 24px 61px 24px;
+	margin-right: 32px;
+  }
+  .contain {
+	display: flex;
+	flex-direction: column;
+	background: #ffffff;
+  } */
+  .horizonatl-image {
+	width: 26px;
+	height: 36px;
+	margin-right: 5px;
+	object-fit: fill;
+  }
+  /* .image2 {
+	height: 19px;
+	margin-top: 4px;
+	align-self: stretch;
+	object-fit: fill;
+  }
+  .image3 {
+	width: 24px;
+	height: 24px;
+	object-fit: fill;
+  }
+  .image4 {
+	width: 24px;
+	height: 24px;
+	margin-right: 52px;
+	object-fit: fill;
+  }
+  .image5 {
+	width: 24px;
+	height: 24px;
+	margin-right: 23px;
+	object-fit: fill;
+  } */
+  /* .image6 {
+	width: 28px;
+	height: 28px;
+	margin-right: 22px;
+	object-fit: fill;
+  }
+  .image7 {
+	width: 16px;
+	height: 20px;
+	margin-right: 3px;
+	object-fit: fill;
+  }
+  .image8 {
+	width: 24px;
+	height: 24px;
+	margin-right: 11px;
+	object-fit: fill;
+  }
+  .image9 {
+	width: 16px;
+	height: 16px;
+	margin-right: 4px;
+	object-fit: fill;
+  } */
+  /* .image10 {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	object-fit: fill;
+  }
+  .input {
+	color: #c7c7c7;
+	font-size: 15px;
+	flex: 1;
+	align-self: stretch;
+	background: none;
+	border: none;
+	padding-top: 7px;
+	padding-bottom: 7px;
+  }
+  .row-view {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	background: #ffffff;
+	padding: 11px 44px;
+  } */
+  /* .row-view2 {
+	width: 330px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 100px;
+	border: 1px solid #dcdcdc;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin-right: 42px;
+  }
+  .row-view3 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-top: 12px;
+  } */
+  /* .row-view4 {
+	align-self: stretch;
+	display: flex;
+	align-items: flex-start;
+	margin-left: 197px;
+	margin-right: 197px;
+  }
+  .row-view5 {
+	display: flex;
+	align-items: center;
+  }
+  .row-view6 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-bottom: 29px;
+	margin-left: 182px;
+	margin-right: 182px;
+  } */
+  .horizontal-row-view7 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 16px;
+	border: 1px solid #dcdcdc;
+	padding: 8px;
+	margin-bottom: 32px;
+	/* margin-left: auto;
+	margin-right: auto; */
+	box-shadow: 0px 0px 16px #00000008;
+  }
+  .horizontal-row-view8 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-bottom: 28px;
+  }
+  .horizontal-row-view9 {
+	align-self: stretch;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 31px;
+  }
+  /* .row-view10 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-right: 57px;
+  }
+  .row-view11 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-bottom: 29px;
+  } */
+  .horizontal-row-view12 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-right: 90px;
+  }
+  /* .row-view13 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-right: 58px;
+  }
+  .row-view14 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	background: #ffffff;
+	border-radius: 16px;
+	border: 1px solid #dcdcdc;
+	padding: 8px;
+	margin-left: 182px;
+	margin-right: 182px;
+	box-shadow: 0px 0px 16px #00000008;
+  } */
+  /* .row-view15 {
+	align-self: stretch;
+	display: flex;
+	align-items: center;
+	margin-right: 50px;
+  }
+  .scroll-view {
+	height: 1888px;
+	align-self: stretch;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	background: #ffffff;
+  } */
+  /* .text {
+	color: #6e6e6e;
+	font-size: 17px;
+	font-weight: bold;
+	margin-right: 36px;
+  }
+  .text2 {
+	color: #303030;
+	font-size: 17px;
+	font-weight: bold;
+	margin-right: 35px;
+  }
+  .text3 {
+	color: #303030;
+	font-size: 17px;
+	font-weight: bold;
+	margin-right: 34px;
+  }
+  .text4 {
+	color: #ffffff;
+	font-size: 17px;
+	font-weight: bold;
+  }
+  .text5 {
+	color: #303030;
+	font-size: 17px;
+	font-weight: bold;
+	margin-right: 16px;
+  }
+  .text6 {
+	color: #303030;
+	font-size: 32px;
+	font-weight: bold;
+	margin-bottom: 17px;
+  }
+  .text7 {
+	color: #6e6e6e;
+	font-size: 17px;
+  }
+  .text8 {
+	color: #c7c7c7;
+	font-size: 19px;
+  }
+  .text9 {
+	color: #f5f5f5;
+	font-size: 19px;
+	font-weight: bold;
+  }
+  .text10 {
+	color: #303030;
+	font-size: 23px;
+	font-weight: bold;
+	margin-bottom: 7px;
+	margin-left: 183px;
+  }
+  .text11 {
+	color: #6e6e6e;
+	font-size: 17px;
+	margin-right: 4px;
+	flex: 1;
+  } */
+  .horizontal-text12 {
+	color: #6e6e6e;
+	font-size: 13px;
+	margin-right: 4px;
+	flex: 1;
+  }
+  .horizontal-text13 {
+	color: #303030;
+	font-size: 23px;
+	font-weight: bold;
+  }
+  .horizontal-text14 {
+	color: #303030;
+	font-size: 13px;
+  }
+  .horizontal-text15 {
+	color: #303030;
+	font-size: 17px;
+	font-weight: bold;
+	margin-bottom: 9px;
+  }
+  .horizontal-text16 {
+	color: #6e6e6e;
+	font-size: 15px;
+	flex: 1;
+  }
+  .horizontal-text17 {
+	color: #f2665d;
+	font-size: 17px;
+	font-weight: bold;
+  }
+  /* .text18 {
+	color: #303030;
+	font-size: 17px;
+	font-weight: bold;
+	margin-bottom: 9px;
+	margin-left: 1px;
+  }
+  .view {
+	width: 143px;
+	display: flex;
+	flex-direction: column;
+	background: #303030;
+	border-radius: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-right: 103px;
+  }
+   */
+
+
+   .horizontal-image3 {
+	width: 24px;
+	height: 24px;
+	object-fit: fill;
+  }
+
+
+  .horizontal-image10 {
+	width: 16px;
+	height: 16px;
+	margin-right: 5px;
+	object-fit: fill;
+  }
+
+  .horizontal-job-descr {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+  }
+  
+
+
+
+  
+  
+
+  .job-listings-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 16px;
+	padding: 16px;
+  }
+  
+  /* Job card styles */
+  .column7 {
+	background: #fff;
+	border-radius: 8px;
+	padding: 16px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Large Screens - Show 4 jobs per row */
+
+  @media (min-width: 2001px) {
+	.job-listings-grid {
+	  grid-template-columns: repeat(4, 1fr);
+	}
+  }
+
+  @media (max-width: 2000px) {
+	.job-listings-grid {
+	  grid-template-columns: repeat(3, 1fr);
+	}
+  }
+  
+  /* Medium Screens (Tablets) - Show 3 jobs per row */
+  @media (max-width: 1499px) {
+	.job-listings-grid {
+	  grid-template-columns: repeat(2, 1fr);
+	}
+  }
+  
+  /* Small Screens (Phones) - Show 2 jobs per row */
+  @media (max-width: 1067px) {
+	.job-listings-grid {
+	  grid-template-columns: repeat(1, 1fr);
+	}
+  }
+  
+  /* Extra Small Screens (Narrow Phones) - Show 1 job per row */
+  @media (max-width: 480px) {
+	.job-listings-grid {
+	  grid-template-columns: repeat(1, 1fr);
+	}
+  }
+  
