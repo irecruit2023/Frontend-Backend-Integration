@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./manage.css";
 import styles from "./manage.css"
@@ -10,7 +11,10 @@ import InterviewModal from "../modals/interview-modal"
 
 
 
+
+
 const JobDashboard = () => {
+
   return (
     <div className="dashboard-graph-container">
       <div className="card logo-card">
@@ -223,7 +227,7 @@ const JobTable = (props) => {
                     <div className="expandedContent">
                       <p className="description">
                         <span style={{ width: "90%" }}>{job.description}</span>
-                        <button className='viewDetails' >View Details</button>
+                        <button className='viewDetails' onClick={()=>{props.navigate('jobs-edit')}} >View Details</button>
                       </p>
 
                       <table className="subTable">
@@ -326,16 +330,17 @@ const JobTable = (props) => {
 
 const ManageJobsTable = () => {
   const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
+  const navigate = useNavigate()
 
   return (
     <div className="dashboard-container">
-      <TopNavBar userType="jobs" />
+      <TopNavBar userType="recuriter" />
 
       <div style={{ margin: "44px" }}>
         <JobDashboard />
         <div className="table-section">
           <div className="manage-jobs-heading">Manage Job Openings</div>
-          <JobTable isInterviewModalOpen ={isInterviewModalOpen} setIsInterviewModalOpen ={setIsInterviewModalOpen} />
+          <JobTable isInterviewModalOpen ={isInterviewModalOpen} setIsInterviewModalOpen ={setIsInterviewModalOpen} navigate ={navigate} />
         </div>
       </div>
       {isInterviewModalOpen && <InterviewModal isInterviewModalOpen ={isInterviewModalOpen} setIsInterviewModalOpen ={setIsInterviewModalOpen} />}

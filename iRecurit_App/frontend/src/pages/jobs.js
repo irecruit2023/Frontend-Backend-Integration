@@ -75,7 +75,7 @@ const Jobs = () => {
 
   return (
     <div className={styles.root}>
-      <TopNavBar userType="jobs" />
+      <TopNavBar userType="recuriter" />
       <main className={styles.contentContainerWrapper}>
         <section className={styles.contentContainer}>
           <WelcomeHeader userType="jobs" />

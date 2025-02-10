@@ -20,6 +20,8 @@ import ThankYouComponent from "./pages/ThankYouComponent";
 import ManageJobsTable from "./pages/manage-jobs-table";
 import JobsSearch from "./pages/jobs-search";
 import JobDetails from "./pages/job-details";
+import JobDetailsEdit from "./pages/job-details-edit";
+import PublishJD from "./pages/publish-jd";
 
 
 
@@ -44,6 +46,8 @@ function App() {
         <Route path="/jobs" element={<Jobs/>} />
         <Route path="/jobs-search" element={<JobsSearch/>} />
         <Route path="/jobs-search/job-details" element={<JobDetails/>} />
+        <Route path="manage-jobs/jobs-edit" element={<JobDetailsEdit/>} />
+        <Route path="/publish-jobs" element={<PublishJD/>} />
         <Route path="/account" element={<Account/>} />
         <Route path="/organization" element={<Organization/>} />
         <Route path="/main" element={<Main/>} />
