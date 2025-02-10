@@ -167,6 +167,13 @@ const InterviewModal = ({ isInterviewModalOpen, setIsInterviewModalOpen }) => {
             ))} */}
 
             <InterviewTimeline />
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+
+            }}> <button className={styles.button2} onClick={() => setIsInterviewModalOpen(false)}>Close </button> </div>
+
           </div>
         </div>
       </div>

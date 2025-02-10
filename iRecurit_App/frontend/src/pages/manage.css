@@ -31,9 +31,9 @@ table th {
 table td {
   padding: 15px;
   border-bottom: 1px solid #eee;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   font-family: Poppins;
-  /* font-size: 17px; */
+  font-size: 17px;
   font-size: 0.9rem;
   font-weight: 500;
   line-height: 25.5px;
@@ -132,7 +132,7 @@ table tr:hover {
 .subTable {
   width: 100%;
   border-collapse: collapse;
-  margin: 10px 0;
+  /* margin: 10px 0; */
 }
 
 .mainTable th {

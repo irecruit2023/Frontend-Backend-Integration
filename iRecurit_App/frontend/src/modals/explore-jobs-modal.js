@@ -29,7 +29,7 @@ const JobModal = ({ isOpen, setIsOpen }) => {
                 <button className={styles.button2} onClick={() => alert("Pressed!")}>
                   <span className={styles.text2}>{"Full Stack Developer"}</span>
                 </button>
-                <button className={styles.button3} onClick={() => alert("Pressed!")}>
+                <button className={styles.button2} onClick={() => alert("Pressed!")}>
                   <span className={styles.text2}>{"Reactjs"}</span>
                 </button>
                 <button className={styles.button} onClick={() => alert("Pressed!")}>

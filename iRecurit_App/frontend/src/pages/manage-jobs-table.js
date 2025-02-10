@@ -109,6 +109,45 @@ const JobTable = (props) => {
 
     },
     {
+      id: "CS0245",
+      dateCreated: "18/11/2024",
+      jobType: "Sr. Software Engineer",
+      location: "Gurugram, India",
+      department: "IT Software",
+      type: "Full Time",
+      status: "Active",
+      applicants: 29,
+      description:
+        "We are looking for a Sr. App developer skilled in building performant mobile apps on both the iOS and Android platforms. You will be responsible for developing cross-platform mobile applications using the React Native and Flutter frameworks, as well as coordinating with the team to deliver high-quality solutions.",
+
+    },
+    {
+      id: "BS0245",
+      dateCreated: "18/11/2024",
+      jobType: "Sr. Software Engineer",
+      location: "Gurugram, India",
+      department: "IT Software",
+      type: "Full Time",
+      status: "Active",
+      applicants: 29,
+      description:
+        "We are looking for a Sr. App developer skilled in building performant mobile apps on both the iOS and Android platforms. You will be responsible for developing cross-platform mobile applications using the React Native and Flutter frameworks, as well as coordinating with the team to deliver high-quality solutions.",
+
+    },
+    {
+      id: "AS025",
+      dateCreated: "18/11/2024",
+      jobType: "Sr. Software Engineer",
+      location: "Gurugram, India",
+      department: "IT Software",
+      type: "Full Time",
+      status: "Active",
+      applicants: 29,
+      description:
+        "We are looking for a Sr. App developer skilled in building performant mobile apps on both the iOS and Android platforms. You will be responsible for developing cross-platform mobile applications using the React Native and Flutter frameworks, as well as coordinating with the team to deliver high-quality solutions.",
+
+    },
+    {
       id: "TS0245",
       dateCreated: "18/11/2024",
       jobType: "Sr. Software Engineer",
@@ -159,7 +198,9 @@ const JobTable = (props) => {
       <table className="mainTable">
         <thead>
           <tr className="tableRow">
-            <th>                 <input
+            <th>                 
+              <input
+               style={{marginRight:'0.5rem'}}
               type="checkbox"
               checked={true}
 
@@ -178,9 +219,10 @@ const JobTable = (props) => {
         <tbody>
           {jobs.map((job) => (
             <React.Fragment key={job.id}>
-              <tr>
+              <tr style ={{cursor:'pointer'}} onClick={() => toggleExpand(job.id)}>
                 <td>
                   <input
+                    style={{marginRight:'0.5rem'}}
                     type="checkbox"
                     checked={true}
 
@@ -204,16 +246,16 @@ const JobTable = (props) => {
                     <rect x="13" y="8.5" width="2" height="8" fill="#303030" />
                   </svg>
 
-                  <svg style={{ marginLeft: '0.2rem' }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg style={{ marginLeft: '0.5rem' }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8.3775 4.5L10.9425 7.0575L11.3775 7.5H21V19.5H3V4.5H8.3775ZM8.3775 3H3C2.60218 3 2.22064 3.15804 1.93934 3.43934C1.65804 3.72064 1.5 4.10218 1.5 4.5V19.5C1.5 19.8978 1.65804 20.2794 1.93934 20.5607C2.22064 20.842 2.60218 21 3 21H21C21.3978 21 21.7794 20.842 22.0607 20.5607C22.342 20.2794 22.5 19.8978 22.5 19.5V7.5C22.5 7.10218 22.342 6.72065 22.0607 6.43934C21.7794 6.15804 21.3978 6 21 6H12L9.4425 3.4425C9.30296 3.30212 9.13701 3.19075 8.95423 3.11481C8.77144 3.03886 8.57543 2.99984 8.3775 3Z" fill="#303030" />
                   </svg>
 
 
-                  {expandedRow == job.id ? <svg style={{ marginLeft: '0.2rem' }} onClick={() => toggleExpand(job.id)} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {expandedRow == job.id ? <svg style={{ marginLeft: '0.5rem' }}  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.3536 9.24645L18.45 15.3429L18.7929 15L12 8.20711L5.20711 15L5.55 15.3429L11.6464 9.24645L12 8.89289L12.3536 9.24645Z" fill="#F2665D" stroke="#F2665D" />
                   </svg>
                     :
-                    <svg width="24" height="24" style={{ marginLeft: '0.2rem' }}  onClick={() => toggleExpand(job.id)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="24" height="24" style={{ marginLeft: '0.5rem' }}  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11.6464 14.7536L5.55 8.65711L5.20711 9L12 15.7929L18.7929 9L18.45 8.65711L12.3536 14.7536L12 15.1071L11.6464 14.7536Z" fill="#303030" stroke="#303030" />
                     </svg>
 
@@ -250,9 +292,9 @@ const JobTable = (props) => {
                           {candidates.map((candidate, index) => (
                             <tr className="tableRow" style ={{cursor:'pointer'}} key={index} onClick={() => props.setIsInterviewModalOpen(true)}>
 
-                              <td>
+                              <td style={{padding:'0px'}}>
                                 <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
-                                  <div className="bar" style={{ marginRight: "12px" }}></div>
+                                  <div className="bar" style={{ marginRight: "12px", background : candidate.status === "Shortlisted"? '#3ACE68':'#F2665D' }}></div>
                                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                                     <div style={{ marginRight: "12px" }}>
                                       <input
