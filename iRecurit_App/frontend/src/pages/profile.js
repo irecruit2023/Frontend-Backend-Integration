@@ -192,7 +192,9 @@ const ProfileCreationPage = () => {
 
   useEffect(() => {
     // Fetch top 5 skills from the API
-    const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
+    // const userId = JSON.parse(localStorage?.loginInformation)?.data?.user_id;
+    const userId = JSON.parse(localStorage?.getItem("loginInformation") || "{}")?.data?.user_id || "";
+
     // const userId = "88a2eb2d-d76d-4158-ac61-e2a2d5163671"
     fetchTopSkills(userId);
     fetchUserDomain(userId)
@@ -230,12 +232,12 @@ const ProfileCreationPage = () => {
                         className={styles.vidhiSharma}
                         style={{
                           fontSize:
-                            (localStorage?.loginInformation && JSON.parse(localStorage.loginInformation)?.data?.name?.length > 11)
+                          (localStorage?.getItem("loginInformation") && (JSON.parse(localStorage.getItem("loginInformation") || "{}")?.data?.name || "").length > 11)
                               ? '1.5rem' // Decreased font size for long names
                               : 'inherit' // Default font size for shorter names
                         }}
                       >
-                        {localStorage?.loginInformation ? JSON.parse(localStorage.loginInformation)?.data?.name || '' : ''}
+                       {localStorage?.getItem("loginInformation") ? JSON.parse(localStorage.getItem("loginInformation") || "{}")?.data?.name || "" : ""}
                       </h1>
 
                       <div className={styles.softwareEngineer}>
