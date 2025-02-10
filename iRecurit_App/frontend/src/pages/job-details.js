@@ -62,40 +62,116 @@ export default (props) => {
         </div>
         <div className={styles.column2}>
           <span className={styles.text11}>{"Tell me about the role"}</span>
-          <input
+          <textarea
+            readOnly
+            style={{
+              // border: "none",
+              outline: "none",
+              resize: "none",
+              width: "90%",
+              boxShadow:'none',
+              background: "transparent",
+              whiteSpace: "pre-wrap", // Ensures text wraps properly
+              wordBreak: "break-word", // Prevents overflow
+          
+            }}
             placeholder={"We are looking for a Sr. App developer skilled in React Native and Flutter..."}
             value={input2}
             onChange={(event) => onChangeInput2(event.target.value)}
             className={styles.input2}
           />
           <span className={styles.text12}>{"What's expected of me?"}</span>
-          <input
+          <textarea
+          readOnly
+          style={{
+            // border: "none",
+            outline: "none",
+            resize: "none",
+            width: "90%",
+            boxShadow:'none',
+            background: "transparent",
+            whiteSpace: "pre-wrap", // Ensures text wraps properly
+            wordBreak: "break-word", // Prevents overflow
+        
+          }}
             placeholder={"Roles & Responsibilities include Cisco technologies, OSPF, Vulnerability Management..."}
             value={input3}
             onChange={(event) => onChangeInput3(event.target.value)}
             className={styles.input3}
           />
           <span className={styles.text13}>{"How do I increase my chances of being seen?"}</span>
-          <input
+          <textarea
+          readOnly
+          style={{
+            // border: "none",
+            outline: "none",
+            resize: "none",
+            width: "90%",
+            boxShadow:'none',
+            background: "transparent",
+            whiteSpace: "pre-wrap", // Ensures text wraps properly
+            wordBreak: "break-word", // Prevents overflow
+        
+          }}
             placeholder={"Eligibilities: 5 years experience in React Application Development"}
             value={input4}
             onChange={(event) => onChangeInput4(event.target.value)}
             className={styles.input3}
           />
           <span className={styles.text14}>{"Which skills must I have?"}</span>
-          <div className={styles.view3}>
-            <span className={styles.text10}>
-              {"Required Skills\nReact\nAnalytical Thinking\nSelf Learning\nPrioritizing Skills\nTeam Player"}
-            </span>
-          </div>
+
+          <textarea
+          readOnly
+          style={{
+            // border: "none",
+            outline: "none",
+            resize: "none",
+            width: "90%",
+            boxShadow:'none',
+            background: "transparent",
+            whiteSpace: "pre-wrap", // Ensures text wraps properly
+            wordBreak: "break-word", // Prevents overflow
+        
+          }}
+            placeholder={"Required Skills\nReact\nAnalytical Thinking\nSelf Learning\nPrioritizing Skills\nTeam Player"}
+            value={input4}
+            onChange={(event) => onChangeInput4(event.target.value)}
+            className={styles.input3}
+          />
           <span className={styles.text14}>{"What will my day be like?"}</span>
-          <div className={styles.view4}>
-            <span className={styles.text10}>
-              {"Daily Kickoff - Team meets and shares updates on tasks"}
-            </span>
-          </div>
+
+          <textarea
+          readOnly
+          style={{
+            // border: "none",
+            outline: "none",
+            resize: "none",
+            width: "90%",
+            boxShadow:'none',
+            background: "transparent",
+            whiteSpace: "pre-wrap", // Ensures text wraps properly
+            wordBreak: "break-word", // Prevents overflow
+        
+          }}
+            placeholder={"Daily Kickoff - Team meets and shares updates on tasks"}
+            value={input4}
+            onChange={(event) => onChangeInput4(event.target.value)}
+            className={styles.input3}
+          />
           <span className={styles.text11}>{"About Company"}</span>
-          <input
+          <textarea
+          readOnly
+          style={{
+            // border: "none",
+            outline: "none",
+            resize: "none",
+            width: "90%",
+            boxShadow:'none',
+            background: "transparent",
+            whiteSpace: "pre-wrap", // Ensures text wraps properly
+            wordBreak: "break-word", // Prevents overflow
+        
+          }}
             placeholder={"Tesla is headquartered in Austin, Texas, and specializes in electric vehicles..."}
             value={input5}
             onChange={(event) => onChangeInput5(event.target.value)}
