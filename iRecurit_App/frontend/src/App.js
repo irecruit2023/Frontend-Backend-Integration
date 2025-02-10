@@ -2,26 +2,30 @@ import { useEffect } from "react";
 import { Routes, Route, useNavigationType, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import Landing from "./pages/landing";
-import Login from "./pages/login";
+
+import Landing from "./genPages/landing";
+import Login from "./genPages/login";
+import SignUp from "./genPages/signUp";
+import SignUpMessage from "./genPages/signUpMessage";
+import EmailActivation from "./genPages/activation";
+import EmailExpiredMessage from "./genPages/email-expired-message";
+import ThankYouComponent from "./genPages/ThankYouComponent";
+
 import Home from "./pages/home";
-import SignUp from "./pages/signUp";
-import SignUpMessage from "./pages/signUpMessage";
 import Main from "./pages/main";
 import Profile from "./pages/profile";
-import EmailActivation from "./pages/activation";
-import EmailExpiredMessage from "./pages/email-expired-message";
-import Jobs from "./pages/jobs";
-import Account from "./pages/account";
-import Organization from "./pages/organization";
-import OrganizationSignup from "./pages/organization-signup";
-import JobDescriptionTemplate from "./pages/jobs-template";
-import ThankYouComponent from "./pages/ThankYouComponent";
-import ManageJobsTable from "./pages/manage-jobs-table";
 import JobsSearch from "./pages/jobs-search";
 import JobDetails from "./pages/job-details";
-import JobDetailsEdit from "./pages/job-details-edit";
-import PublishJD from "./pages/publish-jd";
+
+
+import Jobs from "./orgPages/jobs";
+import Account from "./orgPages/account";
+import Organization from "./orgPages/organization";
+import OrganizationSignup from "./orgPages/organization-signup";
+import JobDescriptionTemplate from "./orgPages/jobs-template";
+import ManageJobsTable from "./orgPages/manage-jobs-table";
+import JobDetailsEdit from "./orgPages/job-details-edit";
+import PublishJD from "./orgPages/publish-jd";
 
 
 

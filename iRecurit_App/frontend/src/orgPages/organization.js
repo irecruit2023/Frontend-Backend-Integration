@@ -1,5 +1,5 @@
 import TopNavBar from "../components/top-nav-bar";
-import styles from "./home.module.css";
+import styles from "../pages/home.module.css";
 import WelcomeHeader from "../components/welcome-header";
 import { React, useState } from "react";
 import InputField from "../components/input-field";

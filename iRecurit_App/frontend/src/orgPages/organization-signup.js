@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import InputField2 from "../components/input-field2";
 import Cts from "../components/cts";
 import InputField3 from "../components/input-field3";
-import styles from "./signUp.module.css";
+import styles from "../genPages/signUp.module.css";
 import { signup } from "../utils/util";
 import { ReactComponent as Loading } from "../assets/icons/loading.svg";
 import { ReactComponent as Icon } from "../assets/icons/symbol1.svg";
