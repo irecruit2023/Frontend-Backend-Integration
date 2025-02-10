@@ -83,8 +83,8 @@ export default (props) => {
     const HorizontalJobListings = ({ jobData, bgColor, buttonName }) => {
         return (<>
             {jobData.map((job) => (
-                <div className="horizontal-row-view7">
-                    <div className="horizontal-column3" style={{ background: bgColor }} >
+                <div className="horizontal-row-view7"  onClick={() =>navigate("job-details")}>
+                    <div className="horizontal-column3"  style={{ background: bgColor }}>
                         <div className="horizontal-row-view8">
                             <span className="horizontal-text12">{"2 days ago"}</span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -123,7 +123,7 @@ export default (props) => {
                         </div>
 
                         <div className="horizontal-box"></div>
-                        <button className="horizontal-button6" onClick={() =>navigate("job-details")}>
+                        <button className="horizontal-button6">
                             <span className="horizontal-text17">{buttonName}</span>
                         </button>
                     </div>
@@ -143,7 +143,7 @@ export default (props) => {
         return (
             <div className="job-listings-grid">
                 {jobData.map((job, index) => (
-                    <div key={index} className="column7">
+                    <div key={index} className="column7"  onClick={() =>navigate("job-details")}>
                         <div className="column8">
                             <div className="row-view13">
                                 <span className="text17">{"2 days ago"}</span>
@@ -175,7 +175,7 @@ export default (props) => {
                                     <span className="text21">{"Gurugram, India"}</span>
                                 </div>
                             </div>
-                            <button className="button9" onClick={() => navigate("job-details")}>
+                            <button className="button9" >
                                 <span className="text22">{"View Details"}</span>
                             </button>
                         </div>
@@ -190,7 +190,7 @@ export default (props) => {
         return (
             <div className="job-listings-grid">
                 {jobData.map((job, index) => (
-                    <div className="column11">
+                    <div className="column11"  onClick={() =>navigate("job-details")}>
                         <div className="column12">
                             <div className="row-view13">
                                 <span className="text17">{"2 days ago"}</span>
@@ -230,7 +230,7 @@ export default (props) => {
 
                             <span className="text25">{"Gurugram, India"}</span>
                         </div>
-                        <button className="button10" onClick={() => navigate("job-details")}>
+                        <button className="button10">
                             <span className="text22">{"View and Apply"}</span>
                         </button>
                     </div>

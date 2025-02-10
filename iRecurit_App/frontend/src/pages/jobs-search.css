@@ -175,6 +175,16 @@
 	padding-bottom: 24px;
 	margin-top: -69px;
 }
+.column8:hover {
+	background: #D8EAFE; /* Change to the desired hover color */
+	cursor: pointer;
+  }
+
+  .column12:hover {
+	background: #fbe5e3; /* Change to the desired hover color */
+	cursor: pointer;
+  }
+
 .column4 {
 	align-self: stretch;
 	display: flex;
