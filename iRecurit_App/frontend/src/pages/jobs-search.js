@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import "./jobs-search.css";
-import C from "../components/top-nav-bar";
+import { useNavigate } from "react-router-dom";
 import TopNavBar from "../components/top-nav-bar";
 export default (props) => {
     const [input1, onChangeInput1] = useState("");
@@ -12,6 +12,7 @@ export default (props) => {
     const [input7, onChangeInput7] = useState("");
     const [advanceSearch, setAdvanceSearch] = useState(false)
     const [isHorizontalLayoutSelected, setIsHorizontalLayoutSelected] = useState(false)
+    const navigate = useNavigate();
 
 
 
@@ -122,7 +123,7 @@ export default (props) => {
                         </div>
 
                         <div className="horizontal-box"></div>
-                        <button className="horizontal-button6" onClick={() => alert("Pressed!")}>
+                        <button className="horizontal-button6" onClick={() =>navigate("job-details")}>
                             <span className="horizontal-text17">{buttonName}</span>
                         </button>
                     </div>
@@ -174,7 +175,7 @@ export default (props) => {
                                     <span className="text21">{"Gurugram, India"}</span>
                                 </div>
                             </div>
-                            <button className="button9" onClick={() => alert("Pressed!")}>
+                            <button className="button9" onClick={() => navigate("job-details")}>
                                 <span className="text22">{"View Details"}</span>
                             </button>
                         </div>
@@ -229,7 +230,7 @@ export default (props) => {
 
                             <span className="text25">{"Gurugram, India"}</span>
                         </div>
-                        <button className="button10" onClick={() => alert("Pressed!")}>
+                        <button className="button10" onClick={() => navigate("job-details")}>
                             <span className="text22">{"View and Apply"}</span>
                         </button>
                     </div>
@@ -530,7 +531,7 @@ export default (props) => {
                         <span className="text23">{"Jobs that matches you profile"}</span>
 
 
-                        {isHorizontalLayoutSelected ? <HorizontalJobListings jobData={jobData} bgColor={'#fff3f2'} buttonName={"View And Apply "} /> : <DefaultVerticalJobListings jobData={jobData} />}
+                         <DefaultVerticalJobListings jobData={jobData} />
                         
                     </div>
                 </div>
