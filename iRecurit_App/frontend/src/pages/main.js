@@ -3,19 +3,22 @@ import LowerContent from "../components/lower-content";
 import BottomContent from "../components/bottom-content";
 import FrameComponent1 from "../components/frame-component1";
 import FrameComponent from "../components/frame-component";
+import ExploreJobModal from "../modals/explore-jobs-modal"
 import styles from "./main.module.css";
 import TopNavBar from "../components/top-nav-bar";
 import { ReactComponent as  GroupIcon } from "../assets/icons/group-54.svg";
+import { useState } from "react";
 
 
 const Main = () => {
+  const [exploreModalContent , setExploreModalContent] = useState(false)
   return (
     <div className={styles.root}>
       <TopNavBar />  
       <main className={styles.mainContent}>
         <section className={styles.contentWrapper}>
           <ContentContainer />
-          <LowerContent />
+          <LowerContent setExploreModalContent ={setExploreModalContent} />
           <BottomContent />
           <FrameComponent1 />
           <FrameComponent />
@@ -33,6 +36,7 @@ const Main = () => {
             </div>
           </div>
         </section>
+        {<ExploreJobModal isOpen ={exploreModalContent}  setIsOpen ={setExploreModalContent}  ></ExploreJobModal>}
       </main>
     </div>
   );

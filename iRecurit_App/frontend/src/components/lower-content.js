@@ -10,7 +10,7 @@ import iconarrows1 from "../assets/icons/iconarrows-1.svg";
 import iconarrows2  from "../assets/icons/iconarrows-2.svg";
 import iconarrows3 from "../assets/icons/iconarrows-3.svg";
 
-const LowerContent = ({ className = "" }) => {
+const LowerContent = ({ className = "", setExploreModalContent }) => {
   return (
     <div className={[styles.lowerContent, className].join(" ")}>
       <div className={styles.actionButtons}>
@@ -69,7 +69,9 @@ const LowerContent = ({ className = "" }) => {
               </div>
             </div>
           </div>
-          <ButtonGrid
+          <div  style={{cursor:'pointer'}} onClick = {()=>{setExploreModalContent(true); console.log("hyyy")}}>
+          <ButtonGrid  
+                    
             description="Explore Jobs"
             description1="With user-friendly interfaces and tailored filters, our platforms streamline the job search process, making it more accessible and efficient for fresh graduates eager to kickstart their careers."
             iconDocument="/icondocument1.svg"
@@ -79,6 +81,7 @@ const LowerContent = ({ className = "" }) => {
             iconEvents1
             iconblogs1
           />
+          </div>
           <ButtonGrid
             description="Discover Events"
             description1="Navigating these curated events equips fresher candidates with the knowledge and connections necessary for a successful transition from academia to the professional landscape."
