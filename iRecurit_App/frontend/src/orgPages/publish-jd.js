@@ -13,7 +13,7 @@ export default (props) => {
   return (
     <div className={styles.contain}>
       <div className={styles["scroll-view"]}>
-        <TopNavBar />
+        <TopNavBar userType="recuriter" />
         <div className={styles.box2}></div>
         <div className={styles["row-view5"]}>
           <div className={styles.column2}>
