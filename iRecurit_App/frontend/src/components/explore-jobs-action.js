@@ -1,6 +1,6 @@
 import ButtonGrid from "./button-grid";
 import PropTypes from "prop-types";
-import styles from "./lower-content.module.css";
+import styles from "./explore-jobs-action.module.css";
 import { ReactComponent as  DocumentIcon } from "../assets/icons/icondocument.svg";
 import { ReactComponent as  JobIcon } from "../assets/icons/iconjob-document.svg";
 import { ReactComponent as  EventIcon } from "../assets/icons/iconevents.svg";
@@ -8,9 +8,9 @@ import { ReactComponent as  Iconblogs } from "../assets/icons/iconblogs.svg";
 import { ReactComponent as  Iconarrows } from "../assets/icons/iconarrows.svg";
 import iconarrows1 from "../assets/icons/iconarrows-1.svg";
 import iconarrows2  from "../assets/icons/iconarrows-2.svg";
-import iconarrows3 from "../assets/icons/iconarrows-3.svg";
+// import iconarrows3 from "../assets/icons/iconarrows-3.svg";
 
-const LowerContent = ({ className = "", setExploreModalContent }) => {
+const exploreJobsAction = ({ className = "", setExploreModalContent }) => {
   return (
     <div className={[styles.lowerContent, className].join(" ")}>
       <div className={styles.actionButtons}>
@@ -71,18 +71,21 @@ const LowerContent = ({ className = "", setExploreModalContent }) => {
           </div>
           <div  style={{cursor:'pointer'}} onClick = {()=>{setExploreModalContent(true); console.log("hyyy")}}>
           <ButtonGrid  
-                    
+            backgroundColor= '#F3E7FF7A' 
+            color= 'var(--colour-secondary-s2'                
             description="Explore Jobs"
             description1="With user-friendly interfaces and tailored filters, our platforms streamline the job search process, making it more accessible and efficient for fresh graduates eager to kickstart their careers."
             iconDocument="/icondocument1.svg"
             secondary="Explore"
             iconArrows={iconarrows1}
             showIconJobDocument
-            iconEvents1
-            iconblogs1
+            // iconEvents1
+            // iconblogs1
           />
           </div>
           <ButtonGrid
+            backgroundColor= '#FFF7E5BD'
+            color= " #FFC63D"
             description="Discover Events"
             description1="Navigating these curated events equips fresher candidates with the knowledge and connections necessary for a successful transition from academia to the professional landscape."
             iconDocument="/icondocument2.svg"
@@ -92,7 +95,8 @@ const LowerContent = ({ className = "", setExploreModalContent }) => {
             iconEvents1
             iconblogs1={false}
           />
-          <ButtonGrid
+          {/* <ButtonGrid
+  
             description="Latest Blogs"
             description1="Navigating these curated events equips fresher candidates with the knowledge and connections necessary for a successful transition from academia to the professional landscape."
             iconDocument="/icondocument3.svg"
@@ -101,15 +105,15 @@ const LowerContent = ({ className = "", setExploreModalContent }) => {
             showIconJobDocument={false}
             iconEvents1={false}
             iconblogs1
-          />
+          /> */}
         </div>
       </div>
     </div>
   );
 };
 
-LowerContent.propTypes = {
+exploreJobsAction.propTypes = {
   className: PropTypes.string,
 };
 
-export default LowerContent;
+export default exploreJobsAction;

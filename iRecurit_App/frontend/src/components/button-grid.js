@@ -7,6 +7,8 @@ import { ReactComponent as  Iconevents } from "../assets/icons/iconevents.svg";
 
 const ButtonGrid = ({
   className = "",
+  backgroundColor,
+  color,
   description,
   description1,
   iconDocument,
@@ -19,8 +21,8 @@ const ButtonGrid = ({
   return (
     <div className={[styles.buttonGrid, className].join(" ")}>
       <div className={styles.content}>
-        <div className={styles.content1}>
-          <div className={styles.description}>
+        <div style ={{backgroundColor: backgroundColor}} className={styles.content1}>
+          <div  style ={{color:color}}className={styles.description}>
             <h1 className={styles.description1}>{description}</h1>
           </div>
           <div className={styles.cts}>
@@ -48,7 +50,7 @@ const ButtonGrid = ({
       </div>
       <div className={styles.cts1}>
         <div className={styles.textLinkParent}>
-          <div className={styles.textLink}>
+          <div  style ={{color:color}} className={styles.textLink}>
             <div className={styles.secondary}>{secondary}</div>
           </div>
           <img className={styles.iconarrows} alt="" src={iconArrows} />

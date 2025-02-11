@@ -1,5 +1,5 @@
 import ContentContainer from "../components/content-container";
-import LowerContent from "../components/lower-content";
+import LowerContent from "../components/explore-jobs-action";
 import BottomContent from "../components/bottom-content";
 import FrameComponent1 from "../components/frame-component1";
 import FrameComponent from "../components/frame-component";
