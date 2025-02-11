@@ -1,0 +1,24 @@
+.secondary,
+.secondaryButton {
+  position: relative;
+}
+.secondaryButtonProfile {
+  position: absolute;
+  border-radius: var(--br-81xl);
+  background-color: var(--i-white);
+  border: 1px solid var(--colour-primary-p1);
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: var(--padding-xs) 76px;
+  white-space: nowrap;
+  text-align: left;
+  font-size: var(--popins-sub-heading-subheader1-size);
+  color: var(--colour-primary-p1);
+  font-family: var(--popins-sub-heading-subheader);
+}
