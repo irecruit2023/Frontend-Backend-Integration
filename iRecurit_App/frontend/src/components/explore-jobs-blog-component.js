@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import styles from "./frame-component1.module.css";
+import styles from "./explore-jobs-blog-component.module.css";
 import { ReactComponent as  Iconarrows1 } from "../assets/icons/iconarrows1.svg";
 import { ReactComponent as  Iconarrows2 } from "../assets/icons/iconarrows2.svg";
 import { ReactComponent as  FrameIcon } from "../assets/icons/frame-56.svg";
 import { ReactComponent as  ToggleIcon } from "../assets/icons/vector1.svg";
 
-const FrameComponent1 = ({ className = "" }) => {
+const ExploreJobsBlogComponent = ({ className = "" }) => {
   return (
     <div className={[styles.rectangleParent, className].join(" ")}>
       <div className={styles.frameChild} />
@@ -163,8 +163,8 @@ const FrameComponent1 = ({ className = "" }) => {
   );
 };
 
-FrameComponent1.propTypes = {
+ExploreJobsBlogComponent.propTypes = {
   className: PropTypes.string,
 };
 
-export default FrameComponent1;
+export default ExploreJobsBlogComponent;

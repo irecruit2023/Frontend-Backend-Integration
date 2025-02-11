@@ -1,8 +1,8 @@
 import ContentContainer from "../components/content-container";
-import LowerContent from "../components/explore-jobs-action";
+import ActionContent from "../components/explore-jobs-action";
 import BottomContent from "../components/bottom-content";
-import FrameComponent1 from "../components/frame-component1";
-import FrameComponent from "../components/frame-component";
+import KeyFeatureComponent from "../components/explore-jobs-blog-component";
+import BlogsComponent from "../components/frame-component";
 import ExploreJobModal from "../modals/explore-jobs-modal"
 import styles from "./main.module.css";
 import TopNavBar from "../components/top-nav-bar";
@@ -18,10 +18,10 @@ const Main = () => {
       <main className={styles.mainContent}>
         <section className={styles.contentWrapper}>
           <ContentContainer />
-          <LowerContent setExploreModalContent ={setExploreModalContent} />
+          <ActionContent setExploreModalContent ={setExploreModalContent} />
           <BottomContent />
-          <FrameComponent1 />
-          <FrameComponent />
+          <KeyFeatureComponent />
+          <BlogsComponent />
           <div className={styles.footerContainer}>
             <div className={styles.footerContent}>
               <div className={styles.wrapperGroup54}>
