@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import styles from "./explore-jobs-blog-component.module.css";
+import styles from "./explore-jobs-key-feature-component.module.css";
 import { ReactComponent as  Iconarrows1 } from "../assets/icons/iconarrows1.svg";
 import { ReactComponent as  Iconarrows2 } from "../assets/icons/iconarrows2.svg";
 import { ReactComponent as  FrameIcon } from "../assets/icons/frame-56.svg";
