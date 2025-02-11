@@ -65,22 +65,22 @@ const Organization = () => {
                       style={{ marginTop: "24px" }}
                     >
                       <div
-                        className={styles.primaryButton}
+                        className={styles.secondaryButton}
                         style={{ width: "213px" }}
                       >
                         <div
-                          className={styles.primary}
+                          className={styles.secondary}
                           style={{ cursor: "pointer" }}
                         >
                           Cancel
                         </div>
                       </div>
                       <div
-                        className={styles.secondaryButton}
+                        className={styles.primaryButton}
                         style={{ width: "213px" }}
                       >
                         <div
-                          className={styles.secondary}
+                          className={styles.primary}
                           style={{ cursor: "pointer" }}
                           onClick={handlePasswordSubmit}
                         >
@@ -125,7 +125,7 @@ const Organization = () => {
                           cursor: "pointer",
                           border: "none",
                           color: "white",
-                          maxHeight: "47px",
+                          // maxHeight: "47px",
                         }}
                         onClick={handleConfirm}
                       >
@@ -133,7 +133,9 @@ const Organization = () => {
                       </button>
                       <button
                         className={styles.secondaryButton}
-                        style={{ cursor: "pointer", maxHeight: "47px" }}
+                        style={{ cursor: "pointer",
+                          //  maxHeight: "47px" 
+                          }}
                         onClick={handleSkip}
                       >
                         Skip and fill later

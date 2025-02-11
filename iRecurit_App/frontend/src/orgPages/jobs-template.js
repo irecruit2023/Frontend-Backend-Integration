@@ -212,10 +212,41 @@ const JobDescriptionTemplate = () => {
                                         ></textarea>
                                     </div>
 
-                                    {/* Submit Button */}
-                                    <div className="mt-4 d-flex justify-content-between">
-                                        <button type="submit" onClick ={()=>{navigate('/publish-jobs')}} className={`  ${styles.buttonAccount}  ${styles.button}`}>Confirm & Proceed</button>
+
+
+                                    <div
+                                        className={styles.primaryButtonParent}
+                                        style={{ marginTop: "24px" }}
+                                    >
+                                        <button
+                                            onClick={() => { navigate('/publish-jobs') }}
+                                            className={styles.secondaryButton}
+                                            style={{
+                                                cursor: "pointer",
+                                                // border: "none",
+                                                // color: "white",
+                                                // maxHeight: "47px",
+                                                 width:"50%"
+                                            }}
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            className={styles.primaryButton}
+                                            style={{
+                                                cursor: "pointer",
+                                                color: "white",
+                                                border: "none",
+                                                width:"50%"
+                                                //  maxHeight: "47px" 
+                                            }}
+                                            onClick={handleSkip}
+                                        >
+                                            Confirm
+                                        </button>
                                     </div>
+
+
                                 </form>
                             </div>
                             <div className={styles.vectorParent}>

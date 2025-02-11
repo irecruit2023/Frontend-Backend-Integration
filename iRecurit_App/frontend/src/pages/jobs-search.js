@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import "./jobs-search.css";
 import { useNavigate } from "react-router-dom";
 import TopNavBar from "../components/top-nav-bar";
@@ -83,8 +83,8 @@ export default (props) => {
     const HorizontalJobListings = ({ jobData, bgColor, buttonName }) => {
         return (<>
             {jobData.map((job) => (
-                <div className="horizontal-row-view7"  onClick={() =>navigate("job-details")}>
-                    <div className="horizontal-column3"  style={{ background: bgColor }}>
+                <div className="horizontal-row-view7" onClick={() => navigate("job-details")}>
+                    <div className="horizontal-column3" style={{ background: bgColor }}>
                         <div className="horizontal-row-view8">
                             <span className="horizontal-text12">{"2 days ago"}</span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +143,7 @@ export default (props) => {
         return (
             <div className="job-listings-grid">
                 {jobData.map((job, index) => (
-                    <div key={index} className="column7"  onClick={() =>navigate("job-details")}>
+                    <div key={index} className="column7" onClick={() => navigate("job-details")}>
                         <div className="column8">
                             <div className="row-view13">
                                 <span className="text17">{"2 days ago"}</span>
@@ -190,7 +190,7 @@ export default (props) => {
         return (
             <div className="job-listings-grid">
                 {jobData.map((job, index) => (
-                    <div className="column11"  onClick={() =>navigate("job-details")}>
+                    <div className="column11" onClick={() => navigate("job-details")}>
                         <div className="column12">
                             <div className="row-view13">
                                 <span className="text17">{"2 days ago"}</span>
@@ -255,6 +255,7 @@ export default (props) => {
             "Project Manager",
             "UI/UX Designer",
             "DevOps Engineer",
+            "Part Time"
         ];
 
         const handleChange = (e) => {
@@ -342,211 +343,219 @@ export default (props) => {
     };
 
 
-    return (
-        <div className="contain">
-            <div className="scroll-view">
-                <TopNavBar />
-                <div className="box2"></div>
-                <div className="column">
-                    <div className="column2">
-                        <span className="text6">{"Jobs"}</span>
-                        <span className="text7">
-                            {
-                                "Vidhi, your career journey is important to us. Whether you choose one of these tailored positions or find something else that sparks your interest, we're here to support you every step of the way. We believe these roles are perfect for your unique skills and experiences."
-                            }
-                        </span>
-                    </div>
-                    <div className="column3" style={{ background: advanceSearch ? "#fafafa" : 'none' }}>
-                        <div className="row-view3">
-                            <SearchBar />
+
+
+    const AdvancedSearchFilter = () => {
+        const [filters, setFilters] = useState({
+            industry: "Engineering",
+            location: "Gurugram",
+            experience: "Fresher",
+            category: "Full Stack Developer",
+            jobType: "Full Time",
+            sortBy: "1 week",
+        });
+
+        const handleChange = (e) => {
+            setFilters({ ...filters, [e.target.name]: e.target.value });
+        };
+
+        const handleClearFilters = () => {
+            setFilters({
+                industry: "",
+                location: "",
+                experience: "",
+                category: "",
+                jobType: "",
+                sortBy: "",
+            });
+        };
+
+        return (
+            <div className="filter-container">
+                <div className="filter-box">
+                    <h2 className="filter-header">Advanced Search Filter</h2>
+
+                    {/* First Row */}
+                    <div className="filter-grid">
+                        <div>
+                            <label className="filter-label">Industry</label>
+                            <select name="industry" value={filters.industry} onChange={handleChange} className="filter-select">
+                                <option value="Engineering">Engineering</option>
+                            </select>
                         </div>
-                        {advanceSearch ? <div className="column4">
-                            <div className="column5">
-                                <span className="text10">{"Advance Search Filter"}</span>
-                                <div className="row-view4">
-                                    <span className="text11">{"Industry"}</span>
-                                    <span className="text12">{"Location"}</span>
-                                    <span className="text13">{"Years of Experence"}</span>
-                                </div>
-                                <div className="row-view5">
-                                    <div className="row-view6">
-                                        <input
-                                            placeholder={"Engineering"}
-                                            value={input2}
-                                            onChange={(event) => onChangeInput2(event.target.value)}
-                                            className="input2"
-                                        />
-                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7.64645 7.75355L1.55 1.65711L1.20711 2L8 8.79289L14.7929 2L14.45 1.65711L8.35355 7.75355L8 8.10711L7.64645 7.75355Z" fill="#303030" stroke="#303030" />
-                                        </svg>
-
-                                    </div>
-                                    <div className="row-view7">
-                                        <input
-                                            placeholder={"Gurugram"}
-                                            value={input3}
-                                            onChange={(event) => onChangeInput3(event.target.value)}
-                                            className="input2"
-                                        />
-                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7.64645 7.75355L1.55 1.65711L1.20711 2L8 8.79289L14.7929 2L14.45 1.65711L8.35355 7.75355L8 8.10711L7.64645 7.75355Z" fill="#303030" stroke="#303030" />
-                                        </svg>
-
-                                    </div>
-                                    <div className="row-view6">
-                                        <input
-                                            placeholder={"Fresher"}
-                                            value={input4}
-                                            onChange={(event) => onChangeInput4(event.target.value)}
-                                            className="input2"
-                                        />
-                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7.64645 7.75355L1.55 1.65711L1.20711 2L8 8.79289L14.7929 2L14.45 1.65711L8.35355 7.75355L8 8.10711L7.64645 7.75355Z" fill="#303030" stroke="#303030" />
-                                        </svg>
-
-                                    </div>
-                                </div>
-                                <div className="row-view8">
-                                    <span className="text11">{"Job Category"}</span>
-                                    <span className="text12">{"Job Type"}</span>
-                                    <span className="text13">{"Sort by"}</span>
-                                </div>
-                                <div className="row-view9">
-                                    <div className="row-view6">
-                                        <input
-                                            placeholder={"Full Stack Developer"}
-                                            value={input5}
-                                            onChange={(event) => onChangeInput5(event.target.value)}
-                                            className="input3"
-                                        />
-                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7.64645 7.75355L1.55 1.65711L1.20711 2L8 8.79289L14.7929 2L14.45 1.65711L8.35355 7.75355L8 8.10711L7.64645 7.75355Z" fill="#303030" stroke="#303030" />
-                                        </svg>
-
-                                    </div>
-                                    <div className="row-view10">
-                                        <input
-                                            placeholder={" Full Time"}
-                                            value={input6}
-                                            onChange={(event) => onChangeInput6(event.target.value)}
-                                            className="input3"
-                                        />
-                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7.64645 7.75355L1.55 1.65711L1.20711 2L8 8.79289L14.7929 2L14.45 1.65711L8.35355 7.75355L8 8.10711L7.64645 7.75355Z" fill="#303030" stroke="#303030" />
-                                        </svg>
-
-                                    </div>
-                                    <div className="row-view7">
-                                        <input
-                                            placeholder={"1 week"}
-                                            value={input7}
-                                            onChange={(event) => onChangeInput7(event.target.value)}
-                                            className="input3"
-                                        />
-                                        <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M7.64645 7.75355L1.55 1.65711L1.20711 2L8 8.79289L14.7929 2L14.45 1.65711L8.35355 7.75355L8 8.10711L7.64645 7.75355Z" fill="#303030" stroke="#303030" />
-                                        </svg>
-
-                                    </div>
-                                </div>
-                                <div className="row-view11">
-                                    <button className="button3" onClick={() => { setAdvanceSearch(false) }}>
-                                        <span className="text14">{"Close Filter"}</span>
-                                    </button>
-                                    <button className="button4" onClick={() => alert("Pressed!")}>
-                                        <span className="text14">{"Clear Filters"}</span>
-                                    </button>
-                                    <div className="box"></div>
-                                    <button className="button5" onClick={() => alert("Pressed!")}>
-                                        <span className="text9">{"Apply Filters"}</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div> : <div className="row-view4">
-                            <div className="box"></div>
-                            <div className="row-view5" style={{ cursor: 'pointer' }} onClick={() => { setAdvanceSearch(true) }}>
-                                <svg style={{ marginRight: "0.5rem" }} width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="2" width="1.5" height="20" fill="#6E6E6E" />
-                                    <rect x="12" width="1.5" height="20" fill="#6E6E6E" />
-                                    <circle cx="3" cy="13" r="2.5" fill="#FCFCFC" stroke="#6E6E6E" />
-                                    <circle cx="13" cy="6" r="2.5" fill="#FCFCFC" stroke="#6E6E6E" />
-                                </svg>
-
-                                <span className="text7">{"Advance search"}</span>
-                            </div>
-                        </div>}
-
-
+                        <div>
+                            <label className="filter-label">Location</label>
+                            <select name="location" value={filters.location} onChange={handleChange} className="filter-select">
+                                <option value="Gurugram">Gurugram</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="filter-label">Years of Experience</label>
+                            <select name="experience" value={filters.experience} onChange={handleChange} className="filter-select">
+                                <option value="Fresher">Fresher</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+
+                    {/* Second Row */}
+                    <div className="filter-grid">
+                        <div>
+                            <label className="filter-label">Job Category</label>
+                            <select name="category" value={filters.category} onChange={handleChange} className="filter-select">
+                                <option value="Full Stack Developer">Full Stack Developer</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="filter-label">Job Type</label>
+                            <select name="jobType" value={filters.jobType} onChange={handleChange} className="filter-select">
+                                <option value="Full Time">Full Time</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="filter-label">Sort By</label>
+                            <select name="sortBy" value={filters.sortBy} onChange={handleChange} className="filter-select">
+                                <option value="1 week">1 week</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="row-view11 filter-actions">
+                        <button className="button3" onClick={() => { setAdvanceSearch(false) }}>
+                            <span className="text14">{"Close Filter"}</span>
+                        </button>
+                        <button className="button4" onClick={() => alert("Pressed!")}>
+                            <span className="text14">{"Clear Filters"}</span>
+                        </button>
+                        <div className="box"></div>
+                        <button className="button5" onClick={() => alert("Pressed!")}>
+                            <span className="text9">{"Apply Filters"}</span>
+                        </button>
+                    </div>
+            
+                {/* <div className="filter-actions">
+              <button className="button close-button" onClick={() => setAdvanceSearch(false)}>
+                Close Filter
+              </button>
+              <button className="button clear-button" onClick={handleClearFilters}>
+                Clear Filters
+              </button>
+              <button className="button apply-button">
+                Apply Filters
+              </button>
+            </div> */}
+            </div>
+        </div >
+      );
+};
 
 
 
-                <div className="column6">
-                    <span className="text15">{"Jobs that matches you profile"}</span>
-                    <div className="row-view12">
-                        <span className="text16">{"Showing 1 to 6 of total 6 jobs"}</span>
 
-                        {isHorizontalLayoutSelected === true ? <svg style={{ marginRight: "0.5rem", cursor: 'pointer' }} onClick={() => { setIsHorizontalLayoutSelected(false) }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 10H7C9 10 10 9 10 7V5C10 3 9 2 7 2H5C3 2 2 3 2 5V7C2 9 3 10 5 10Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M17 10H19C21 10 22 9 22 7V5C22 3 21 2 19 2H17C15 2 14 3 14 5V7C14 9 15 10 17 10Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M17 22H19C21 22 22 21 22 19V17C22 15 21 14 19 14H17C15 14 14 15 14 17V19C14 21 15 22 17 22Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M5 22H7C9 22 10 21 10 19V17C10 15 9 14 7 14H5C3 14 2 15 2 17V19C2 21 3 22 5 22Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
 
-                            :
-                            <svg width="24" style={{ marginRight: "0.5rem", cursor: 'pointer' }} height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5 10H7C9 10 10 9 10 7V5C10 3 9 2 7 2H5C3 2 2 3 2 5V7C2 9 3 10 5 10Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M17 10H19C21 10 22 9 22 7V5C22 3 21 2 19 2H17C15 2 14 3 14 5V7C14 9 15 10 17 10Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M17 22H19C21 22 22 21 22 19V17C22 15 21 14 19 14H17C15 14 14 15 14 17V19C14 21 15 22 17 22Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M5 22H7C9 22 10 21 10 19V17C10 15 9 14 7 14H5C3 14 2 15 2 17V19C2 21 3 22 5 22Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
 
+return (
+    <div className="contain">
+        <div className="scroll-view">
+            <TopNavBar />
+            <div className="box2"></div>
+            <div className="column">
+                <div className="column2">
+                    <span className="text6">{"Jobs"}</span>
+                    <span className="text7">
+                        {
+                            "Vidhi, your career journey is important to us. Whether you choose one of these tailored positions or find something else that sparks your interest, we're here to support you every step of the way. We believe these roles are perfect for your unique skills and experiences."
                         }
-
-                        {isHorizontalLayoutSelected === false ? <svg style={{ cursor: 'pointer' }} onClick={() => { setIsHorizontalLayoutSelected(true) }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M19.9 13.5L4.1 13.5C2.6 13.5 2 14.14 2 15.73L2 19.77C2 21.36 2.6 22 4.1 22L19.9 22C21.4 22 22 21.36 22 19.77L22 15.73C22 14.14 21.4 13.5 19.9 13.5Z" stroke="#303030" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M19.9 2L4.1 2C2.6 2 2 2.64 2 4.23L2 8.27C2 9.86 2.6 10.5 4.1 10.5L19.9 10.5C21.4 10.5 22 9.86 22 8.27L22 4.23C22 2.64 21.4 2 19.9 2Z" stroke="#303030" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg> :
-
-                            <svg width="24" height="24" style={{ cursor: 'pointer' }} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19.9 13.5L4.1 13.5C2.6 13.5 2 14.14 2 15.73L2 19.77C2 21.36 2.6 22 4.1 22L19.9 22C21.4 22 22 21.36 22 19.77L22 15.73C22 14.14 21.4 13.5 19.9 13.5Z" stroke="#BBBBBB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M19.9 2L4.1 2C2.6 2 2 2.64 2 4.23L2 8.27C2 9.86 2.6 10.5 4.1 10.5L19.9 10.5C21.4 10.5 22 9.86 22 8.27L22 4.23C22 2.64 21.4 2 19.9 2Z" stroke="#BBBBBB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        }
-
-
-                    </div>
-
-
-                    {isHorizontalLayoutSelected ? <HorizontalJobListings jobData={jobData} bgColor={'#f0f6ff'} buttonName={"View Details "} /> : <VerticalJobListings jobData={jobData} />}
-
-
-                </div>
-
-
-                <div className="view2">
-                    <div className="column10">
-                        <span className="text23">{"Jobs that matches you profile"}</span>
-
-
-                         <DefaultVerticalJobListings jobData={jobData} />
-                        
-                    </div>
-                </div>
-
-
-                <div className="column13">
-                    <span className="text28">
-                        {"Some of our top clients' open positions"}
                     </span>
-                    <span className="text29">{"Showing 1 to 6 of total 6 jobs"}</span>
+                </div>
+                <div className="column3" style={{ background: advanceSearch ? "#fafafa" : 'none' }}>
+                    <div className="row-view3">
+                        <SearchBar />
+                    </div>
+                    {advanceSearch ? <AdvancedSearchFilter /> : <div className="row-view4">
+                        <div className="box"></div>
+                        <div className="row-view5" style={{ cursor: 'pointer' }} onClick={() => { setAdvanceSearch(true) }}>
+                            <svg style={{ marginRight: "0.5rem" }} width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" width="1.5" height="20" fill="#6E6E6E" />
+                                <rect x="12" width="1.5" height="20" fill="#6E6E6E" />
+                                <circle cx="3" cy="13" r="2.5" fill="#FCFCFC" stroke="#6E6E6E" />
+                                <circle cx="13" cy="6" r="2.5" fill="#FCFCFC" stroke="#6E6E6E" />
+                            </svg>
 
-                    {isHorizontalLayoutSelected ? <HorizontalJobListings jobData={jobData} bgColor={'#f0f6ff'} buttonName={"View Details "} /> : <VerticalJobListings jobData={jobData} />}
+                            <span className="text7">{"Advance search"}</span>
+                        </div>
+                    </div>}
+
 
                 </div>
             </div>
+
+
+
+            <div className="column6">
+                <span className="text15">{"Jobs that matches you profile"}</span>
+                <div className="row-view12">
+                    <span className="text16">{"Showing 1 to 6 of total 6 jobs"}</span>
+
+                    {isHorizontalLayoutSelected === true ? <svg style={{ marginRight: "0.5rem", cursor: 'pointer' }} onClick={() => { setIsHorizontalLayoutSelected(false) }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 10H7C9 10 10 9 10 7V5C10 3 9 2 7 2H5C3 2 2 3 2 5V7C2 9 3 10 5 10Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M17 10H19C21 10 22 9 22 7V5C22 3 21 2 19 2H17C15 2 14 3 14 5V7C14 9 15 10 17 10Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M17 22H19C21 22 22 21 22 19V17C22 15 21 14 19 14H17C15 14 14 15 14 17V19C14 21 15 22 17 22Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M5 22H7C9 22 10 21 10 19V17C10 15 9 14 7 14H5C3 14 2 15 2 17V19C2 21 3 22 5 22Z" stroke="#303030" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+
+                        :
+                        <svg width="24" style={{ marginRight: "0.5rem", cursor: 'pointer' }} height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 10H7C9 10 10 9 10 7V5C10 3 9 2 7 2H5C3 2 2 3 2 5V7C2 9 3 10 5 10Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17 10H19C21 10 22 9 22 7V5C22 3 21 2 19 2H17C15 2 14 3 14 5V7C14 9 15 10 17 10Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M17 22H19C21 22 22 21 22 19V17C22 15 21 14 19 14H17C15 14 14 15 14 17V19C14 21 15 22 17 22Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M5 22H7C9 22 10 21 10 19V17C10 15 9 14 7 14H5C3 14 2 15 2 17V19C2 21 3 22 5 22Z" stroke="#BBBBBB" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+                    }
+
+                    {isHorizontalLayoutSelected === false ? <svg style={{ cursor: 'pointer' }} onClick={() => { setIsHorizontalLayoutSelected(true) }} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.9 13.5L4.1 13.5C2.6 13.5 2 14.14 2 15.73L2 19.77C2 21.36 2.6 22 4.1 22L19.9 22C21.4 22 22 21.36 22 19.77L22 15.73C22 14.14 21.4 13.5 19.9 13.5Z" stroke="#303030" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M19.9 2L4.1 2C2.6 2 2 2.64 2 4.23L2 8.27C2 9.86 2.6 10.5 4.1 10.5L19.9 10.5C21.4 10.5 22 9.86 22 8.27L22 4.23C22 2.64 21.4 2 19.9 2Z" stroke="#303030" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg> :
+
+                        <svg width="24" height="24" style={{ cursor: 'pointer' }} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.9 13.5L4.1 13.5C2.6 13.5 2 14.14 2 15.73L2 19.77C2 21.36 2.6 22 4.1 22L19.9 22C21.4 22 22 21.36 22 19.77L22 15.73C22 14.14 21.4 13.5 19.9 13.5Z" stroke="#BBBBBB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M19.9 2L4.1 2C2.6 2 2 2.64 2 4.23L2 8.27C2 9.86 2.6 10.5 4.1 10.5L19.9 10.5C21.4 10.5 22 9.86 22 8.27L22 4.23C22 2.64 21.4 2 19.9 2Z" stroke="#BBBBBB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    }
+
+
+                </div>
+
+
+                {isHorizontalLayoutSelected ? <HorizontalJobListings jobData={jobData} bgColor={'#f0f6ff'} buttonName={"View Details "} /> : <VerticalJobListings jobData={jobData} />}
+
+
+            </div>
+
+
+            <div className="view2">
+                <div className="column10">
+                    <span className="text23">{"Jobs that matches you profile"}</span>
+
+
+                    <DefaultVerticalJobListings jobData={jobData} />
+
+                </div>
+            </div>
+
+
+            <div className="column13">
+                <span className="text28">
+                    {"Some of our top clients' open positions"}
+                </span>
+                <span className="text29">{"Showing 1 to 6 of total 6 jobs"}</span>
+
+                {isHorizontalLayoutSelected ? <HorizontalJobListings jobData={jobData} bgColor={'#f0f6ff'} buttonName={"View Details "} /> : <VerticalJobListings jobData={jobData} />}
+
+            </div>
         </div>
-    );
+    </div>
+);
 };
