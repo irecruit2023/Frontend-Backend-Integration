@@ -219,28 +219,22 @@ const JobDescriptionTemplate = () => {
                                         style={{ marginTop: "24px" }}
                                     >
                                         <button
-                                            onClick={() => { navigate('/publish-jobs') }}
+                                            
                                             className={styles.secondaryButton}
-                                            style={{
-                                                cursor: "pointer",
-                                                // border: "none",
-                                                // color: "white",
-                                                // maxHeight: "47px",
-                                                 width:"50%"
-                                            }}
                                         >
                                             Cancel
                                         </button>
                                         <button
+                                        onClick={() => { navigate('/publish-jobs') }}
                                             className={styles.primaryButton}
                                             style={{
-                                                cursor: "pointer",
+                                                // cursor: "pointer",
                                                 color: "white",
                                                 border: "none",
-                                                width:"50%"
+                                                // width:"50%"
                                                 //  maxHeight: "47px" 
                                             }}
-                                            onClick={handleSkip}
+                                           
                                         >
                                             Confirm
                                         </button>
