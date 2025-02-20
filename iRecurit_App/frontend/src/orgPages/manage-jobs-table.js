@@ -8,6 +8,7 @@ import { ReactComponent as Shortlisted } from "../assets/icons/shortlist-font.sv
 import { ReactComponent as Rejected } from "../assets/icons/rejected-font.svg";
 import { ReactComponent as Progress } from "../assets/icons/in-progress-font.svg";
 import InterviewModal from "../modals/interview-modal"
+import BarGraph from "../components/bar-chart"
 
 
 
@@ -44,6 +45,7 @@ const JobDashboard = () => {
 
 
       <div className="card graph-card">
+        <BarGraph/>
         {/* <svg width="717" height="316" viewBox="0 0 717 316" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="717" height="316" rx="16" fill="#F6F7FF" />
         </svg> */}
